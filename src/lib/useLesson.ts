@@ -8,8 +8,9 @@ type Loaded = { engine: Engine; state: LessonState }
 export function useLesson(layer: number) {
   const [progress, setProgress] = useState(0)
   const [loaded, dispatchRaw] = useReducer(
-    (cur: Loaded | null, a: Action | { type: 'loaded'; engine: Engine }): Loaded | null => {
+    (cur: Loaded | null, a: Action | { type: 'loaded'; engine: Engine } | { type: 'unload' }): Loaded | null => {
       if (a.type === 'loaded') return { engine: a.engine, state: initialState(a.engine) }
+      if (a.type === 'unload') return null
       return cur && { ...cur, state: reducer(cur.engine, cur.state, a) }
     },
     null,
@@ -18,6 +19,7 @@ export function useLesson(layer: number) {
   useEffect(() => {
     let cancelled = false
     setProgress(0)
+    dispatchRaw({ type: 'unload' }) // show the loading bar, not the previous lesson
     loadEngine(layer, (p) => !cancelled && setProgress(p)).then((engine) => {
       if (!cancelled) dispatchRaw({ type: 'loaded', engine })
     })

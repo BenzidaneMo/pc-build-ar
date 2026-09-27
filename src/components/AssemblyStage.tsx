@@ -17,13 +17,15 @@ interface Props {
   dispatch: (a: Action) => void
   /** Part being dragged or selected in the tray. */
   active: string | null
+  /** "Show instructions" off: hotspots still work but aren't highlighted (the original expert mode). */
+  quiet: boolean
   onPlace: (x: number, y: number) => void
 }
 
 const DEFAULT_TOOLS: Rect = [69, 104.8, 29, 196]
 
 export const AssemblyStage = forwardRef<StageHandle, Props>(function AssemblyStage(
-  { engine, state, dispatch, active, onPlace },
+  { engine, state, dispatch, active, quiet, onPlace },
   ref,
 ) {
   const { assets } = engine
@@ -85,20 +87,20 @@ export const AssemblyStage = forwardRef<StageHandle, Props>(function AssemblySta
         {!running && availableTasks(engine, state).map((t) => {
           if (!t.part || !isOnStage(engine, state, dropClip(t))) return null
           const r = dropHotspot(engine, state, t)
-          return r && <Hotspot key={t.id} part={t.part} rect={r} strong={active === t.part} label={`ضع ${engine.names[t.part]} هنا`}
+          return r && <Hotspot key={t.id} quiet={quiet} part={t.part} rect={r} strong={active === t.part} label={`ضع ${engine.names[t.part]} هنا`}
             onActivate={active === t.part ? () => onPlace((r[0] + r[1]) / 2, (r[2] + r[3]) / 2) : undefined} />
         })}
 
         {!running && availableTasks(engine, state).map((t) => {
           if (!t.start || !isOnStage(engine, state, t.start.clip)) return null
           const r = inflate(childRect(engine, state, t.start.clip, t.start.target), 28)
-          return r && <Hotspot key={t.id} rect={r} strong label={t.say} data-start={t.id}
+          return r && <Hotspot key={t.id} quiet={quiet} rect={r} strong label={quiet ? 'اضغط هنا' : t.say} data-start={t.id}
             onActivate={() => dispatch({ type: 'start', task: t.id })} />
         })}
 
         {w?.kind === 'click' && w.targets.filter((t) => !w.clicked.includes(t)).map((t) => {
           const r = inflate(childRect(engine, state, w.clip, t), 28)
-          return r && <Hotspot key={t} rect={r} strong label="اضغط هنا"
+          return r && <Hotspot key={t} quiet={quiet} rect={r} strong label="اضغط هنا"
             onActivate={() => dispatch({ type: 'click', target: t })} />
         })}
 
@@ -127,14 +129,15 @@ export const AssemblyStage = forwardRef<StageHandle, Props>(function AssemblySta
   )
 })
 
-function Hotspot({ rect, strong, label, part, onActivate, 'data-start': start }: {
-  rect: Rect; strong: boolean; label: string; part?: string; onActivate?: () => void; 'data-start'?: string
+function Hotspot({ rect, strong, quiet, label, part, onActivate, 'data-start': start }: {
+  rect: Rect; strong: boolean; quiet: boolean; label: string; part?: string; onActivate?: () => void; 'data-start'?: string
 }) {
   const style = { left: rect[0], top: rect[2], width: rect[1] - rect[0], height: rect[3] - rect[2] }
+  const cls = `hotspot${quiet ? ' quiet' : strong ? ' strong' : ''}`
   return onActivate ? (
-    <button className={`hotspot${strong ? ' strong' : ''}`} style={style} aria-label={label} title={label} data-part={part} data-start={start}
+    <button className={cls} style={style} aria-label={label} title={quiet ? undefined : label} data-part={part} data-start={start}
       onClick={(e) => { e.stopPropagation(); onActivate() }} />
   ) : (
-    <div className={`hotspot${strong ? ' strong' : ''}`} style={style} data-part={part} />
+    <div className={cls} style={style} data-part={part} />
   )
 }

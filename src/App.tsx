@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { AssemblyStage, type StageHandle } from './components/AssemblyStage'
+import { LearnPanel } from './components/LearnPanel'
 import { PartsTray } from './components/PartsTray'
 import { lessons, lessonTitles } from './content/lessons'
 import { asset, parts } from './lib/content'
@@ -17,6 +18,16 @@ function loadCompleted(): number[] {
   }
 }
 
+const HINTS_KEY = 'pc-build-ar:show-instructions'
+
+function loadHints(): boolean {
+  try {
+    return localStorage.getItem(HINTS_KEY) !== 'false'
+  } catch {
+    return true
+  }
+}
+
 type Drag = { part: string; x: number; y: number; moved: boolean; startX: number; startY: number }
 
 export default function App() {
@@ -26,6 +37,16 @@ export default function App() {
   const [drag, setDrag] = useState<Drag | null>(null)
   const [selected, setSelected] = useState<string | null>(null)
   const [completed, setCompleted] = useState<number[]>(loadCompleted)
+  const [hints, setHints] = useState(loadHints)
+
+  const toggleHints = (on: boolean) => {
+    setHints(on)
+    try {
+      localStorage.setItem(HINTS_KEY, String(on))
+    } catch {
+      // storage unavailable: the choice lasts for this session only
+    }
+  }
 
   useEffect(() => {
     if (!state?.complete || completed.includes(layer)) return
@@ -69,6 +90,8 @@ export default function App() {
 
   const active = drag?.moved ? drag.part : selected
   const instruction = engine && state ? currentInstruction(engine, state) : ''
+  // Without instructions, only completion is announced (the original "expert mode").
+  const shown = hints || state?.complete ? instruction : 'التعليمات مخفية: ركّب القطع بالاعتماد على معلوماتك.'
 
   return (
     <div className="app">
@@ -91,6 +114,7 @@ export default function App() {
                   {!ready && <span className="soon">قريبًا</span>}
                   {completed.includes(n) && <span className="check" aria-label="مكتمل">✓</span>}
                 </button>
+                {n === layer && <LearnPanel lesson={n} />}
               </li>
             )
           })}
@@ -106,22 +130,28 @@ export default function App() {
         ) : (
           <>
             <div className="instruction-row">
-              <p className={`instruction${state.complete ? ' done' : ''}`} aria-live="polite">{instruction}</p>
+              <p className={`instruction${state.complete ? ' done' : hints ? '' : ' hidden-hints'}`} aria-live="polite">{shown}</p>
+              <label className="hints-toggle">
+                <input type="checkbox" checked={hints} onChange={(e) => toggleHints(e.target.checked)} />
+                إظهار التعليمات
+              </label>
               <button className="ghost" onClick={() => { setSelected(null); dispatch({ type: 'reset' }) }}>
                 إعادة الدرس
               </button>
             </div>
             <div className="stage-wrap">
-              <AssemblyStage ref={stage} engine={engine} state={state} dispatch={dispatch} active={active}
+              <AssemblyStage ref={stage} engine={engine} state={state} dispatch={dispatch} active={active} quiet={!hints}
                 onPlace={(x, y) => active && place(active, x, y)} />
               {state.message && state.message.text !== instruction && (
-                <p className={`message ${state.message.kind}`} role="alert">{state.message.text}</p>
+                <p className={`message ${state.message.kind}`} role="alert">
+                  {state.message.text}{hints && state.message.hint ? ` ${state.message.hint}` : ''}
+                </p>
               )}
             </div>
             {state.complete && lessons[layer + 1] && (
               <button className="primary next" onClick={() => setLayer(layer + 1)}>الدرس التالي ←</button>
             )}
-            <PartsTray engine={engine} state={state} active={active}
+            <PartsTray engine={engine} state={state} active={active} hints={hints}
               onGrab={(part, e) => setDrag({ part, x: e.clientX, y: e.clientY, startX: e.clientX, startY: e.clientY, moved: false })} />
           </>
         )}

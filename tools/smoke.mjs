@@ -32,6 +32,9 @@ async function drag(part) {
 await page.goto(url)
 await page.locator('.lessons button').nth(lesson - 1).click()
 await page.locator('.instruction').waitFor({ timeout: 60000 })
+// HINTS=off plays with "Show instructions" unchecked (hotspots invisible but still active)
+const box = page.locator('.hints-toggle input')
+if ((process.env.HINTS === 'off') === (await box.isChecked())) await box.click()
 let last = ''
 const start = Date.now()
 while (Date.now() - start < 900000) {

@@ -89,7 +89,7 @@ describe.each(Object.keys(lessons).map(Number))('lesson %i', (layer) => {
     if (!blocked) return
     const next = reducer(e, s, { type: 'drop', part: blocked.part!, x: 0, y: 0 })
     expect(next.running).toBeNull()
-    expect(next.message?.text).toContain('أولاً')
+    expect(next.message?.hint).toContain('أولاً')
   })
 })
 

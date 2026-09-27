@@ -26,7 +26,8 @@ export interface LessonState {
   done: string[]
   installed: string[]
   spin: 1 | -1 | null
-  message: { kind: 'error' | 'success'; text: string } | null
+  /** `hint` is extra help shown only when "Show instructions" is on. */
+  message: { kind: 'error' | 'success'; text: string; hint?: string } | null
   complete: boolean
 }
 
@@ -218,10 +219,10 @@ export function reducer(e: Engine, s: LessonState, a: Action): LessonState {
       if (missing) {
         const need = task(e, missing)
         const what = need.part ? `«${e.names[need.part]}»` : 'الخطوة السابقة'
-        return { ...s, message: { kind: 'error', text: `ليس بعد: ركّب ${what} أولاً.` } }
+        return { ...s, message: { kind: 'error', text: 'ليس بعد: هناك خطوة يجب إنجازها أولاً.', hint: `ركّب ${what} أولاً.` } }
       }
       if (!inside(dropHotspot(e, s, t), a.x, a.y)) {
-        return { ...s, message: { kind: 'error', text: `ليس هنا. ضع «${e.names[a.part]}» في المنطقة المضيئة.` } }
+        return { ...s, message: { kind: 'error', text: `ليس هذا مكان «${e.names[a.part]}».`, hint: 'ضعه في المنطقة المضيئة.' } }
       }
       return advance(e, { ...s, message: null, running: { task: t.id, step: 0 } })
     }

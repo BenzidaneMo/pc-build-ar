@@ -5,11 +5,13 @@ interface Props {
   engine: Engine
   state: LessonState
   active: string | null
+  /** Show ordering hints ("after: CPU") — off when "Show instructions" is unchecked. */
+  hints: boolean
   onGrab: (part: string, e: React.PointerEvent) => void
 }
 
 /** The antistatic mat: the lesson's parts, ready to drag onto the case. */
-export function PartsTray({ engine, state, active, onGrab }: Props) {
+export function PartsTray({ engine, state, active, hints, onGrab }: Props) {
   const available = availableTasks(engine, state)
   return (
     <section className="tray" aria-label="البساط المضاد للكهرباء الساكنة">
@@ -22,7 +24,7 @@ export function PartsTray({ engine, state, active, onGrab }: Props) {
           const ready = available.includes(t)
           const blocker = (t.after ?? []).find((a) => !state.done.includes(a))
           const blockerPart = blocker && engine.program.tasks.find((x) => x.id === blocker)?.part
-          const status = installed ? 'مُثبَّت ✓' : blockerPart ? `بعد: ${engine.names[blockerPart]}` : ''
+          const status = installed ? 'مُثبَّت ✓' : blockerPart && hints ? `بعد: ${engine.names[blockerPart]}` : ''
           return (
             <li key={t.id}>
               <button
