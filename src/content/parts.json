@@ -1,0 +1,478 @@
+{
+  "parts": [
+    {
+      "id": "iPowerSupply",
+      "name": {
+        "ar": "علبة التغذية",
+        "fr": "Bloc d'alimentation",
+        "en": "Power Supply"
+      },
+      "requires": null,
+      "thumb": "powerSupply.webp",
+      "image": "powerSupply.webp",
+      "explore": "explorePowerSupply.swf"
+    },
+    {
+      "id": "iPowerSupplyScrews",
+      "name": {
+        "ar": "براغي علبة التغذية",
+        "fr": "Vis du bloc d'alimentation",
+        "en": "Power Supply Screws"
+      },
+      "requires": "iPowerSupply",
+      "thumb": "driveScrews.webp",
+      "image": "cardScrews.webp",
+      "explore": null
+    },
+    {
+      "id": "iRAM1",
+      "name": {
+        "ar": "الذاكرة الحية 1",
+        "fr": "Barrette RAM 1",
+        "en": "RAM 1"
+      },
+      "requires": null,
+      "thumb": "ram.webp",
+      "image": "ram.webp",
+      "explore": "exploreRam.swf"
+    },
+    {
+      "id": "iRAM2",
+      "name": {
+        "ar": "الذاكرة الحية 2",
+        "fr": "Barrette RAM 2",
+        "en": "RAM 2"
+      },
+      "requires": null,
+      "thumb": "ram.webp",
+      "image": "ram.webp",
+      "explore": "exploreRam.swf"
+    },
+    {
+      "id": "iCPU",
+      "name": {
+        "ar": "المعالج",
+        "fr": "Processeur",
+        "en": "CPU"
+      },
+      "requires": null,
+      "thumb": "cpu.webp",
+      "image": "cpu.webp",
+      "explore": "exploreCPU.swf"
+    },
+    {
+      "id": "iThermalGlue",
+      "name": {
+        "ar": "المعجون الحراري",
+        "fr": "Pâte thermique",
+        "en": "Thermal Compound"
+      },
+      "requires": "iCPU",
+      "thumb": "thermalGlue.webp",
+      "image": "thermalGlue.webp",
+      "explore": null
+    },
+    {
+      "id": "iHeatsink",
+      "name": {
+        "ar": "المشتت الحراري والمروحة",
+        "fr": "Ventirad",
+        "en": "Heat Sink"
+      },
+      "requires": "iThermalGlue",
+      "thumb": "heatsink.webp",
+      "image": "heatsink.webp",
+      "explore": "exploreHeatSink.swf"
+    },
+    {
+      "id": "iMoboScrews",
+      "name": {
+        "ar": "براغي اللوحة الأم",
+        "fr": "Vis de la carte mère",
+        "en": "Motherboard Screws"
+      },
+      "requires": null,
+      "thumb": "mbscrews.webp",
+      "image": "cardScrews.webp",
+      "explore": null
+    },
+    {
+      "id": "iMobo",
+      "name": {
+        "ar": "اللوحة الأم",
+        "fr": "Carte mère",
+        "en": "Motherboard"
+      },
+      "requires": null,
+      "thumb": "motherboard.webp",
+      "image": "motherboard.webp",
+      "explore": "exploreMotherboard.swf"
+    },
+    {
+      "id": "iNic",
+      "name": {
+        "ar": "بطاقة الشبكة",
+        "fr": "Carte réseau",
+        "en": "NIC"
+      },
+      "requires": null,
+      "thumb": "nicCard.webp",
+      "image": "nicCard.webp",
+      "explore": "exploreNicCard.swf"
+    },
+    {
+      "id": "iNicScrews",
+      "name": {
+        "ar": "برغي بطاقة الشبكة",
+        "fr": "Vis de la carte réseau",
+        "en": "NIC Screw"
+      },
+      "requires": "iNic",
+      "thumb": "cardScrews.webp",
+      "image": "cardScrews.webp",
+      "explore": null
+    },
+    {
+      "id": "iWireless",
+      "name": {
+        "ar": "بطاقة الشبكة اللاسلكية",
+        "fr": "Carte Wi-Fi",
+        "en": "Wireless NIC"
+      },
+      "requires": null,
+      "thumb": "wirelessCard.webp",
+      "image": "wirelessCard.webp",
+      "explore": "exploreWirelessCard.swf"
+    },
+    {
+      "id": "iWirelessScrews",
+      "name": {
+        "ar": "برغي البطاقة اللاسلكية",
+        "fr": "Vis de la carte Wi-Fi",
+        "en": "Wireless NIC Screw"
+      },
+      "requires": "iWireless",
+      "thumb": "cardScrews.webp",
+      "image": "cardScrews.webp",
+      "explore": null
+    },
+    {
+      "id": "iVideoCard",
+      "name": {
+        "ar": "بطاقة الرسوميات",
+        "fr": "Carte graphique",
+        "en": "Video Adapter"
+      },
+      "requires": null,
+      "thumb": "videoCard.webp",
+      "image": "videoCard.webp",
+      "explore": "exploreVideoCard.swf"
+    },
+    {
+      "id": "iVideoScrews",
+      "name": {
+        "ar": "برغي بطاقة الرسوميات",
+        "fr": "Vis de la carte graphique",
+        "en": "Video Adapter Screw"
+      },
+      "requires": "iVideoCard",
+      "thumb": "cardScrews.webp",
+      "image": "cardScrews.webp",
+      "explore": null
+    },
+    {
+      "id": "iHD",
+      "name": {
+        "ar": "القرص الصلب",
+        "fr": "Disque dur",
+        "en": "Hard Disk Drive"
+      },
+      "requires": null,
+      "thumb": "hardDrive.webp",
+      "image": "hardDrive.webp",
+      "explore": "exploreHarddrive.swf"
+    },
+    {
+      "id": "iHDScrews",
+      "name": {
+        "ar": "براغي القرص الصلب",
+        "fr": "Vis du disque dur",
+        "en": "Hard Disk Screws"
+      },
+      "requires": "iHD",
+      "thumb": "driveScrews.webp",
+      "image": "cardScrews.webp",
+      "explore": null
+    },
+    {
+      "id": "iDvdDrive",
+      "name": {
+        "ar": "قارئ الأقراص الضوئية",
+        "fr": "Lecteur DVD",
+        "en": "Optical Drive"
+      },
+      "requires": null,
+      "thumb": "dvdDrive.webp",
+      "image": "dvdDrive.webp",
+      "explore": "exploreDVD.swf"
+    },
+    {
+      "id": "iDvdScrews",
+      "name": {
+        "ar": "براغي قارئ الأقراص",
+        "fr": "Vis du lecteur DVD",
+        "en": "Optical Drive Screws"
+      },
+      "requires": "iDvdDrive",
+      "thumb": "driveScrews.webp",
+      "image": "cardScrews.webp",
+      "explore": null
+    },
+    {
+      "id": "iFloppyDrive",
+      "name": {
+        "ar": "قارئ الأقراص المرنة",
+        "fr": "Lecteur de disquette",
+        "en": "Floppy Drive"
+      },
+      "requires": null,
+      "thumb": "floppyDrive.webp",
+      "image": "floppyDrive.webp",
+      "explore": "exploreFloppy.swf"
+    },
+    {
+      "id": "iFloppyScrews",
+      "name": {
+        "ar": "براغي قارئ الأقراص المرنة",
+        "fr": "Vis du lecteur de disquette",
+        "en": "Floppy Drive Screws"
+      },
+      "requires": "iFloppyDrive",
+      "thumb": "driveScrews.webp",
+      "image": "cardScrews.webp",
+      "explore": null
+    },
+    {
+      "id": "iPata1",
+      "name": {
+        "ar": "كابل PATA",
+        "fr": "Nappe PATA (IDE)",
+        "en": "PATA Cable"
+      },
+      "requires": null,
+      "thumb": "pata1.webp",
+      "image": "pata1.webp",
+      "explore": "exploreParallelDVD.swf"
+    },
+    {
+      "id": "iPata2",
+      "name": {
+        "ar": "كابل القرص المرن",
+        "fr": "Nappe disquette",
+        "en": "Floppy Cable"
+      },
+      "requires": null,
+      "thumb": "pata2.webp",
+      "image": "pata2.webp",
+      "explore": "exploreParallelFloppy.swf"
+    },
+    {
+      "id": "iSata",
+      "name": {
+        "ar": "كابل SATA",
+        "fr": "Câble SATA",
+        "en": "SATA Cable"
+      },
+      "requires": null,
+      "thumb": "sata.webp",
+      "image": "sata.webp",
+      "explore": "exploreSata.swf"
+    },
+    {
+      "id": "iCasePanels",
+      "name": {
+        "ar": "غطاء العلبة",
+        "fr": "Panneaux du boîtier",
+        "en": "Case Panels"
+      },
+      "requires": null,
+      "thumb": "panels.webp",
+      "image": "panels.webp",
+      "explore": null
+    },
+    {
+      "id": "iPanelScrews",
+      "name": {
+        "ar": "براغي الغطاء",
+        "fr": "Vis des panneaux",
+        "en": "Case Panel Screws"
+      },
+      "requires": "iCasePanels",
+      "thumb": "caseScrews.webp",
+      "image": "cardScrews.webp",
+      "explore": null
+    },
+    {
+      "id": "iMonitor",
+      "name": {
+        "ar": "كابل الشاشة",
+        "fr": "Câble écran (VGA)",
+        "en": "Monitor Cable"
+      },
+      "requires": null,
+      "thumb": "periMonitor.webp",
+      "image": "periMonitor.webp",
+      "explore": "explorePeriMonitor.swf"
+    },
+    {
+      "id": "iKeyboard",
+      "name": {
+        "ar": "لوحة المفاتيح",
+        "fr": "Clavier",
+        "en": "Keyboard"
+      },
+      "requires": null,
+      "thumb": "periKeyboard.webp",
+      "image": "periKeyboard.webp",
+      "explore": "explorePeriKeyboard.swf"
+    },
+    {
+      "id": "iMouse",
+      "name": {
+        "ar": "الفأرة",
+        "fr": "Souris",
+        "en": "Mouse"
+      },
+      "requires": null,
+      "thumb": "periMouse.webp",
+      "image": "periMouse.webp",
+      "explore": "explorePeriMouse.swf"
+    },
+    {
+      "id": "iUSB",
+      "name": {
+        "ar": "كابل USB",
+        "fr": "Câble USB",
+        "en": "USB Cable"
+      },
+      "requires": null,
+      "thumb": "periUSB.webp",
+      "image": "periUSB.webp",
+      "explore": "explorePeriUSB.swf"
+    },
+    {
+      "id": "iEthernet",
+      "name": {
+        "ar": "كابل الشبكة",
+        "fr": "Câble Ethernet (RJ45)",
+        "en": "Ethernet Cable"
+      },
+      "requires": null,
+      "thumb": "periEthernet.webp",
+      "image": "periEthernet.webp",
+      "explore": "explorePeriEthernet.swf"
+    },
+    {
+      "id": "iAntenna",
+      "name": {
+        "ar": "الهوائي اللاسلكي",
+        "fr": "Antenne Wi-Fi",
+        "en": "Wireless Antenna"
+      },
+      "requires": null,
+      "thumb": "wirelessAntenna.webp",
+      "image": "wirelessAntenna.webp",
+      "explore": null
+    },
+    {
+      "id": "iPowerCord",
+      "name": {
+        "ar": "كابل الكهرباء",
+        "fr": "Câble d'alimentation",
+        "en": "Power Cord"
+      },
+      "requires": null,
+      "thumb": "peripheralPower.webp",
+      "image": "peripheralPower.webp",
+      "explore": "explorePeriPOWER.swf"
+    }
+  ],
+  "lessons": [
+    {
+      "layer": 1,
+      "file": "PowerSupply",
+      "parts": [
+        "iPowerSupply",
+        "iPowerSupplyScrews"
+      ]
+    },
+    {
+      "layer": 2,
+      "file": "Motherboard",
+      "parts": [
+        "iThermalGlue",
+        "iMoboScrews",
+        "iCPU",
+        "iHeatsink",
+        "iRAM1",
+        "iRAM2"
+      ]
+    },
+    {
+      "layer": 3,
+      "file": "ExpansionCards",
+      "parts": [
+        "iWireless",
+        "iNic",
+        "iVideoCard",
+        "iVideoScrews",
+        "iWirelessScrews",
+        "iNicScrews"
+      ]
+    },
+    {
+      "layer": 4,
+      "file": "InternalDrive",
+      "parts": [
+        "iHDScrews",
+        "iHD"
+      ]
+    },
+    {
+      "layer": 5,
+      "file": "ExternalDrives",
+      "parts": [
+        "iDvdScrews",
+        "iFloppyScrews",
+        "iDvdDrive",
+        "iFloppyDrive"
+      ]
+    },
+    {
+      "layer": 6,
+      "file": "InternalCables",
+      "parts": [
+        "iSata",
+        "iPata1",
+        "iPata2"
+      ]
+    },
+    {
+      "layer": 7,
+      "file": "ExternalCables",
+      "parts": [
+        "iCasePanels",
+        "iPanelScrews",
+        "iAntenna",
+        "iMonitor",
+        "iUSB",
+        "iPowerCord",
+        "iParallel",
+        "iMouse",
+        "iKeyboard",
+        "iEthernet",
+        "iAudio"
+      ]
+    }
+  ]
+}

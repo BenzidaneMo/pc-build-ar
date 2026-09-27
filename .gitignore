@@ -1,0 +1,7 @@
+node_modules/
+dist/
+# JPEXS download, decompiled scripts, raw bitmap exports, smoke screenshots
+tools/.cache/
+__pycache__/
+*.tsbuildinfo
+Thumbs.db

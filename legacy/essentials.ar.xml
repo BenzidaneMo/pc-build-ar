@@ -1,0 +1,457 @@
+<!--
+=======================================
+Intro Text
+======================================= 
+-->
+<instructions>
+<title>ﺏﻮﺳﺎﺤﻟﺍ ﻊﻴﻤﺠﺗ ﺓﺎﻛﺎﺤﻣ ﺞﻣﺎﻧﺮﺑ ﻲﻓ ﻚﺑ ﺍًﺒﺣﺮﻣ</title>
+<text><br>ﺔﻳﻮﻠﻌﻟﺍ ﻰﻨﻤﻴﻟﺍ ﺔﻳﻭﺍﺰﻟﺍ ﻲﻓ "ﺕﺎﻤﻴﻠﻌﺗ" ﻰﻠﻋ ﻂﻐﻀﻟﺎﺑ ﺕﺍﺩﺎﺷﺭﻹﺍ ﻡﺍﺪﺨﺘﺳﺍ ﻚﻨﻜﻤﻳ 
+.ﺞﻣﺎﻧﺮﺒﻠـﻟ ﺔﻴﺴﻴﺋﺮﻟﺍ ﺕﺍﺰﻴﻤﻟﺍ ﺢﻔﺼﺘﻟ ﺖﻗﻮﻟﺍ ﺾﻌﺑ ﺺﻴﺼﺨﺗ ﺀﺎﺟﺮﻟﺎﻓ ، ﻚﻟ ﻰﻟﻭﻷﺍ ﺓﺮﻤﻟﺍ ﻲﻫ ﻩﺬﻫ ﺖﻧﺎﻛ ﺍﺫﺇ .ﻚﺗﺎﻣﻮﻠﻌﻣ ﺭﺎﺒﺘﺧﺍﻭ ﻪﺗﺎﻧﻮﻜﻣ ﻑﺎﺸﻜﺘﺳﺍﻭ ﻲﺒﺘﻜﻣ ﺮﺗﻮﻴﺒﻤﻛ ﻊﻴﻤﺠﺘﻟ ﺔﻴﺳﺎﺳﻷﺍ ﺕﺍﻮﻄﺨﻟﺍ ﻢﻠﻌﺘﻨﺳ.</text>
+</instructions>
+
+<!--
+=======================================
+ Accordian Menu
+======================================= 
+-->
+<accordian id = "علبة التغذية" file = "mcBOTTOMLAYER">
+<text>ﻞﻴﻐﺸﺘﻟ ﻡﺯﻼﻟﺍ ﺪﻬﺠﻟﺍ ﺔﻳﺬﻐﺘﻟﺍ ﺔﺒﻠﻋ ﺮﻓﻮﺗ
+ﺔﻔﻠﺘﺨﻤﻟﺍ ﺔﻴﻧﻭﺮﺘﻜﻟﻻﺍ ﺮﺋﺍﻭﺪﻟﺍ 
+ﺏﻮﺳﺎﺤﻟﺍ ﺎﻬﻨﻣ ﻥﻮﻜﺘﻳ ﻲﺘﻟﺍ
+ﻕﻭﺪﻨﺼﻟﺎﺑ ﺔﻗﺎﻄﻟﺍ ﺭﺪﺼﻣ ﺐﻴﻛﺮﺘﺑ ﻢﻗ
+</text>
+<text2>
+ﻕﻭﺪﻨﺼﻟﺍ ﻲﻓ ﺔﻳﺬﻐﺘﻟﺍ ﺔﺒﻠﻋ ﻊﺿ
+ﺮﻳﻭﺪﺘﻠﻟ ﻢﻬﺳﻻﺍ ﻡﺪﺨﺘﺳﺍ
+ </text2>
+</accordian>
+<accordian id="  اللوحة الأم"     file= "mcMOTHERBOARD">
+	<text>ﺢﻤﺴﺗ ﻲﺘﻟﺍ ﺔﻌﻄﻘﻟﺍ ﻲﻫ ﻡﻷﺍ ﺔﺣﻮﻠﻟﺍ
+	ﺎﻬﻀﻌﺒﺑ ﺏﻮﺳﺎﺤﻟﺍ ﻊﻄﻗ ﻞﻛ ﻞﻴﺻﻮﺘﺑ
+	:ﺐﻴﻛﺮﺘﺑ ﻡﻮﻘﻨﺳ ﺔﻠﺣﺮﻤﻟﺍ ﻩﺬﻫ ﻲﻓ
+	ﺞﻟﺎﻌﻤﻟﺍ -
+	ﺔﺣﻭﺮﻤﻟﺍﻭ ﻱﺭﺍﺮﺤﻟﺍ ﻥﻮﺠﻌﻤﻟﺍ -
+	ﺔﻴﺤﻟﺍ ﺓﺮﻛﺍﺬﻟﺍ ﻦﻣ 2 -
+	</text>
+	<text2>--ﺞﻟﺎﻌﻤﻟﺍ ﺖﻴﺒﺜﺗ--
+ﺲﺒﻘﻤﻟﺍ ﻊﻣ ﺞﻟﺎﻌﻤﻟﺍ ﺓﺍﺫﺎﺤﻤﺑ ﻢﻗ
+ﺲﺒﻘﻤﻟﺍ ﻲﻓ ﻖﻓﺮﺑ ﺞﻟﺎﻌﻤﻟﺍ ﻊﺿ
+ ﺞﻟﺎﻌﻤﻟﺍ ﺢﻄﺳ ﻰﻠﻋ ﻱﺭﺍﺮﺤﻟﺍ ﺐﻛﺮﻤﻟﺍ ﻊﺿ
+ﺞﻟﺎﻌﻤﻟﺍ ﻰﻠﻋ ﺔﺣﻭﺮﻤﻟﺍ/ﻱﺭﺍﺮﺤﻟﺍ ﺖﺘﺸﻤﻟﺍ ﻊﺿ
+
+--ﺔﻴﺤﻟﺍ ﺓﺮﻛﺍﺬﻟﺍ ﺖﻴﺒﺜﺗ--
+ﺔﻴﻠﻔﺴﻟﺍ ﺓﻮﺠﻔﻟﺍ ﺐﺴﺣ ﺔﻴﺤﻟﺍ ﺓﺮﻛﺍﺬﻟﺍ ﺓﺍﺫﺎﺤﻤﺑ ﻢﻗ
+.ﺕﺎﺷﺎﻤﻜﻟﺍ ﺕﻮﺻ ﻊﻤﺴﺗ ﻰﺘﺣ ﻞﻔﺳﻷ ﻂﻐﺿﺍ
+ﻡﺎﻜﺣﺎﺑ ﺖﻘﻠﻏﺃ ﺪﻗ ﺔﻴﺒﻧﺎﺠﻟﺍ ﺕﺎﺷﺎﻤﻜﻟﺍ ﻥﺃ ﻦﻣ ﺪﻛﺄﺗ
+ ﺔﻴﺤﻟﺍ ﺓﺮﻛﺍﺬﻟﺍ ﺓﺪﺣﻭ ﻰﻠﻋ 
+
+--ﻡﻷﺍ ﺔﺣﻮﻠﻟﺍ ﺖﻴﺒﺜﺗ--
+ﻕﻭﺪﻨﺼﻟﺍ ﻲﻓ ﺀﻂﺒﺑ ﻡﻷﺍ ﺔﺣﻮﻠﻟﺍ ﻊﺿ
+ﻲﻏﺍﺮﺒﻟﺍ ﻡﺍﺪﺨﺘﺳﺎﺑ ﻡﻷﺍ ﺔﺣﻮﻠﻟﺍ ﺖﻴﺒﺜﺘﺑ ﻢﻗ
+	</text2>
+</accordian>
+<accordian id="  البطاقات الداخلية" file="mcEXPANSIONCARDS">
+	<text>ﺏﻮﺳﺎﺤﻠﻟ ﺢﻤﺴﺗ ﺔﻜﺒﺸﻟﺍ ﺔﻗﺎﻄﺑ
+	.ﺔﻜﺒﺷ ﺮﺒﻋ ﻝﺎﺼﺗﻻﺎﺑ 
+
+	ﺢﻤﺴﺗ ﺔﻴﻜﻠﺳﻼﻟﺍ ﺔﻜﺒﺸﻟﺍ ﺔﻗﺎﻄﺑ
+	.ﻙﻼﺳأ نود ﻝﺎﺼﺗﻻﺎﺑ ﺏﻮﺳﺎﺤﻠﻟ
+
+	ﺕﺎﻣﻮﻠﻌﻤﻟﺎﺑ ﻢﺘﻬﺗ ﺕﺎﻣﻮﺳﺮﻟﺍ ﺔﻗﺎﻄﺑ
+	.ﺔﺷﺎﺸﻟﺍ ﻰﻠﻋ ﺎﻬﺿﺮﻋ ﻞﺟأ ﻦﻣ ﺔﻴﺋﺮﻤﻟﺍ
+	</text>
+	<text2><br>
+<section>
+ﺔﻜﺒﺸﻟﺍ ﺓﻗﺎﻃﺑ ﺕﻴﺒﺜﺗ  
+.ﻗﻮﺩﻨﺻ ﻰﻟﺇ ﺔﻜﺒﺸﻟﺍ ﺓﻗﺎﻃﺑ ﻞﻘﻧﺍ  
+.ﺎﻤﻷﺍ ﺔﺣﻮﻟ ﻰﻟﻋ ‎PCIe x1‎ ﺫﻒﻨﻣ ﻊﻣ ﺔﻜﺒﺸﻟﺍ ﺓﻗﺎﻃﺑ ﺔﺬﺎﺣﻣﺑ ﻢﻗ  
+.ﺎًﻴﻠﻛ ﺕﺒﺜﺗ ﻰﺘﺣ ﺔﻜﺒﺸﻟﺍ ﺓﻗﺎﻃﺑ ﻰﻠﻋ ﻒﻠﻃﺑ ﻂﻐﻀﺍ  
+.ﺮﺒﻃ ﻕﻮﺳﻟﺍ ﻲﻧﺪﻌﻤﻟﺍ ﻞﻟﺍﻮﺑﻮﻳﺭ ﻞﻛﺎﺑ ﻞﺑ ﻢﺴﺘﺧﺩﺎﺑ ﻲﻏﺮﺑ ﺓﻗﺎﻃﺑ ﺕﺒﺜﺗ
+</section>
+<section>
+ﺔﻴﻜﻠﺳﻻﺍ ﺔﻜﺒﺸﻟﺍ ﺓﻗﺎﻃﺑ ﺕﻴﺒﺜﺗ  
+.ﻗﻮﺩﻨﺻ ﻰﻟﺇ ﺔﻴﻜﻠﺳﻻﺍ ﺔﻜﺒﺸﻟﺍ ﺓﻗﺎﻃﺑ ﻞﻘﻧﺍ  
+.ﺎﻤﻷﺍ ﺔﺣﻮﻟ ﻰﻟﻋ ‎PCI‎ ﺫﻒﻨﻣ ﻊﻣ ﻬﺗﺎﺫﺎﺣﻣﺑ ﻢﻗ  
+.ﺎًﻤﺎﺗﺎﻣ ﺕﺮﻘﺘﺴﺗ ﻰﺘﺣ ﺔﻴﻜﻠﺳﻻﺍ ﺓﻗﺎﻃﺑﻟﺍ ﻰﻠﻋ ﻒﻠﻃﺑ ﻂﻐﻀﺍ  
+.ﺮﺒﻃ ﻕﻮﺳﻟﺍ ﻲﻧﺪﻌﻤﻟﺍ ﻞﻟﺍﻮﺑﻮﻳﺭ ﻞﻛﺎﺑ ﻞﺑ ﻢﺴﺘﺧﺩﺎﺑ ﻲﻏﺮﺑ ﻬﺗﺒﺜﺗ
+</section>
+<section>
+ﺔﻣﻮﺳﺮﻟﺍ ﺓﻗﺎﻃﺑ ﺕﻴﺒﺜﺗ  
+.ﻗﻮﺩﻨﺻ ﻰﻟﺇ ﺔﻣﻮﺳﺮﻟﺍ ﺓﻗﺎﻃﺑ ﻞﻘﻧﺍ  
+.ﺎﻤﻷﺍ ﺔﺣﻮﻟ ﻰﻟﻋ ‎PCIe x16‎ ﺫﻒﻨﻣ ﻊﻣ ﺔﻣﻮﺳﺮﻟﺍ ﺓﻗﺎﻃﺑ ﺔﺬﺎﺣﻣﺑ ﻢﻗ  
+.ﺎﻬﻧﺎﻜﻣ ﻲﻓ ﺎﻤﻠﻛﺎﻣ ﺎﺒﻟﻛﺎﻣ ﺕﺮﻘﺘﺴﺗ ﻰﺘﺣ ﺓﻗﺎﻃﺑﻟﺍ ﻰﻠﻋ ﻒﻘﺮﺑ ﻂﻐﻀﺍ  
+.ﺮﺒﻃ ﻕﻮﺳﻟﺍ ﻲﻧﺪﻌﻤﻟﺍ ﻞﻟﺍﻮﺑﻮﻳﺭ ﻞﻛﺎﺑ ﻞﺑ ﻢﺴﺘﺧﺩﺎﺑ ﻲﻏﺮﺑ ﺓﻗﺎﻃﺑﻟﺍ ﺕﺒﺜﺗ
+</section>
+<br></text2>
+
+
+
+
+</accordian>
+<accordian id="  وحدات التخزين" file="mcINTERNALDRIVES">
+	<text><br> ﻦﻳﺰﺨﺗ ﺓﺪﺣﻭ ﻮﻫ ﺐﻠﺼﻟﺍ  ﺹﺮﻘﻟﺍ
+	ﻢﺋﺍﺩ ﻞﻜﺸﺑ ﺕﺎﻣﻮﻠﻌﻤﻟﺍ ﻆﻔﺘﺤﺗ ﺔﻴﺴﻴﻃﺎﻨﻐﻣ<br>
+	<br>ﻕﻭﺪﻨﺼﻟﺎﺑ ﺐﻠﺼﻟﺍ ﺹﺮﻘﻟﺍ ﺖﺒﺜﺗ</text>
+	<text2><br>ﺐﻠﺼﻟﺍ ﺹﺮﻘﻟﺍ ﺖﻴﺒﺜﺗ<ul><li>Move the  HDD to the case</li><li>Position the  HDD so it aligns with the 3.5” drive bay</li><li>Insert the HDD into the drive bay</li><li>Secure the HDD to the case using the proper screws.</li><li><br><br></text2>
+</accordian>
+<accordian id="  وحدات التخزين الخارجية" file="mcEXTERNALDRIVES">
+	<text><br>ﺔﻄﻐﻀﻤﻟﺍ ﺹﺍﺮﻘﻷﺍ ﺊﺮﺍﻗ<BR><BR>A floppy disk drive (FDD) is a magnetic drive that reads and writes information to floppy diskettes.<BR><BR>Install the Optical Drive and FDD.</text>
+	<text2><br>INSTALL OPTICAL DRIVE<UL><LI>Move the optical drive to the case</LI><LI>Position the optical drive so it aligns with the 5.25” drive bay</LI><LI>Insert the optical drive into the drive bay</LI><LI>Secure the optical drive to the case using the proper screws.</LI></UL><BR>INSTALL FLOPPY DRIVE<UL><LI>Move the FDD to the case</LI><LI>Position the FDD so it aligns with the 3.5 “ drive bay</LI><LI>Insert the FDD into the drive bay</LI><LI>Secure the FDD to the case using the proper screws.</LI><UL><BR><BR>
+</text2>
+</accordian>
+<!--===============================-->
+<accordian id="  الأسلاك الداخلية" file="mcINTERNALCABLES">
+
+<text><br>
+:ﺔﺰﻫﺠﻼﺍ ﻊﻣ ﺗﻼﺑﺎﻛﻟﺍ ﻞﻴﺻﻮﺗﺑ ﻢﻗ  
+<BR>ﻊﻣ 1 ﻓﺮﻃ ﻖﻓﻮﺗ ﻦﻣ ﺪﻛﺄﺗ 
+.ﺔﺰﻫﺠﻼﺍ ﻊﻣ ﺗﻼﺑﺎﻛﻟﺍ ﻞﻴﺻﻮﺗﺑ ﺪﻨﻋ 1 ﻓﺮﻃ ﻢﻗﺭ 
+ﺗﻼﺑﺎﻛﻟﺍ ﻊﻴﻣﺟ ﻞﻴﺻﻮﺗﺑ ﻢﻗ 
+.ﺏﻮﺴﺤﻟﺍ ﻲﻓ ﺔﺒﺴﺎﻨﻤﻟﺍ ﺔﺍﻨﻮﻛﻤﻟﺍ ﻊﻣ ﺔﻠﻴﺧﺍﺩﻟﺍ  
+</text><br><br><LI>20-pin ATX Power</LI><LI>4-pin Auxiliary Power</LI><LI>SATA Power</LI><LI>Molex Power</LI><LI>Berg Power</LI><LI>Case Fan Power</LI><LI>SATA</LI><LI>PATA</LI><LI>Floppy Drive</LI>
+</text>
+
+<text2><br>ﺔﻴﻠﺧﺍﺪﻟﺍ ﻙﻼﺳﻻﺍ ﻞﻛ ﺐﻴﻛﺮﺗ<br><br><LI>Align the 20-pin ATX power supply cable to the socket on the motherboard and gently press down to secure the connection.</LI><br><LI>Align the 4-pin auxiliary power connector to the auxiliary power socket on the motherboard and gently press down to secure the connection.</LI><br><LI>Plug in a SATA power supply cable to the hard drive.</LI><br><LI>Plug in a Molex power supply cable to the Optical drive.</LI><br><LI>Plug in a Berg power supply cable to the floppy drive.</LI><br><LI>Align the 3-pin case-fan power cable and gently press down to secure to the case-fan pins on the motherboard.</LI><br><LI>Align and plug in the SATA cable to the motherboard socket. Align and plug in the other end of the SATA data cable to the hard drive.</LI><br><LI>Align and plug in the PATA cable to the motherboard socket. Align and plug in the other end of the PATA data cable to the Optical drive.</LI><br><LI>Align and plug in the floppy data cable to the motherboard socket.  Align and plug in the other end of the floppy data cable to floppy drive.</LI>
+</text2>
+</accordian>
+<!--===============================-->
+<accordian id="  الأسلاك الخارجية" file="mcEXTERNALCABLES">
+	<text><br> ﺔﻴﺟﺭﺎﺨﻟﺍ ﻙﻼﺳﻷﺍ ﺐﻴﻛﺮﺗ 
+	 ﺔﻴﺟﺭﺎﺨﻟﺍ ﺕﺍﺪﺣﻮﻟﺍ ﻊﻴﻤﺠﺑ ﺏﻮﺳﺎﺤﻟﺍ ﻂﺑﺮﻟ 
+	<br><br>Connect the cables to the computer: <br><br><LI>Monitor</LI><LI>Keyboard</LI><LI>Mouse</LI><LI>USB</LI><LI>Ethernet</LI><LI>Parallel</LI><LI>Power</LI>
+</text>
+	<text2><br>Before connecting the external cables, you must attach the case panels and secure them with the case panel screws.<br><br>Note: Connect the power cable after all other external cables are attached.<br><br><LI>Align and attach the monitor cable to the video port on the video adapter. Secure it by tightening the screws on the connector.</LI><br><LI>Align and plug in the keyboard cable to the PS/2 port. </LI><br><LI>Align and plug in the mouse cable to the PS/2 port.</LI><br><LI>Align and plug in the USB cable to the port.</LI><br><LI>Align and plug in the Ethernet cable to the port. </LI><br><LI>Align and plug in the power cable to the port.</LI><br>
+	</text2>
+</accordian> 
+<!--
+=======================================
+ Devices
+======================================= 
+-->
+<thumb id="iPowerSupply" accessLevel="0">
+	<title></title>
+	<title2>ﺔﻳﺬﻐﺘﻟﺍ ﺔﺒﻠﻋ</title2>
+	<smallImg>powerSupply.png</smallImg>
+	<largeImg>powerSupply.png</largeImg>
+	<explore>explorePowerSupply.swf</explore>
+</thumb> 
+
+<thumb id="iPowerSupplyScrews" accessLevel="1" linkTo="iPowerSupply">
+	<title>ﻲﻏﺍﺮﺑ</title>
+	<title2>ﺔﻳﺬﻐﺘﻟﺍ ﺔﺒﻠﻋ</title2>
+	<smallImg>drivescrews.png</smallImg>
+	<largeImg>cardscrews.png</largeImg>
+	<explore></explore>
+</thumb> 
+
+<thumb id="iRAM1" accessLevel="0">
+	<title></title>
+	<title2>RAM 1</title2>
+	<smallImg>ram.png</smallImg>
+	<largeImg>ram.png</largeImg>
+	<explore>exploreRam.swf</explore>
+</thumb>
+
+<thumb id="iRAM2" accessLevel="0">
+	<title></title>
+	<title2>RAM 2</title2>
+	<smallImg>ram.png</smallImg>
+	<largeImg>ram.png</largeImg>
+	<explore>exploreRam.swf</explore>
+</thumb>
+
+<thumb id="iCPU" accessLevel="0">
+	<title></title>
+	<title2>CPU</title2>
+	<smallImg>cpu.png</smallImg>
+	<largeImg>cpu.png</largeImg>
+	<explore>exploreCPU.swf</explore>
+</thumb>
+
+<thumb id="iThermalGlue" accessLevel="1" linkTo="iCPU">
+	<title></title>
+	<title2>ﻱﺭﺍﺮﺤﻟﺍ ﻥﻮﺠﻌﻤﻟﺍ</title2>
+	<smallImg>thermalGlue.png</smallImg>
+	<largeImg>thermalGlue.png</largeImg>
+	<explore></explore>
+</thumb>
+
+<thumb id="iHeatsink" accessLevel="2" linkTo="iThermalGlue">
+	<title></title>
+	<title2>ﻱﺭﺍﺮﺣ ﺖﺘﺸﻣ</title2>
+	<smallImg>heatsink.png</smallImg>
+	<largeImg>heatsink.png</largeImg>
+	<explore>exploreHeatSink.swf</explore>
+</thumb>
+
+<thumb id="iMoboScrews" accessLevel="0">
+	<title>ﻲﻏﺍﺮﺑ</title>
+	<title2>Motherboard</title2>
+	<smallImg>MBscrews.png</smallImg>
+	<largeImg>cardscrews.png</largeImg>
+	<explore></explore>
+</thumb> 
+
+<thumb id="iMobo" accessLevel="0">
+	<title></title>
+	<title2>Motherboard</title2>
+	<smallImg>motherboard.png</smallImg>
+	<largeImg>motherboard.png</largeImg>
+	<explore>exploreMotherboard.swf</explore>
+</thumb>
+
+<thumb id="iNic" accessLevel="0">
+	<title></title>
+	<title2>ﺔﻜﺒﺸﻟﺍ ﺔﻗﺎﻄﺑ</title2>
+	<smallImg>nicCard.png</smallImg>
+	<largeImg>nicCard.png</largeImg>
+	<explore>exploreNicCard.swf</explore>
+</thumb> 
+
+<thumb id="iNicScrews" accessLevel="1" linkTo="iNic">
+	<title>ﻲﻏﺮﺑ</title>
+	<title2>ﺔﻜﺒﺸﻟﺍ ﺔﻗﺎﻄﺑ</title2>
+	<smallImg>cardscrews.png</smallImg>
+	<largeImg>cardscrews.png</largeImg>
+	<explore></explore>
+</thumb> 
+
+<thumb id="iWireless" accessLevel="0">
+	<title>ﺔﻜﺒﺸﻟﺍ ﺔﻗﺎﻄﺑ</title>
+	<title2>ﺔﻴﻜﻠﺳﻼﻟﺍ</title2>
+	<smallImg>wirelessCard.png</smallImg>
+	<largeImg>wirelessCard.png</largeImg>
+	<explore>exploreWirelessCard.swf</explore>
+</thumb>
+
+<thumb id="iWirelessScrews" accessLevel="1" linkTo="iWireless">
+	<title>ﻲﻏﺮﺑ</title>
+	<title2>ﺔﻜﺒﺸﻟﺍ ﺔﻗﺎﻄﺑ</title2>
+	<smallImg>cardscrews.png</smallImg>
+	<largeImg>cardscrews.png</largeImg>
+	<explore></explore>
+</thumb> 
+
+<thumb id="iVideoCard" accessLevel="0">
+	<title></title>
+	<title2>ﺔﻴﻣﻮﺳﺭ ﺔﻗﺎﻄﺑ</title2>
+	<smallImg>videoCard.png</smallImg>
+	<largeImg>videoCard.png</largeImg>
+	<explore>exploreVideoCard.swf</explore>
+</thumb> 
+
+<thumb id="iVideoScrews" accessLevel="1" linkTo="iVideoCard">
+	<title>ﻲﻏﺮﺑ</title>
+	<title2>ﺔﻴﻣﻮﺳﺭ ﺔﻗﺎﻄﺑ</title2>
+	<smallImg>cardscrews.png</smallImg>
+	<largeImg>cardscrews.png</largeImg>
+	<explore></explore>
+</thumb> 
+
+<thumb id="iHD" accessLevel="0">
+	<title></title>
+	<title2>ﺐﻠﺼﻟﺍ ﺹﺮﻘﻟﺍ</title2>
+	<smallImg>hardDrive.png</smallImg>
+	<largeImg>hardDrive.png</largeImg>
+	<explore>exploreHarddrive.swf</explore>
+</thumb> 
+
+<thumb id="iHDScrews" accessLevel="1" linkTo="iHD">
+	<title>ﻲﻏﺍﺮﺑ</title>
+	<title2>ﺐﻠﺼﻟﺍ ﺹﺮﻘﻟﺍ</title2>
+	<smallImg>drivescrews.png</smallImg>
+	<largeImg>cardscrews.png</largeImg>
+	<explore></explore>
+</thumb> 
+
+<thumb id="iDvdDrive" accessLevel="0">
+	<title></title>
+	<title2>DVD ﺉﺭﺎﻗ</title2>
+	<smallImg>dvdDrive.png</smallImg>
+	<largeImg>dvdDrive.png</largeImg>
+	<explore>exploreDVD.swf</explore>
+</thumb> 
+
+<thumb id="iDvdScrews" accessLevel="1" linkTo="iDvdDrive">
+	<title>ﻲﻏﺍﺮﺑ</title>
+	<title2>DVD ﺉﺭﺎﻗ</title2>
+	<smallImg>drivescrews.png</smallImg>
+	<largeImg>cardscrews.png</largeImg>
+	<explore></explore>
+</thumb>
+
+<thumb id="iFloppyDrive" accessLevel="0">
+	<title></title>
+	<title2>ﻥﺮﻤﻟﺍ ﺹﺮﻘﻟﺍ</title2>
+	<smallImg>floppyDrive.png</smallImg>
+	<largeImg>floppyDrive.png</largeImg>
+	<explore>exploreFloppy.swf</explore>
+</thumb>
+
+<thumb id="iFloppyScrews" accessLevel="1" linkTo="iFloppyDrive">
+	<title>ﻲﻏﺍﺮﺑ</title>
+	<title2>ﻥﺮﻤﻟﺍ ﺹﺮﻘﻟﺍ</title2>
+	<smallImg>Drivescrews.png</smallImg>
+	<largeImg>cardscrews.png</largeImg>
+	<explore></explore>
+</thumb>
+
+<thumb id="iPata1" accessLevel="0">
+	<title>PATA</title>
+	<title2>Cable</title2>
+	<smallImg>pata1.png</smallImg>
+	<largeImg>pata1.png</largeImg>
+	<explore>exploreParallelDVD.swf</explore>
+</thumb> 
+
+<thumb id="iPata2" accessLevel="0">
+	<title>Floppy</title>
+	<title2>Cable</title2>
+	<smallImg>pata2.png</smallImg>
+	<largeImg>pata2.png</largeImg>
+	<explore>exploreParallelFloppy.swf</explore>
+</thumb>
+
+<thumb id="iSata" accessLevel="0">
+	<title>SATA</title>
+	<title2>Cable</title2>
+	<smallImg>sata.png</smallImg>
+	<largeImg>sata.png</largeImg>
+	<explore>exploreSata.swf</explore>
+</thumb>
+
+<thumb id="iCasePanels" accessLevel="0">
+	<title></title>
+	<title2>ﻕﻭﺪﻨﺼﻟﺍ ﺀﺎﻄﻏ</title2>
+	<smallImg>panels.png</smallImg>
+	<largeImg>panels.png</largeImg>
+	<explore></explore>
+</thumb>
+
+<thumb id="iPanelScrews" accessLevel="1" linkTo="iCasePanels">
+	<title>ﻲﻏﺍﺮﺑ</title>
+	<title2>ﻕﻭﺪﻨﺼﻟﺍ ﺀﺎﻄﻏ</title2>
+	<smallImg>casescrews.png</smallImg>
+	<largeImg>cardscrews.png</largeImg>
+	<explore></explore>	
+</thumb>
+
+<thumb id="iMonitor" accessLevel="0">
+	<title></title>
+	<title2>ﺔﺷﺎﺸﻟﺍ ﻂﻴﺧ</title2>
+	<smallImg>perimonitor.png</smallImg>
+	<largeImg>perimonitor.png</largeImg>
+	<explore>explorePeriMonitor.swf</explore>	
+</thumb>
+
+<thumb id="iKeyboard" accessLevel="0">
+	<title></title>
+	<title2>ﺢﻴﺗﺎﻔﻤﻟﺍ ﺔﺣﻮﻟ</title2>
+	<smallImg>perikeyboard.png</smallImg>
+	<largeImg>perikeyboard.png</largeImg>
+	<explore>explorePeriKeyboard.swf</explore>	
+</thumb>
+
+<thumb id="iMouse" accessLevel="0">
+	<title></title>
+	<title2>ﺓﺭﺄﻔﻟﺍ</title2>
+	<smallImg>perimouse.png</smallImg>
+	<largeImg>perimouse.png</largeImg>
+	<explore>explorePeriMouse.swf</explore>	
+</thumb>
+
+<thumb id="iUSB" accessLevel="0">
+	<title></title>
+	<title2>USB</title2>
+	<smallImg>periusb.png</smallImg>
+	<largeImg>periusb.png</largeImg>
+	<explore>explorePeriUSB.swf</explore>	
+</thumb>
+
+<thumb id="iEthernet" accessLevel="0">
+	<title></title>
+	<title2>Ethernet</title2>
+	<smallImg>periethernet.png</smallImg>
+	<largeImg>periethernet.png</largeImg>
+	<explore>explorePeriEthernet.swf</explore>	
+</thumb>
+
+<thumb id="iAntenna" accessLevel="0">
+	<title>Wireless</title>
+	<title2>Antenna</title2>
+	<smallImg>wirelessAntenna.png</smallImg>
+	<largeImg>wirelessAntenna.png</largeImg>
+	<explore></explore>	
+</thumb>
+
+<thumb id="iPowerCord" accessLevel="0">
+	<title></title>
+	<title2>ﺀﺎﺑﺮﻬﻜﻟﺍ ﻂﻴﺧ</title2>
+	<smallImg>peripheralPower.png</smallImg>
+	<largeImg>peripheralPower.png</largeImg>
+	<explore>explorePeriPOWER.swf</explore>	
+</thumb>
+<!--
+=======================================
+Lessons
+======================================= 
+-->
+<lesson layer="1" file="PowerSupply.swf">
+	<modelName id="iPowerSupply" />
+	<modelName id="iPowerSupplyScrews" />
+</lesson>
+
+<lesson layer="2" file="Motherboard.swf">
+	<modelName id="iThermalGlue" />
+	<modelName id="iMoboScrews" />
+	<modelName id="iCPU" />
+	<modelName id="iHeatsink" />
+	<modelName id="iRAM1" />
+	<modelName id="iRAM2" />
+</lesson>
+
+<lesson layer="3" file="ExpansionCards.swf">
+	<modelName id="iWireless" />
+	<modelName id="iNic" />
+	<modelName id="iVideoCard" />
+	<modelName id="iVideoScrews" />
+	<modelName id="iWirelessScrews" />
+	<modelName id="iNicScrews" />
+</lesson>
+
+<lesson layer="4" file="InternalDrive.swf">
+	<modelName id="iHDScrews" />
+	<modelName id="iHD" />
+</lesson>
+
+<lesson layer="5" file="ExternalDrives.swf">
+	<modelName id="iDvdScrews" />
+	<modelName id="iFloppyScrews" />
+	<modelName id="iDvdDrive" />
+	<modelName id="iFloppyDrive" />
+</lesson>
+
+<lesson layer="6" file="InternalCables.swf">
+	<modelName id="iSata" />
+	<modelName id="iPata1" />
+	<modelName id="iPata2" />
+</lesson>
+
+<lesson layer="7" file="ExternalCables.swf">
+	<modelName id="iCasePanels" />
+	<modelName id="iPanelScrews" />
+	<modelName id="iAntenna" />
+	<modelName id="iMonitor" />
+	<modelName id="iUSB" />
+	<modelName id="iPowerCord" />
+	<modelName id="iParallel" />
+	<modelName id="iMouse" />
+	<modelName id="iKeyboard" />
+	<modelName id="iEthernet" />
+	<modelName id="iAudio" />
+</lesson>
+
+
+
+
+

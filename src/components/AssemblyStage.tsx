@@ -1,0 +1,140 @@
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import { drawUrl } from '../lib/content'
+import {
+  availableTasks, childRect, dropClip, dropHotspot, inflate, isOnStage, scene, stageClips,
+  type Action, type Engine, type LessonState,
+} from '../lib/engine'
+import type { Rect } from '../lib/types'
+
+export interface StageHandle {
+  /** Converts a viewport point to stage pixels, or null if outside the stage. */
+  toStage(clientX: number, clientY: number): { x: number; y: number } | null
+}
+
+interface Props {
+  engine: Engine
+  state: LessonState
+  dispatch: (a: Action) => void
+  /** Part being dragged or selected in the tray. */
+  active: string | null
+  onPlace: (x: number, y: number) => void
+}
+
+const DEFAULT_TOOLS: Rect = [69, 104.8, 29, 196]
+
+export const AssemblyStage = forwardRef<StageHandle, Props>(function AssemblyStage(
+  { engine, state, dispatch, active, onPlace },
+  ref,
+) {
+  const { assets } = engine
+  const box = useRef<HTMLDivElement>(null)
+  const [scale, setScale] = useState(1)
+
+  useEffect(() => {
+    const el = box.current!
+    const ro = new ResizeObserver(() => setScale(el.clientWidth / assets.width))
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [assets.width])
+
+  const toStage = (cx: number, cy: number) => {
+    const r = box.current!.getBoundingClientRect()
+    const x = (cx - r.left) / scale
+    const y = (cy - r.top) / scale
+    return x >= 0 && y >= 0 && x <= assets.width && y <= assets.height ? { x, y } : null
+  }
+  useImperativeHandle(ref, () => ({ toStage }))
+
+  const draw = (i: number, key: string) => {
+    const d = assets.draws[i]
+    const src = drawUrl(assets.name, d)
+    if ('x' in d) {
+      return <img key={key} src={src} alt="" draggable={false} className="layer"
+        style={{ left: d.x, top: d.y, width: d.w, height: d.h }} />
+    }
+    // transformed bitmap (m maps image px -> stage px) or svg (m maps shape space -> stage)
+    const [a, b, c, dd, tx, ty] = d.m
+    const inner = 'v' in d ? { left: d.x0, top: d.y0 } : { left: 0, top: 0 }
+    return (
+      <div key={key} className="layer" style={{ left: 0, top: 0, transformOrigin: '0 0', transform: `matrix(${a},${b},${c},${dd},${tx},${ty})` }}>
+        <img src={src} alt="" draggable={false} className="layer" style={{ ...inner, width: d.w, height: d.h }} />
+      </div>
+    )
+  }
+
+  const drawClip = (clip: string): React.ReactNode[] =>
+    (assets.clips[clip]?.frames[state.frames[clip] ?? 0] ?? []).map((i, n) =>
+      typeof i === 'string' ? (state.hidden[i] ? null : drawClip(i)) : draw(i, `${clip}-${n}`),
+    )
+
+  const w = state.wait
+  const running = state.running != null
+  const tools = w?.kind === 'rotate' ? childRect(engine, state, w.clip, 'iRotateTools') ?? DEFAULT_TOOLS : null
+  const spin = (dir: 1 | -1 | 0) => dispatch({ type: 'spin', dir })
+
+  return (
+    <div className="stage-box" ref={box} style={{ aspectRatio: `${assets.width} / ${assets.height}` }}
+      onClick={(e) => {
+        const p = active && toStage(e.clientX, e.clientY)
+        if (p) onPlace(p.x, p.y)
+      }}>
+      <div className="stage" dir="ltr" style={{ width: assets.width, height: assets.height, transform: `scale(${scale})` }}>
+        {!state.view && scene(engine, state).draws.map((i, n) => draw(i, `bg${n}`))}
+        {stageClips(engine, state).map((clip) => drawClip(clip))}
+
+        {!running && availableTasks(engine, state).map((t) => {
+          if (!t.part || !isOnStage(engine, state, dropClip(t))) return null
+          const r = dropHotspot(engine, state, t)
+          return r && <Hotspot key={t.id} part={t.part} rect={r} strong={active === t.part} label={`ضع ${engine.names[t.part]} هنا`}
+            onActivate={active === t.part ? () => onPlace((r[0] + r[1]) / 2, (r[2] + r[3]) / 2) : undefined} />
+        })}
+
+        {!running && availableTasks(engine, state).map((t) => {
+          if (!t.start || !isOnStage(engine, state, t.start.clip)) return null
+          const r = inflate(childRect(engine, state, t.start.clip, t.start.target), 28)
+          return r && <Hotspot key={t.id} rect={r} strong label={t.say} data-start={t.id}
+            onActivate={() => dispatch({ type: 'start', task: t.id })} />
+        })}
+
+        {w?.kind === 'click' && w.targets.filter((t) => !w.clicked.includes(t)).map((t) => {
+          const r = inflate(childRect(engine, state, w.clip, t), 28)
+          return r && <Hotspot key={t} rect={r} strong label="اضغط هنا"
+            onActivate={() => dispatch({ type: 'click', target: t })} />
+        })}
+
+        {tools && (
+          <div className="rotate-tools" style={{ left: tools[0] - 8, top: tools[2] }} onClick={(e) => e.stopPropagation()}>
+            {([[1, '↻', 'تدوير'], [-1, '↺', 'تدوير عكسي']] as const).map(([dir, icon, label], i) => (
+              <button key={dir} className="tool" aria-label={label} title={label} style={{ order: i * 2 }}
+                onPointerDown={(e) => { e.currentTarget.setPointerCapture(e.pointerId); spin(dir) }}
+                onPointerUp={() => spin(0)} onPointerCancel={() => spin(0)}
+                onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && !e.repeat ? spin(dir) : undefined}
+                onKeyUp={() => spin(0)}>
+                {icon}
+              </button>
+            ))}
+            <button className="tool install" style={{ order: 1 }} onClick={() => dispatch({ type: 'install' })}>تثبيت</button>
+          </div>
+        )}
+      </div>
+
+      {w?.kind === 'button' && (
+        <button className="primary stage-action" onClick={(e) => { e.stopPropagation(); dispatch({ type: 'button' }) }}>
+          {w.label}
+        </button>
+      )}
+    </div>
+  )
+})
+
+function Hotspot({ rect, strong, label, part, onActivate, 'data-start': start }: {
+  rect: Rect; strong: boolean; label: string; part?: string; onActivate?: () => void; 'data-start'?: string
+}) {
+  const style = { left: rect[0], top: rect[2], width: rect[1] - rect[0], height: rect[3] - rect[2] }
+  return onActivate ? (
+    <button className={`hotspot${strong ? ' strong' : ''}`} style={style} aria-label={label} title={label} data-part={part} data-start={start}
+      onClick={(e) => { e.stopPropagation(); onActivate() }} />
+  ) : (
+    <div className={`hotspot${strong ? ' strong' : ''}`} style={style} data-part={part} />
+  )
+}
