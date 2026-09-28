@@ -7,17 +7,21 @@ interface Props {
   active: string | null
   /** Show ordering hints ("after: CPU") — off when "Show instructions" is unchecked. */
   hints: boolean
+  /** TEST mode: don't reveal the assembly order through the card order. */
+  shuffle?: boolean
   onGrab: (part: string, e: React.PointerEvent) => void
 }
 
 /** The antistatic mat: the lesson's parts, ready to drag onto the case. */
-export function PartsTray({ engine, state, active, hints, onGrab }: Props) {
+export function PartsTray({ engine, state, active, hints, shuffle, onGrab }: Props) {
   const available = availableTasks(engine, state)
+  const tasks = engine.program.tasks.filter((t) => t.part)
+  if (shuffle) tasks.sort((a, b) => scramble(a.part!) - scramble(b.part!))
   return (
     <section className="tray" aria-label="البساط المضاد للكهرباء الساكنة">
       <h2 className="tray-title">البساط المضاد للكهرباء الساكنة</h2>
       <ul className="tray-list">
-        {engine.program.tasks.filter((t) => t.part).map((t) => {
+        {tasks.map((t) => {
           const id = t.part!
           const p = parts[id]
           const installed = state.done.includes(t.id)
@@ -48,4 +52,11 @@ export function PartsTray({ engine, state, active, hints, onGrab }: Props) {
       </ul>
     </section>
   )
+}
+
+/** Stable pseudo-random key per part, so the shuffled order doesn't jump between renders. */
+function scramble(id: string): number {
+  let h = 2166136261
+  for (const c of id) h = Math.imul(h ^ c.charCodeAt(0), 16777619)
+  return h >>> 0
 }

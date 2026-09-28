@@ -186,3 +186,39 @@ button.hotspot { padding: 0; }
 }
 
 .stage-action { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); font-size: 1.05rem; padding: 12px 22px; box-shadow: 0 6px 18px rgb(0 0 0 / 0.2); z-index: 3; }
+
+/* ---- TEST mode ---- */
+.test-button {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  border: 0;
+  border-radius: var(--radius);
+  background: #6b6b2a;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+}
+.test-button:hover, .test-button.current { background: #57571f; }
+.test-button.quit { background: var(--surface); color: var(--error); border: 1px solid var(--error); }
+.test-chip { padding: 8px 12px; border-radius: var(--radius); background: var(--error-soft); color: var(--error); font-weight: 700; white-space: nowrap; }
+.test-card { max-width: 640px; justify-self: center; width: 100%; padding: 24px 28px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); line-height: 1.8; }
+.test-card h2 { margin: 0 0 12px; font-size: 1.3rem; }
+.test-card p { margin: 0 0 10px; }
+.test-name { display: grid; gap: 4px; margin: 14px 0; font-weight: 700; }
+.test-name input { padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; font: inherit; }
+.test-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+.test-meta { color: var(--muted); }
+.test-results table { width: 100%; border-collapse: collapse; margin: 8px 0 14px; }
+.test-results th, .test-results td { padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: start; }
+.test-results tfoot th { border-bottom: 0; border-top: 2px solid var(--ink); }
+.test-results td.good { color: var(--success); font-weight: 700; }
+.test-results td.bad { color: var(--error); font-weight: 700; }
+.test-verdict { font-weight: 700; }
+
+@media print {
+  .topbar, .lessons, .no-print { display: none !important; }
+  .app { display: block; }
+  body, .workspace { background: #fff; }
+  .test-card { border: 0; max-width: none; }
+}

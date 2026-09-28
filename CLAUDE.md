@@ -14,6 +14,8 @@ npm run build                     # tsc -b && vite build -> dist/
 npm test                          # vitest: auto-solves every lesson against the real extracted data
 npx vitest run -t "lesson 2"      # one lesson
 node tools/smoke.mjs <lesson> [url]   # plays a lesson through the real UI in headless system Chrome; screenshots -> tools/.cache/smoke/lesson<N>/
+HINTS=off node tools/smoke.mjs 2 [url]  # same with "Show instructions" unchecked
+node tools/smoke.mjs test [url]       # TEST mode: all 7 stages then the results screen (~25 min)
 python tools/contact_sheet.py tools/.cache/smoke/lesson<N>   # tiles those screenshots into sheet.png
 ```
 
@@ -53,6 +55,10 @@ Transcription helpers:
   Root placement matrices are baked in. `build_assets.py` dedupes layers into `draws` and crops bitmaps to WebP.
 - **`src/lib/engine.ts`** is a generic, pure interpreter. Each lesson is a set of **tasks**, started by dropping a tray part, by clicking a scene target (`start`), or automatically when prerequisites are done (no part, e.g. the "Install Motherboard" button). A task runs **steps**: `play`, `goto`, `scene`, `view` (close-up: draw only these clips), `show`/`hide`, `rotate`, `click`, `button`, `done`. Clips wait on their last frame, and sub-clips start at 0.
 - **`src/content/lessons.ts`** holds the lesson programs, transcribed from `tools/.cache/scripts/<Lesson>/`. It also has helpers for repeated patterns (`card`, `driveScrews`, `power`, `data`, `plug`). **Flash `_currentframe` is 1-based and `stop()` in `frame_N` means index N-1, while everything here is 0-based.** A click target's rect exists only on the frame where the clip stops, and a label usually marks the frame *after* that stop. A lesson shows in the menu only once it's in `lessons`.
+- **Modes (App.tsx):**
+  - Learn is the default: lesson menu with the LEARN panel (`src/content/learn.ts`) and a "Show instructions" toggle. Off means the original expert mode: hotspots stay active but invisible, and instructions, order hints and error hints are hidden.
+  - TEST chains lessons 1–7 with instructions forced off and the tray shuffled. It records `state.mistakes` (wrong place, order or orientation) and time per stage, then shows a printable result sheet (`components/TestPanels.tsx`).
+  - Adding hooks to `App` resets its state on hot reload, which breaks a smoke run in progress.
 - **Components:**
   - `AssemblyStage` scales the fixed stage and draws the scene or view clips, including sub-clips. It also renders drop, start and click hotspots (tiny ones are inflated), the rotate tools, and the action button.
   - `PartsTray` is the antistatic mat.

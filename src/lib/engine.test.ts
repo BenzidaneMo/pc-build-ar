@@ -73,6 +73,7 @@ describe.each(Object.keys(lessons).map(Number))('lesson %i', (layer) => {
     const { s } = solve(e)
     expect(s.complete).toBe(true)
     expect(s.done.length).toBe(e.program.tasks.length)
+    expect(s.mistakes).toBe(0)
   })
 
   it('refuses a drop outside the hotspot', () => {
@@ -81,6 +82,7 @@ describe.each(Object.keys(lessons).map(Number))('lesson %i', (layer) => {
     const next = reducer(e, s, { type: 'drop', part: t.part!, x: -10, y: -10 })
     expect(next.running).toBeNull()
     expect(next.message?.kind).toBe('error')
+    expect(next.mistakes).toBe(1)
   })
 
   it('refuses parts whose prerequisites are missing', () => {

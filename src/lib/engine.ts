@@ -29,6 +29,8 @@ export interface LessonState {
   /** `hint` is extra help shown only when "Show instructions" is on. */
   message: { kind: 'error' | 'success'; text: string; hint?: string } | null
   complete: boolean
+  /** Wrong-place, wrong-order and wrong-orientation attempts (scored in TEST mode). */
+  mistakes: number
 }
 
 export type Action =
@@ -125,7 +127,7 @@ export function initialState(e: Engine): LessonState {
   for (const [k, c] of Object.entries(e.assets.clips)) frames[k] = k.includes('.') ? 0 : c.frames.length - 1
   const s: LessonState = {
     frames, hidden: {}, view: null, anims: {}, running: { task: INTRO, step: 0 }, wait: null,
-    done: [], installed: [], spin: null, message: null, complete: false,
+    done: [], installed: [], spin: null, message: null, complete: false, mistakes: 0,
   }
   return advance(e, s)
 }
@@ -219,10 +221,10 @@ export function reducer(e: Engine, s: LessonState, a: Action): LessonState {
       if (missing) {
         const need = task(e, missing)
         const what = need.part ? `«${e.names[need.part]}»` : 'الخطوة السابقة'
-        return { ...s, message: { kind: 'error', text: 'ليس بعد: هناك خطوة يجب إنجازها أولاً.', hint: `ركّب ${what} أولاً.` } }
+        return { ...s, mistakes: s.mistakes + 1, message: { kind: 'error', text: 'ليس بعد: هناك خطوة يجب إنجازها أولاً.', hint: `ركّب ${what} أولاً.` } }
       }
       if (!inside(dropHotspot(e, s, t), a.x, a.y)) {
-        return { ...s, message: { kind: 'error', text: `ليس هذا مكان «${e.names[a.part]}».`, hint: 'ضعه في المنطقة المضيئة.' } }
+        return { ...s, mistakes: s.mistakes + 1, message: { kind: 'error', text: `ليس هذا مكان «${e.names[a.part]}».`, hint: 'ضعه في المنطقة المضيئة.' } }
       }
       return advance(e, { ...s, message: null, running: { task: t.id, step: 0 } })
     }
@@ -250,7 +252,7 @@ export function reducer(e: Engine, s: LessonState, a: Action): LessonState {
       if (w.correct.some(([lo, hi]) => f >= lo && f <= hi)) {
         return resume(e, { ...s, message: null, frames: { ...s.frames, [w.clip]: w.install } })
       }
-      return { ...s, message: { kind: 'error', text: 'الاتجاه غير صحيح. واصل التدوير حتى تتطابق القطعة مع مكانها، ثم اضغط «تثبيت».' } }
+      return { ...s, mistakes: s.mistakes + 1, message: { kind: 'error', text: 'الاتجاه غير صحيح. واصل التدوير حتى تتطابق القطعة مع مكانها، ثم اضغط «تثبيت».' } }
     }
 
     case 'click': {
