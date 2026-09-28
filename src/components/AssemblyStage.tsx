@@ -74,7 +74,7 @@ export const AssemblyStage = forwardRef<StageHandle, Props>(function AssemblySta
     const TY = b * d.x0 + dd * d.y0 + ty
     const det = a * dd - b * c
     const [ia, ib, ic, id] = [dd / det, -b / det, -c / det, a / det]
-    const url = `url("${drawUrl(assets.name, d)}")`
+    const url = `url("${d.mask ?? drawUrl(assets.name, d)}")`
     return (
       <div key={key} className="layer" style={{
         left: 0, top: 0, width: d.w, height: d.h, transformOrigin: '0 0', transform: `matrix(${a},${b},${c},${dd},${TX},${TY})`,

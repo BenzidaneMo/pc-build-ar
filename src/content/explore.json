@@ -1,0 +1,1158 @@
+{
+ "exploreCPU": [
+  {
+   "view": "Top",
+   "img": "exploreCPU/top.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": [
+    {
+     "en": "Thermal Compound",
+     "rect": [
+      20.7,
+      7.7,
+      55.8,
+      85.0
+     ]
+    },
+    {
+     "en": "Connection 1 Indicator",
+     "rect": [
+      17.1,
+      86.5,
+      7.1,
+      11.7
+     ]
+    }
+   ]
+  },
+  {
+   "view": "Bottom",
+   "img": "exploreCPU/bottom.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": [
+    {
+     "en": "CPU Contacts",
+     "rect": [
+      19.4,
+      5.1,
+      60.5,
+      88.4
+     ]
+    }
+   ]
+  }
+ ],
+ "exploreDVD": [
+  {
+   "view": "Front",
+   "img": "exploreDVD/front.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": [
+    {
+     "en": "Status Indicator LED",
+     "rect": [
+      35.6,
+      59.5,
+      8.3,
+      6.2
+     ]
+    },
+    {
+     "en": "Emergency Eject",
+     "rect": [
+      23.5,
+      53.6,
+      4.0,
+      5.5
+     ]
+    },
+    {
+     "en": "DVD Tray",
+     "rect": [
+      4.9,
+      32.9,
+      90.5,
+      19.4
+     ]
+    },
+    {
+     "en": "Open/Close Button",
+     "rect": [
+      77.5,
+      56.1,
+      15.6,
+      12.2
+     ]
+    }
+   ]
+  },
+  {
+   "view": "Back",
+   "img": "exploreDVD/back.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": [
+    {
+     "en": "Jumper Pins",
+     "rect": [
+      27.0,
+      56.8,
+      6.8,
+      9.3
+     ]
+    },
+    {
+     "en": "Analog Audio Connectors",
+     "rect": [
+      18.3,
+      56.7,
+      7.6,
+      8.7
+     ]
+    },
+    {
+     "en": "PATA Connector",
+     "rect": [
+      34.9,
+      57.1,
+      39.0,
+      8.5
+     ]
+    },
+    {
+     "en": "Molex Power Connector",
+     "rect": [
+      75.4,
+      56.9,
+      16.0,
+      8.6
+     ]
+    },
+    {
+     "en": "Digital Audio Connectors",
+     "rect": [
+      9.4,
+      56.5,
+      7.6,
+      8.7
+     ]
+    }
+   ]
+  },
+  {
+   "view": "Top",
+   "img": "exploreDVD/top.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": [
+    {
+     "en": "Jumper Settings",
+     "rect": [
+      55.3,
+      24.6,
+      9.2,
+      54.4
+     ]
+    }
+   ]
+  },
+  {
+   "view": "Bottom",
+   "img": "exploreDVD/bottom.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  },
+  {
+   "view": "Right",
+   "img": "exploreDVD/right.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  },
+  {
+   "view": "Left",
+   "img": "exploreDVD/left.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  }
+ ],
+ "exploreFloppy": [
+  {
+   "view": "Front",
+   "img": "exploreFloppy/front.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": [
+    {
+     "en": "Eject Button",
+     "rect": [
+      70.8,
+      53.6,
+      17.1,
+      13.5
+     ]
+    },
+    {
+     "en": "Status Indicator LED",
+     "rect": [
+      17.4,
+      55.5,
+      12.0,
+      9.8
+     ]
+    },
+    {
+     "en": "Floppy Disk Slot",
+     "rect": [
+      3.7,
+      36.5,
+      93.5,
+      15.2
+     ]
+    }
+   ]
+  },
+  {
+   "view": "Back",
+   "img": "exploreFloppy/back.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": [
+    {
+     "en": "Floppy Connector",
+     "rect": [
+      48.3,
+      49.2,
+      49.7,
+      15.0
+     ]
+    },
+    {
+     "en": "Berg Power Connector",
+     "rect": [
+      4.3,
+      50.2,
+      14.7,
+      15.2
+     ]
+    }
+   ]
+  },
+  {
+   "view": "Top",
+   "img": "exploreFloppy/top.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  },
+  {
+   "view": "Bottom",
+   "img": "exploreFloppy/bottom.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  },
+  {
+   "view": "Right",
+   "img": "exploreFloppy/right.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  },
+  {
+   "view": "Left",
+   "img": "exploreFloppy/left.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  }
+ ],
+ "exploreHarddrive": [
+  {
+   "view": "Front",
+   "img": "exploreHarddrive/front.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  },
+  {
+   "view": "Back",
+   "img": "exploreHarddrive/back.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": [
+    {
+     "en": "SATA Data Connector",
+     "rect": [
+      36.0,
+      60.4,
+      12.7,
+      9.3
+     ]
+    },
+    {
+     "en": "SATA Power Connector",
+     "rect": [
+      12.5,
+      60.6,
+      22.4,
+      8.7
+     ]
+    },
+    {
+     "en": "Jumper Pins",
+     "rect": [
+      59.6,
+      60.4,
+      13.0,
+      8.5
+     ]
+    },
+    {
+     "en": "Molex Power Connector",
+     "rect": [
+      73.9,
+      60.3,
+      22.3,
+      8.6
+     ]
+    }
+   ]
+  },
+  {
+   "view": "Top",
+   "img": "exploreHarddrive/top.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": [
+    {
+     "en": "Jumper Settings",
+     "rect": [
+      52.8,
+      20.0,
+      7.5,
+      41.8
+     ]
+    },
+    {
+     "en": "Drive Specifications",
+     "rect": [
+      23.3,
+      16.1,
+      19.9,
+      25.3
+     ]
+    }
+   ]
+  },
+  {
+   "view": "Bottom",
+   "img": "exploreHarddrive/bottom.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  }
+ ],
+ "exploreHeatSink": [
+  {
+   "view": "Top",
+   "img": "exploreHeatSink/top.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": [
+    {
+     "en": "Heat Sink Fan Connector",
+     "rect": [
+      1.7,
+      9.6,
+      14.0,
+      13.3
+     ]
+    }
+   ]
+  },
+  {
+   "view": "Bottom",
+   "img": "exploreHeatSink/bottom.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": [
+    {
+     "en": "Heat Sink Fan Connector",
+     "rect": [
+      85.9,
+      22.2,
+      14.0,
+      13.3
+     ]
+    }
+   ]
+  }
+ ],
+ "exploreMotherboard": [
+  {
+   "view": "Back",
+   "img": "exploreMotherboard/back.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": [
+    {
+     "en": "PS/2 Mouse Port",
+     "rect": [
+      2.0,
+      51.4,
+      7.2,
+      9.6
+     ]
+    },
+    {
+     "en": "PS/2 Keyboard Port",
+     "rect": [
+      2.0,
+      61.7,
+      7.2,
+      9.6
+     ]
+    },
+    {
+     "en": "Parallel Port",
+     "rect": [
+      11.3,
+      48.9,
+      24.7,
+      12.0
+     ]
+    },
+    {
+     "en": "Serial Port",
+     "rect": [
+      9.8,
+      62.3,
+      12.2,
+      9.0
+     ]
+    },
+    {
+     "en": "Line In Jack",
+     "rect": [
+      63.7,
+      47.5,
+      5.3,
+      8.3
+     ]
+    },
+    {
+     "en": "Headphone Jack",
+     "rect": [
+      63.7,
+      56.0,
+      5.3,
+      8.3
+     ]
+    },
+    {
+     "en": "Microphone Jack",
+     "rect": [
+      63.7,
+      63.4,
+      5.3,
+      8.3
+     ]
+    },
+    {
+     "en": "VGA Port",
+     "rect": [
+      26.3,
+      62.6,
+      12.2,
+      9.0
+     ]
+    },
+    {
+     "en": "Ethernet Port",
+     "rect": [
+      49.0,
+      49.9,
+      6.0,
+      9.3
+     ]
+    },
+    {
+     "en": "USB Ports",
+     "rect": [
+      39.2,
+      59.8,
+      16.8,
+      12.0
+     ]
+    },
+    {
+     "en": "Firewire Port",
+     "rect": [
+      39.7,
+      53.2,
+      6.6,
+      6.1
+     ]
+    }
+   ]
+  },
+  {
+   "view": "Top",
+   "img": "exploreMotherboard/top.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": [
+    {
+     "en": "PCIe x1 Slots",
+     "rect": [
+      22.8,
+      20.0,
+      9.7,
+      13.5
+     ]
+    },
+    {
+     "en": "I/O Controller",
+     "rect": [
+      32.2,
+      64.0,
+      9.7,
+      13.5
+     ]
+    },
+    {
+     "en": "SATA Connectors",
+     "rect": [
+      29.3,
+      84.3,
+      5.8,
+      15.7
+     ]
+    },
+    {
+     "en": "USB Connectors",
+     "rect": [
+      25.0,
+      72.2,
+      3.1,
+      17.8
+     ]
+    },
+    {
+     "en": "Front Panel Connectors",
+     "rect": [
+      25.2,
+      92.6,
+      3.1,
+      7.4
+     ]
+    },
+    {
+     "en": "FireWire Connectors",
+     "rect": [
+      25.0,
+      39.6,
+      3.1,
+      16.4
+     ]
+    },
+    {
+     "en": "PCI Slots",
+     "rect": [
+      12.4,
+      18.2,
+      29.9,
+      36.8
+     ]
+    },
+    {
+     "en": "PCIe x16 Slot",
+     "rect": [
+      43.9,
+      19.9,
+      3.1,
+      36.8
+     ]
+    },
+    {
+     "en": "Chipset with Heatsink",
+     "rect": [
+      48.2,
+      38.5,
+      14.6,
+      31.4
+     ]
+    },
+    {
+     "en": "I/O Ports",
+     "rect": [
+      46.1,
+      1.5,
+      44.4,
+      13.7
+     ]
+    },
+    {
+     "en": "CPU Socket",
+     "rect": [
+      66.0,
+      31.2,
+      15.7,
+      25.6
+     ]
+    },
+    {
+     "en": "RAM Slots",
+     "rect": [
+      47.8,
+      70.9,
+      36.5,
+      16.1
+     ]
+    },
+    {
+     "en": "Floppy Connector",
+     "rect": [
+      62.1,
+      96.3,
+      14.5,
+      3.7
+     ]
+    },
+    {
+     "en": "PATA Connector",
+     "rect": [
+      47.1,
+      96.2,
+      14.5,
+      3.8
+     ]
+    },
+    {
+     "en": "ATX Power Connector",
+     "rect": [
+      62.0,
+      92.1,
+      14.5,
+      3.8
+     ]
+    },
+    {
+     "en": "Aux Power Connector",
+     "rect": [
+      75.9,
+      13.0,
+      3.1,
+      5.0
+     ]
+    },
+    {
+     "en": "Heat Sink Fan Connector",
+     "rect": [
+      84.3,
+      60.0,
+      3.1,
+      5.4
+     ]
+    },
+    {
+     "en": "Battery",
+     "rect": [
+      42.8,
+      88.0,
+      3.1,
+      5.4
+     ]
+    }
+   ]
+  },
+  {
+   "view": "Bottom",
+   "img": "exploreMotherboard/bottom.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  }
+ ],
+ "exploreNicCard": [
+  {
+   "view": "Front",
+   "img": "exploreNicCard/front.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": [
+    {
+     "en": "PC Mounting Bracket",
+     "rect": [
+      13.7,
+      23.5,
+      9.5,
+      14.9
+     ]
+    },
+    {
+     "en": "Ethernet Port",
+     "rect": [
+      18.1,
+      39.0,
+      11.1,
+      17.6
+     ]
+    },
+    {
+     "en": "PCIe x1 Connector",
+     "rect": [
+      41.9,
+      78.9,
+      12.2,
+      7.1
+     ]
+    }
+   ]
+  },
+  {
+   "view": "Back",
+   "img": "exploreNicCard/back.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  },
+  {
+   "view": "Left",
+   "img": "exploreNicCard/left.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": [
+    {
+     "en": "Ethernet Port",
+     "rect": [
+      32.5,
+      41.2,
+      32.3,
+      18.1
+     ]
+    }
+   ]
+  }
+ ],
+ "exploreParallelDVD": [
+  {
+   "view": "Photo1",
+   "img": "exploreParallelDVD/photo1.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  },
+  {
+   "view": "Photo2",
+   "img": "exploreParallelDVD/photo2.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  },
+  {
+   "view": "Photo3",
+   "img": "exploreParallelDVD/photo3.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  }
+ ],
+ "exploreParallelFLOPPY": [
+  {
+   "view": "Photo1",
+   "img": "exploreParallelFLOPPY/photo1.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  },
+  {
+   "view": "Photo2",
+   "img": "exploreParallelFLOPPY/photo2.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  }
+ ],
+ "explorePeriEthernet": [
+  {
+   "view": "Photo1",
+   "img": "explorePeriEthernet/photo1.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  },
+  {
+   "view": "Photo2",
+   "img": "explorePeriEthernet/photo2.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  }
+ ],
+ "explorePeriKeyboard": [
+  {
+   "view": "Photo1",
+   "img": "explorePeriKeyboard/photo1.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  }
+ ],
+ "explorePeriMonitor": [
+  {
+   "view": "Photo1",
+   "img": "explorePeriMonitor/photo1.webp",
+   "w": 256,
+   "h": 227,
+   "callouts": []
+  }
+ ],
+ "explorePeriMouse": [
+  {
+   "view": "Photo1",
+   "img": "explorePeriMouse/photo1.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  },
+  {
+   "view": "Photo2",
+   "img": "explorePeriMouse/photo2.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  }
+ ],
+ "explorePeriPOWER": [
+  {
+   "view": "Photo1",
+   "img": "explorePeriPOWER/photo1.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  }
+ ],
+ "explorePeriParallel": [
+  {
+   "view": "Photo1",
+   "img": "explorePeriParallel/photo1.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  }
+ ],
+ "explorePeriUSB": [
+  {
+   "view": "Photo1",
+   "img": "explorePeriUSB/photo1.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  }
+ ],
+ "explorePowerSupply": [
+  {
+   "view": "Front",
+   "img": "explorePowerSupply/front.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  },
+  {
+   "view": "Back",
+   "img": "explorePowerSupply/back.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": [
+    {
+     "en": "Exhaust Vent",
+     "rect": [
+      42.6,
+      26.4,
+      45.2,
+      39.4
+     ]
+    },
+    {
+     "en": "AC Power Connector",
+     "rect": [
+      16.4,
+      54.3,
+      24.0,
+      24.2
+     ]
+    }
+   ]
+  },
+  {
+   "view": "Top",
+   "img": "explorePowerSupply/top.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  },
+  {
+   "view": "Bottom",
+   "img": "explorePowerSupply/bottom.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  },
+  {
+   "view": "Right",
+   "img": "explorePowerSupply/right.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  },
+  {
+   "view": "Left",
+   "img": "explorePowerSupply/left.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": [
+    {
+     "en": "Power Harness",
+     "rect": [
+      83.2,
+      39.3,
+      14.0,
+      22.9
+     ]
+    },
+    {
+     "en": "Power Specifications",
+     "rect": [
+      19.0,
+      32.3,
+      47.0,
+      24.0
+     ]
+    }
+   ]
+  }
+ ],
+ "exploreRam": [
+  {
+   "view": "Front",
+   "img": "exploreRam/front.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": [
+    {
+     "en": "Latch Notches",
+     "rect": [
+      0.0,
+      41.1,
+      100.0,
+      19.8
+     ]
+    },
+    {
+     "en": "DIMM Connector",
+     "rect": [
+      1.8,
+      62.1,
+      95.0,
+      6.9
+     ]
+    },
+    {
+     "en": "Single Key Notch",
+     "rect": [
+      49.8,
+      61.3,
+      4.4,
+      7.6
+     ]
+    }
+   ]
+  },
+  {
+   "view": "Back",
+   "img": "exploreRam/back.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  }
+ ],
+ "exploreSATA": [
+  {
+   "view": "Photo1",
+   "img": "exploreSATA/photo1.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  },
+  {
+   "view": "Photo2",
+   "img": "exploreSATA/photo2.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  },
+  {
+   "view": "Photo3",
+   "img": "exploreSATA/photo3.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  }
+ ],
+ "exploreThermalPaste": [
+  {
+   "view": "Photo1",
+   "img": "exploreThermalPaste/photo1.webp",
+   "w": 252,
+   "h": 208,
+   "callouts": []
+  }
+ ],
+ "exploreVideoCard": [
+  {
+   "view": "Front",
+   "img": "exploreVideoCard/front.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": [
+    {
+     "en": "PC Mounting Bracket",
+     "rect": [
+      0.9,
+      0.0,
+      9.5,
+      51.9
+     ]
+    },
+    {
+     "en": "Video Port",
+     "rect": [
+      4.8,
+      52.2,
+      11.1,
+      29.4
+     ]
+    },
+    {
+     "en": "Graphic Processor & Heat Sink",
+     "rect": [
+      48.8,
+      37.5,
+      32.0,
+      33.4
+     ]
+    },
+    {
+     "en": "VRAM",
+     "rect": [
+      82.4,
+      36.8,
+      9.5,
+      36.1
+     ]
+    },
+    {
+     "en": "PCIe x 16 Connector",
+     "rect": [
+      32.3,
+      79.2,
+      46.1,
+      7.1
+     ]
+    }
+   ]
+  },
+  {
+   "view": "Back",
+   "img": "exploreVideoCard/back.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  },
+  {
+   "view": "Left",
+   "img": "exploreVideoCard/left.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": [
+    {
+     "en": "Video Port",
+     "rect": [
+      52.6,
+      40.5,
+      30.7,
+      17.9
+     ]
+    }
+   ]
+  }
+ ],
+ "exploreWirelessCard": [
+  {
+   "view": "Front",
+   "img": "exploreWirelessCard/front.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": [
+    {
+     "en": "PC Mounting Bracket",
+     "rect": [
+      15.1,
+      0.0,
+      9.2,
+      52.2
+     ]
+    },
+    {
+     "en": "Wireless Antenna Connector",
+     "rect": [
+      16.8,
+      53.6,
+      11.1,
+      17.6
+     ]
+    },
+    {
+     "en": "PCI Connector",
+     "rect": [
+      41.7,
+      75.3,
+      45.2,
+      8.4
+     ]
+    }
+   ]
+  },
+  {
+   "view": "Back",
+   "img": "exploreWirelessCard/back.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": []
+  },
+  {
+   "view": "Left",
+   "img": "exploreWirelessCard/left.webp",
+   "w": 405,
+   "h": 266,
+   "callouts": [
+    {
+     "en": "Wireless Antenna Connector",
+     "rect": [
+      47.4,
+      41.7,
+      30.5,
+      17.4
+     ]
+    }
+   ]
+  }
+ ]
+}

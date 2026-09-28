@@ -120,7 +120,9 @@ function pack(arch, work) {
  *  "./" and "." entries out of the archive (WinRAR chokes on them). */
 function zip(parent, folder, out) {
   rmSync(out, { force: true })
-  const r = spawnSync('tar', ['-a', '-c', '-f', out, '-C', parent, folder], { stdio: 'inherit' })
+  // Windows' own tar by path: from Git Bash, `tar` is GNU tar, which reads "M:\..." as host:path and can't write zips
+  const tar = join(process.env.SystemRoot ?? 'C:\\Windows', 'System32', 'tar.exe')
+  const r = spawnSync(tar, ['-a', '-c', '-f', out, '-C', parent, folder], { stdio: 'inherit' })
   if (r.status !== 0) throw new Error(`zip failed: ${out}`)
 }
 

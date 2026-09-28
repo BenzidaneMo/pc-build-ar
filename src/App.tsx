@@ -1,17 +1,20 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { ArrowLeft, CircleHelp, Info, Lightbulb, Maximize2, Minimize2, Monitor, RotateCcw } from 'lucide-react'
+import { ArrowLeft, CircleHelp, Compass, Info, Lightbulb, Maximize2, Minimize2, Monitor, RotateCcw, UserRoundPlus, X } from 'lucide-react'
 import { About } from './components/About'
 import { AssemblyStage, type StageHandle } from './components/AssemblyStage'
+import { Explore } from './components/Explore'
 import { PageDecor, StageDecor } from './components/Decor'
 import { InfoPanel, type Terms } from './components/InfoPanel'
 import { LessonHead, StepsCard, TestStatus } from './components/LessonPanels'
 import { PartsTray } from './components/PartsTray'
+import { ResetProgress } from './components/ResetProgress'
 import { Sidebar } from './components/Sidebar'
 import { TestIntro, TestResults, type LessonResult } from './components/TestPanels'
 import { Tour } from './components/Tour'
+import { exploreFor } from './content/explore'
 import { lessons, lessonTitles } from './content/lessons'
 import { asset, parts } from './lib/content'
-import { currentInstruction } from './lib/engine'
+import { currentInstruction, type LessonState } from './lib/engine'
 import { lessonSteps } from './lib/steps'
 import { useLesson } from './lib/useLesson'
 
@@ -37,6 +40,9 @@ const TOUR_KEY = 'pc-build-ar:tour-seen'
 const TERMS_KEY = 'pc-build-ar:terms'
 
 const LESSON_COUNT = lessonTitles.length
+/** How long stage feedback stays up (longer when it carries a hint to read). */
+const MESSAGE_MS = 4000
+const MESSAGE_HINT_MS = 7000
 
 type Test =
   | { phase: 'intro' }
@@ -62,6 +68,11 @@ export default function App() {
   const [tour, setTour] = useState(() => load(TOUR_KEY, (v) => v !== '1', true))
   const [about, setAbout] = useState(false)
   const closeAbout = useCallback(() => setAbout(false), [])
+  // «اكتشف القطع»: undefined = closed, null = the catalog, or an entry id
+  const [explore, setExplore] = useState<string | null | undefined>(undefined)
+  const closeExplore = useCallback(() => setExplore(undefined), [])
+  const [resetting, setResetting] = useState(false)
+  const closeReset = useCallback(() => setResetting(false), [])
   const closeTour = useCallback(() => {
     setTour(false)
     save(TOUR_KEY, '1')
@@ -78,16 +89,16 @@ export default function App() {
     save(TERMS_KEY, t)
   }
 
+  // `current` guards against the previous lesson's state lingering for a render after switching
+  const current = engine?.program === lessons[layer]
   useEffect(() => {
-    if (!state?.complete || completed.includes(layer)) return
+    if (!current || !state?.complete || completed.includes(layer)) return
     const next = [...completed, layer]
     setCompleted(next)
     save(DONE_KEY, JSON.stringify(next))
-  }, [state?.complete, layer, completed])
+  }, [current, state?.complete, layer, completed])
 
   // TEST: start the clock when a lesson is ready, record the result when it completes.
-  // `current` guards against the previous lesson's state lingering for a render after switching.
-  const current = engine?.program === lessons[layer]
   useEffect(() => {
     if (test?.phase === 'running' && current && state && test.lessonStart == null) {
       setTest({ ...test, lessonStart: Date.now() })
@@ -102,6 +113,16 @@ export default function App() {
   const goTo = (n: number) => {
     setSelected(null)
     setLayer(n)
+  }
+  // «تلميذ جديد»: clears the ✓ marks and restarts from lesson 1. A test result sheet on screen stays.
+  const resetProgress = () => {
+    setResetting(false)
+    setCompleted([])
+    save(DONE_KEY, '[]')
+    if (test) return
+    setSelected(null)
+    if (layer === 1) dispatch({ type: 'reset' })
+    else setLayer(1)
   }
   const startTest = (name: string) => {
     setTest({ phase: 'running', name, results: [], lessonStart: null })
@@ -163,6 +184,14 @@ export default function App() {
     : testing ? 'ركّب القطع بالاعتماد على معلوماتك.'
     : 'التعليمات مخفية: ركّب القطع بالاعتماد على معلوماتك.'
   const steps = ready ? lessonSteps(engine, state) : []
+  // feedback over the stage: closes on click or by itself (every new message is a new object)
+  const [dismissed, setDismissed] = useState<LessonState['message']>(null)
+  const message = ready && state.message && state.message !== dismissed && state.message.text !== instruction ? state.message : null
+  useEffect(() => {
+    if (!message) return
+    const t = setTimeout(() => setDismissed(message), message.hint && showHints ? MESSAGE_HINT_MS : MESSAGE_MS)
+    return () => clearTimeout(t)
+  }, [message, showHints])
   const lessonView = test?.phase !== 'intro' && test?.phase !== 'results'
 
   const nextButton = ready && state.complete && (testing ? (
@@ -195,11 +224,18 @@ export default function App() {
               </button>
             ))}
           </div>
-          <button className="help-button" onClick={() => setTour(true)} disabled={testing}>
-            <CircleHelp aria-hidden="true" />مساعدة
+          <button className="help-button explore-button" onClick={() => setExplore(null)} disabled={testing} title="اكتشف القطع">
+            <Compass aria-hidden="true" /><span>اكتشف القطع</span>
           </button>
-          <button className="help-button" onClick={() => setAbout(true)} disabled={testing}>
-            <Info aria-hidden="true" />حول التطبيق
+          <button className="help-button reset-button" onClick={() => setResetting(true)} disabled={testing}
+            title="تلميذ جديد: مسح التقدّم والبدء من الدرس الأول">
+            <UserRoundPlus aria-hidden="true" /><span>تلميذ جديد</span>
+          </button>
+          <button className="help-button" onClick={() => setTour(true)} disabled={testing} title="مساعدة">
+            <CircleHelp aria-hidden="true" /><span>مساعدة</span>
+          </button>
+          <button className="help-button" onClick={() => setAbout(true)} disabled={testing} title="حول التطبيق">
+            <Info aria-hidden="true" /><span>حول التطبيق</span>
           </button>
         </div>
       </header>
@@ -258,9 +294,10 @@ export default function App() {
                     <div className="bar"><div style={{ width: `${progress * 100}%` }} /></div>
                   </div>
                 )}
-                {ready && state.message && state.message.text !== instruction && (
-                  <p className={`message ${state.message.kind}`} role="alert">
-                    {state.message.text}{showHints && state.message.hint ? ` ${state.message.hint}` : ''}
+                {message && (
+                  <p className={`message ${message.kind}`} role="alert" title="اضغط للإغلاق" onClick={() => setDismissed(message)}>
+                    {message.text}{showHints && message.hint ? ` ${message.hint}` : ''}
+                    <X className="message-close" aria-hidden="true" />
                   </p>
                 )}
               </div>
@@ -274,7 +311,8 @@ export default function App() {
 
             {ready && (
               <PartsTray engine={engine} state={state} active={active} hints={showHints} shuffle={testing} terms={terms}
-                onGrab={(part, e) => setDrag({ part, x: e.clientX, y: e.clientY, startX: e.clientX, startY: e.clientY, moved: false })} />
+                onGrab={(part, e) => setDrag({ part, x: e.clientX, y: e.clientY, startX: e.clientX, startY: e.clientY, moved: false })}
+                onInfo={testing ? undefined : (part) => setExplore(exploreFor(part)?.id ?? null)} />
             )}
           </>
         )}
@@ -282,6 +320,8 @@ export default function App() {
 
       {tour && !testing && <Tour onClose={closeTour} />}
       {about && <About onClose={closeAbout} />}
+      {explore !== undefined && <Explore start={explore} terms={terms} onClose={closeExplore} />}
+      {resetting && <ResetProgress onConfirm={resetProgress} onClose={closeReset} />}
 
       {drag?.moved && (
         <img className="drag-ghost" src={asset(`media/images/${parts[drag.part].image}`)} alt=""

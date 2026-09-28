@@ -150,3 +150,5 @@ if (testMode) {
 console.log('stage sizes seen:', await page.evaluate(() => [...window.__stageSizes].map(([s, d]) => `${s} (${d})`)))
 console.log('errors:', errors.length ? errors : 'none')
 await browser.close()
+// console errors fail the run: from file:// they are how blocked resources show up (e.g. CSS masks)
+if (errors.length) process.exitCode = 1

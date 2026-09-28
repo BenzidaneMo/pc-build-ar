@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Check, ChevronLeft, ChevronRight, Lock, Sparkles } from 'lucide-react'
+import { Check, ChevronLeft, ChevronRight, Info, Lock, Sparkles } from 'lucide-react'
 import { asset, parts } from '../lib/content'
 import { availableTasks, type Engine, type LessonState } from '../lib/engine'
 import type { Terms } from './InfoPanel'
@@ -14,13 +14,15 @@ interface Props {
   shuffle?: boolean
   terms: Terms
   onGrab: (part: string, e: React.PointerEvent) => void
+  /** Opens «اكتشف القطع» on this part (hidden during a test). */
+  onInfo?: (part: string) => void
 }
 
 /** Pastel card colours, cycled along the mat. */
 const TINTS = ['mint', 'sky', 'sun', 'lilac', 'peach', 'aqua']
 
 /** The antistatic mat: the lesson's parts, ready to drag onto the case. */
-export function PartsTray({ engine, state, active, hints, shuffle, terms, onGrab }: Props) {
+export function PartsTray({ engine, state, active, hints, shuffle, terms, onGrab, onInfo }: Props) {
   const available = availableTasks(engine, state)
   const tasks = engine.program.tasks.filter((t) => t.part)
   if (shuffle) tasks.sort((a, b) => scramble(a.part!) - scramble(b.part!))
@@ -89,6 +91,11 @@ export function PartsTray({ engine, state, active, hints, shuffle, terms, onGrab
                       : <Lock aria-label="ليس بعد" />}
                   </span>
                 </button>
+                {onInfo && (
+                  <button className="part-info" onClick={() => onInfo(id)} title={`تعرّف على: ${p.name.ar}`} aria-label={`تعرّف على: ${p.name.ar}`}>
+                    <Info aria-hidden="true" />
+                  </button>
+                )}
               </li>
             )
           })}

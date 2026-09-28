@@ -14,7 +14,8 @@ npm run build                     # tsc -b && vite build -> dist/
 npm run package [-- x64|x86]      # build + Pake (GNU toolchain), 64- and 32-bit -> release/ (msi, portable zip, web.zip, guide)
 npm test                          # vitest: auto-solves every lesson against the real extracted data
 npx vitest run -t "lesson 2"      # one lesson
-node tools/smoke.mjs <lesson> [url]   # plays a lesson through the real UI in headless system Chrome; screenshots -> tools/.cache/smoke/lesson<N>/
+node tools/smoke.mjs <lesson> [url]   # plays a lesson through the real UI in headless system Chrome; screenshots -> tools/.cache/smoke/lesson<N>/; exits 1 on console errors
+node tools/smoke.mjs 6 "file:///$PWD/dist/index.html"   # the web.zip case: run before packaging (blocked file:// resources show up as console errors)
 HINTS=off node tools/smoke.mjs 2 [url]  # same with "Show instructions" unchecked
 node tools/smoke.mjs test [url]       # TEST mode: all 7 stages then the results screen (~25 min)
 CPU=4 node tools/smoke.mjs 6 [url]    # slow-PC check: logs load time and fps during an assembly animation
@@ -31,6 +32,8 @@ J="/c/Program Files/Java/jdk-21/bin/java"; FF=tools/.cache/ffdec/ffdec-cli.jar
 "$J" -jar $FF -export script tools/.cache/scripts/<Lesson> legacy/models/<Lesson>.swf   # decompiled AS2, the behaviour reference
 python tools/extract_lessons.py [Lesson]   # SWF -> tools/.cache/manifests/<Lesson>.json
 python tools/build_assets.py [Lesson]      # -> public/lessons/<Lesson>/ + src/content/lessons/<Lesson>.json (parallel, cached)
+# «اكتشف القطع» photos + callouts from legacy/media/explore/*.swf (export images and texts first, see the script's docstring):
+python tools/extract_explore.py [--debug]  # -> public/media/explore/ + src/content/explore.json; --debug outlines callouts in tools/.cache/explore-debug/
 ```
 
 Transcription helpers:
@@ -66,7 +69,7 @@ Transcription helpers:
   - named children and unnamed buttons (`btn<charId>`, the click targets) as rects.
 
   Root placement matrices are baked in. `build_assets.py` dedupes layers into `draws` and crops bitmaps to WebP.
-  - **Masks** (`clip_depth`) become `{mask, items}` frame entries. The renderer uses the mask shape's SVG as a CSS `mask-image`. They hide the part of a drive or cable that has slid inside the case. Without them, parts are drawn in front of the case.
+  - **Masks** (`clip_depth`) become `{mask, items}` frame entries. The renderer uses the mask shape's SVG as a CSS `mask-image`. They hide the part of a drive or cable that has slid inside the case. Without them, parts are drawn in front of the case. Mask draws carry the SVG inline as a `data:` URL (`mask`): browsers fetch `mask-image` in CORS mode, which fails from `file://`, and a mask that can't load hides everything inside it. A test checks every mask is inline.
   - One shape can stack several full-stage bitmap fills, for example a close-up painted over the previous view. Some come from `StateNewStyles` records mid-shape. `Swf.shape_bitmap_fills()` walks the shape records to find them all, bottom first.
 - **Playback runs at 35 fps** (`useLesson.ts`), RootMovie's rate. Flash plays movies loaded with `loadMovie` at the host's rate, whatever their own header says (24, or 12 for ExternalCables).
 - **`src/lib/engine.ts`** is a generic, pure interpreter. Each lesson is a set of **tasks**, started by dropping a tray part, by clicking a scene target (`start`), or automatically when prerequisites are done (no part, e.g. the "Install Motherboard" button). A task runs **steps**: `play`, `goto`, `scene`, `view` (close-up: draw only these clips), `show`/`hide`, `rotate`, `click`, `button`, `done`. Clips wait on their last frame, and sub-clips start at 0.
@@ -82,6 +85,9 @@ Transcription helpers:
   - `AssemblyStage` scales the fixed stage and draws the scene or view clips, including sub-clips. It also renders drop, start and click hotspots (tiny ones are inflated), the rotate tools, and the action button.
   - `PartsTray` is the antistatic mat: pastel cards, FR/EN term, and scroll arrows when the cards overflow. With instructions off it gives no order hints and lets any part be picked up.
   - `Sidebar` holds the lesson list, the tip, the progress, and the test card. `InfoPanel` holds the learn text, the terms and «تذكّر دائمًا».
+  - `Explore` is «اكتشف القطع» (header button, or ⓘ on a tray card): a catalog by lesson, then per component the original EXPLORE photos (front/back/top… views) with numbered callouts, and what it is, its role, today's equivalent and a fact. Texts, callout translations and the part → entry map are in `src/content/explore.ts`; photos and callout rects come from `tools/extract_explore.py`.
+  - «تلميذ جديد» (`ResetProgress`) clears the ✓ marks and returns to lesson 1, for the next student on the same PC. It's disabled during a test and leaves a result sheet on screen alone. `Dialog` is the shared modal shell.
+  - Stage feedback (`.message`) closes on click, or by itself after 4 s (7 s with a hint).
   - `About` is the «حول التطبيق» dialog from the header, with details from `src/content/about.ts` and the photo at `public/media/about/`. The GitHub, LinkedIn and Facebook logos are inline SVG paths, because lucide 1.x has no brand icons.
   - `LessonPanels` holds `LessonHead`, `StepsCard` (built from `lib/steps.ts`, using `Task.label` or the part name) and `TestStatus`. `Decor` holds the SVG blobs and illustrations.
   - `App` owns pointer drag, plus tap-to-select/tap-to-place.

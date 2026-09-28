@@ -5,7 +5,7 @@ import partsData from '../content/parts.json'
 import {
   availableTasks, childRect, dropHotspot, initialState, reducer, type Engine, type LessonState,
 } from './engine'
-import type { LessonAssets } from './types'
+import type { FrameItem, LessonAssets } from './types'
 
 const names = Object.fromEntries(partsData.parts.map((p) => [p.id, p.name.ar]))
 
@@ -92,6 +92,13 @@ describe.each(Object.keys(lessons).map(Number))('lesson %i', (layer) => {
     const next = reducer(e, s, { type: 'drop', part: blocked.part!, x: 0, y: 0 })
     expect(next.running).toBeNull()
     expect(next.message?.hint).toContain('أولاً')
+  })
+
+  it('ships every mask inline (CSS masks from file:// are blocked)', () => {
+    const masks = new Set<number>()
+    const walk = (items: FrameItem[]) => items.forEach((i) => typeof i === 'object' && (masks.add(i.mask), walk(i.items)))
+    Object.values(e.assets.clips).forEach((c) => c.frames.forEach(walk))
+    for (const m of masks) expect(e.assets.draws[m], `draw ${m}`).toHaveProperty('mask', expect.stringMatching(/^data:image\/svg\+xml;base64,/))
   })
 })
 

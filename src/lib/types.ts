@@ -5,7 +5,8 @@ export type Matrix = [a: number, b: number, c: number, d: number, tx: number, ty
 export type Draw =
   | { b: number; x: number; y: number; w: number; h: number }
   | { b: number; m: Matrix; w: number; h: number }
-  | { v: number; m: Matrix; x0: number; y0: number; w: number; h: number }
+  /** svg; `mask` is the same svg as a data: URL when it's used as a Flash mask (CSS masks can't load files from file://) */
+  | { v: number; m: Matrix; x0: number; y0: number; w: number; h: number; mask?: string }
 
 export interface Run<T> { from: number; to: number; rect?: Rect | null; draws?: number[]; clips?: string[]; value?: T }
 

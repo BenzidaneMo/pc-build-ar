@@ -6,7 +6,8 @@ Output per lesson:
 - src/content/lessons/<Lesson>.json:
     draws   unique drawable layers: {b, x, y, w, h} (1:1 bitmap), {b, m, w, h}
             (transformed bitmap; m maps cropped-bitmap px -> stage px) or
-            {v, m, x0, y0, w, h} (svg; m maps shape space -> stage px)
+            {v, m, x0, y0, w, h} (svg; m maps shape space -> stage px; + mask: data URL
+            of the svg when it is used as a mask)
     clips   every animated sprite: labels, draw indices per frame (or a sub-clip
             key, or {mask, items}: items shown only inside the svg draw `mask`),
             named children (hotspots, buttons...) as frame ranges + rects
@@ -14,6 +15,7 @@ Output per lesson:
 
 Usage: python build_assets.py [Lesson ...]     (default: all lessons)
 """
+import base64
 import json
 import os
 from concurrent.futures import ProcessPoolExecutor
@@ -147,6 +149,8 @@ def build(lesson):
             return add({'v': vid, 'm': layer['m'], 'x0': xmin / 20, 'y0': ymin / 20, 'w': w, 'h': h})
         return None
 
+    mask_ids = set()
+
     def ids(layers):
         out = []
         for l in layers:
@@ -156,6 +160,7 @@ def build(lesson):
                 if mask is None:
                     out += items
                 elif items:
+                    mask_ids.add(mask)
                     out.append({'mask': mask, 'items': items})
             else:
                 i = use(l)
@@ -172,6 +177,11 @@ def build(lesson):
         }
     scenes = runs([{'draws': ids(sc['layers']), 'clips': sc['clips']} for sc in src['scenes']],
                   key=lambda s: json.dumps(s))
+    # CSS mask-image is always fetched in CORS mode, which fails from file:// (the web.zip build):
+    # an unloadable mask hides everything inside it. Masks ship inline as data: URLs instead.
+    for i in sorted(mask_ids):
+        text = open(os.path.join(CACHE, 'shapes', lesson, f"{draws[i]['v']}.svg"), encoding='utf-8').read()
+        draws[i]['mask'] = 'data:image/svg+xml;base64,' + base64.b64encode(text.encode('utf-8')).decode('ascii')
     content = {
         'name': lesson, 'width': src['width'], 'height': src['height'], 'fps': src['fps'],
         'rootLabels': src['rootLabels'], 'scenes': scenes, 'clips': clips,
