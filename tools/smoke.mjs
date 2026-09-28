@@ -1,6 +1,12 @@
 // Plays a lesson through the real UI in headless Chrome, screenshotting each new instruction.
 // Usage: node tools/smoke.mjs [lesson=1|test] [url]      (dev server must be running)
 //   "test" runs TEST mode: all 7 stages without instructions, then the results screen.
+// Env options:
+//   CDP=http://127.0.0.1:9222  drive an already-open page instead (e.g. the packaged app, started with
+//                              WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS=--remote-debugging-port=9222)
+//   CPU=4                      throttle the CPU (slow lab PC) and report load time and frame rate
+//   TOUCH=1                    play with taps (tap-to-select, tap-to-place) instead of mouse drags
+//   HINTS=off                  play with "Show instructions" unchecked
 import { chromium } from 'playwright-core'
 import { mkdirSync, rmSync } from 'node:fs'
 
@@ -11,8 +17,17 @@ const out = testMode ? 'tools/.cache/smoke/test' : `tools/.cache/smoke/lesson${l
 rmSync(out, { recursive: true, force: true })
 mkdirSync(out, { recursive: true })
 
-const browser = await chromium.launch({ channel: 'chrome', headless: true })
-const page = await browser.newPage({ viewport: { width: 1280, height: 860 } })
+const touch = process.env.TOUCH === '1'
+const browser = process.env.CDP
+  ? await chromium.connectOverCDP(process.env.CDP)
+  : await chromium.launch({ channel: 'chrome', headless: true })
+const page = process.env.CDP
+  ? browser.contexts()[0].pages()[0]
+  : await (await browser.newContext({ viewport: { width: 1280, height: 860 }, hasTouch: touch })).newPage()
+if (process.env.CPU) {
+  const cdp = await page.context().newCDPSession(page)
+  await cdp.send('Emulation.setCPUThrottlingRate', { rate: Number(process.env.CPU) })
+}
 const errors = []
 page.on('pageerror', (e) => errors.push(String(e)))
 page.on('console', (m) => m.type() === 'error' && errors.push(m.text()))
@@ -23,6 +38,11 @@ const visible = async (sel) => (await page.locator(sel).count()) > 0 && page.loc
 async function drag(part) {
   const card = page.locator(`.part-card[data-part="${part}"]`)
   await card.scrollIntoViewIfNeeded()
+  if (touch) {
+    await card.tap()
+    await page.locator(`.hotspot[data-part="${part}"]`).tap()
+    return
+  }
   const c = await card.boundingBox()
   await page.mouse.move(c.x + c.width / 2, c.y + c.height / 2)
   await page.mouse.down()
@@ -32,9 +52,20 @@ async function drag(part) {
   await page.mouse.up()
 }
 
+const press = (loc) => (touch ? loc.tap() : loc.click())
+
+/** Samples the page's rendering rate (requestAnimationFrame callbacks per second) over `ms`. */
+const fps = (ms = 1500) => page.evaluate((ms) => new Promise((done) => {
+  let n = 0
+  const t0 = performance.now()
+  const f = () => (performance.now() - t0 < ms ? (n++, requestAnimationFrame(f)) : done(Math.round((n * 1000) / ms)))
+  requestAnimationFrame(f)
+}), ms)
+
 /** Plays the lesson on screen until its completion message shows. */
 async function playLesson() {
   let last = ''
+  let sampled = false
   const start = Date.now()
   while (Date.now() - start < 900000) {
     const text = (await page.locator('.instruction').textContent()) ?? ''
@@ -44,26 +75,33 @@ async function playLesson() {
       // one step at a time until "install" is accepted (the first try is deliberately wrong)
       const rot = page.getByRole('button', { name: 'تدوير', exact: true })
       for (let i = 0; i < 160 && (await visible('.rotate-tools')); i++) {
-        await page.getByRole('button', { name: 'تثبيت' }).click()
+        await press(page.getByRole('button', { name: 'تثبيت' }))
         await page.waitForTimeout(40)
         if (!(await visible('.rotate-tools'))) break
-        const b = await rot.boundingBox()
-        await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2)
-        await page.mouse.down(); await page.waitForTimeout(35); await page.mouse.up()
+        if (touch) { await rot.tap() } else {
+          const b = await rot.boundingBox()
+          await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2)
+          await page.mouse.down(); await page.waitForTimeout(35); await page.mouse.up()
+        }
         await page.waitForTimeout(50)
       }
       continue
     }
-    if (await visible('.stage-action')) { await page.locator('.stage-action').click(); continue }
-    if (await visible('button.hotspot:not([data-part])')) { await page.locator('button.hotspot:not([data-part])').first().click(); continue }
+    if (await visible('.stage-action')) { await press(page.locator('.stage-action')); continue }
+    if (await visible('button.hotspot:not([data-part])')) { await press(page.locator('button.hotspot:not([data-part])').first()); continue }
     const drop = page.locator('div.hotspot[data-part]')
-    if (await drop.count()) { await drag(await drop.first().getAttribute('data-part')); await page.waitForTimeout(100); continue }
+    if (await drop.count()) {
+      await drag(await drop.first().getAttribute('data-part'))
+      if (process.env.CPU && !sampled) { sampled = true; console.log(`fps during assembly animation: ${await fps(1000)}`) }
+      await page.waitForTimeout(100)
+      continue
+    }
     await page.waitForTimeout(150)
   }
   return { done: await visible('.instruction.done'), last }
 }
 
-await page.goto(url)
+if (!process.env.CDP) await page.goto(url)
 if (testMode) {
   await page.locator('.test-button').click()
   await page.locator('.test-name input').fill('تلميذ تجريبي')
@@ -80,12 +118,16 @@ if (testMode) {
   await shot('results')
   console.log('results:', (await page.locator('.test-results tbody tr').allTextContents()).join(' | '))
 } else {
-  await page.locator('.lessons button').nth(lesson - 1).click()
+  const t0 = Date.now()
+  await press(page.locator('.lessons button').nth(lesson - 1))
   await page.locator('.instruction').waitFor({ timeout: 60000 })
+  if (process.env.CPU) console.log(`load: ${Date.now() - t0} ms at ${process.env.CPU}x CPU slowdown, idle fps ${await fps()}`)
   // HINTS=off plays with "Show instructions" unchecked (hotspots invisible but still active)
   const box = page.locator('.hints-toggle input')
   if ((process.env.HINTS === 'off') === (await box.isChecked())) await box.click()
+  const t1 = Date.now()
   const r = await playLesson()
+  if (process.env.CPU) console.log(`played in ${Math.round((Date.now() - t1) / 1000)} s`)
   await page.waitForTimeout(400)
   await shot('end')
   console.log(`lesson ${lesson}:`, r.done ? 'COMPLETED' : 'NOT completed', '| last:', r.last)

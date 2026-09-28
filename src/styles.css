@@ -122,7 +122,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
   background: rgb(245 165 36 / 0.12);
   animation: pulse 1.6s ease-in-out infinite;
 }
-.hotspot.strong { border-style: solid; background: rgb(245 165 36 / 0.3); }
+/* the selected part's spot sits above overlapping ones (the two RAM slots) */
+.hotspot.strong { border-style: solid; background: rgb(245 165 36 / 0.3); z-index: 1; }
 button.hotspot { padding: 0; }
 .hotspot.quiet { border-color: transparent; background: transparent; animation: none; }
 .instruction.hidden-hints { color: var(--muted); border-inline-start-color: var(--line); }

@@ -7,7 +7,8 @@ export const parts: Record<string, PartInfo> = Object.fromEntries(
   (partsData.parts as PartInfo[]).map((p) => [p.id, p]),
 )
 
-const lessonFiles = import.meta.glob<LessonAssets>('../content/lessons/*.json', { import: 'default' })
+// Eager: the build is a single classic script (file://), so lesson data ships inside it anyway.
+const lessonFiles = import.meta.glob<LessonAssets>('../content/lessons/*.json', { import: 'default', eager: true })
 
 export const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`
 
@@ -18,7 +19,7 @@ export function drawUrl(lesson: string, d: Draw) {
 /** Loads a lesson's frame data and preloads every image before play starts. */
 export async function loadEngine(layer: number, onProgress: (p: number) => void): Promise<Engine> {
   const program = lessons[layer]
-  const assets = await lessonFiles[`../content/lessons/${program.file}.json`]()
+  const assets = lessonFiles[`../content/lessons/${program.file}.json`]
   const urls = [...new Set(assets.draws.map((d) => drawUrl(assets.name, d)))]
   let done = 0
   await Promise.all(

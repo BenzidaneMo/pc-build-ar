@@ -5,3 +5,4 @@ tools/.cache/
 __pycache__/
 *.tsbuildinfo
 Thumbs.db
+release/

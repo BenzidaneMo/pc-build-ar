@@ -4,18 +4,21 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A rebuild of the 2007 Cisco IT Essentials "Virtual Desktop" PC-assembly simulator (Flash 8 / ActionScript 2) as an offline React app. Algerian high-school CS teachers use it to teach students how to put a PC together. The UI is Arabic (RTL), with French and English hardware terms shown alongside. Packaging with Pake (`--use-local-file`) comes later, so `dist/` must keep working from `file://`. That's why `base: './'` is set, with no CDN, and the font is self-hosted.
+A rebuild of the 2007 Cisco IT Essentials "Virtual Desktop" PC-assembly simulator (Flash 8 / ActionScript 2) as an offline React app. Algerian high-school CS teachers use it to teach students how to put a PC together. The UI is Arabic (RTL), with French and English hardware terms shown alongside. It ships as a Windows app built with Pake, and `dist/` must also work opened straight from a folder (`file://`) as a fallback for lab PCs without WebView2 (Windows 7). That's why `base: './'` is set, with no CDN and a self-hosted font. `vite.config.ts` also builds one classic IIFE script (no `type="module"`, no `crossorigin`; browsers block both from `file://`) plus one CSS file, targeting Chrome 109 / Firefox 115, the last browsers on Windows 7. Lesson data is an eager glob inside that script. Target hardware is mouse-and-keyboard desktop lab PCs, not touch screens.
 
 ## Commands
 
 ```bash
 npm run dev                       # Vite dev server (use --host 127.0.0.1 if localhost hangs)
 npm run build                     # tsc -b && vite build -> dist/
+npm run package                   # build + Pake (local pake-cli, --windows-toolchain gnu) -> release/PCBuilderDZ.msi + .exe
 npm test                          # vitest: auto-solves every lesson against the real extracted data
 npx vitest run -t "lesson 2"      # one lesson
 node tools/smoke.mjs <lesson> [url]   # plays a lesson through the real UI in headless system Chrome; screenshots -> tools/.cache/smoke/lesson<N>/
 HINTS=off node tools/smoke.mjs 2 [url]  # same with "Show instructions" unchecked
 node tools/smoke.mjs test [url]       # TEST mode: all 7 stages then the results screen (~25 min)
+CPU=4 node tools/smoke.mjs 6 [url]    # slow-PC check: logs load time and fps during an assembly animation
+CDP=http://127.0.0.1:9222 node tools/smoke.mjs 1   # drive the packaged app (see Packaging)
 python tools/contact_sheet.py tools/.cache/smoke/lesson<N>   # tiles those screenshots into sheet.png
 ```
 
@@ -35,6 +38,14 @@ Transcription helpers:
 - `python tools/render_frames.py <Lesson> <clip> <frames…>` renders what specific frames show, with named rects outlined.
 
 `tools/convert_xml.py` generated `src/content/parts.json` once. It is now hand-maintained, so don't regenerate it over edits.
+
+## Packaging
+
+`tools/package.mjs` runs the project-local `pake-cli` on `dist/` from inside `release/`, because Pake writes artifacts to its cwd. It uses `--use-local-file` and `--windows-toolchain gnu`.
+- The GNU build needs MinGW `gcc` on PATH. The script prepends `C:\msys64\ucrt64\bin` (override with `MINGW_BIN`) for that process only. Pake sets `RUSTUP_TOOLCHAIN=stable-x86_64-pc-windows-gnu` itself.
+- The icon comes from `python tools/make_icon.py` (-> `build/icon.*`).
+- To smoke-test the packaged app, start `release/PCBuilderDZ.exe` with `WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS=--remote-debugging-port=9222`, then run smoke with `CDP=http://127.0.0.1:9222`.
+- `docs/guide-enseignant.md` is the teacher handout for the classroom trial.
 
 ## Architecture
 
