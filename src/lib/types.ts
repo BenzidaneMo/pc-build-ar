@@ -79,6 +79,8 @@ export interface Task {
   after?: string[]
   /** Instruction while this task is the next thing to do. */
   say: string
+  /** Short name in the lesson's step list (defaults to the part's name; hidden when neither exists). */
+  label?: string
   steps: Step[]
 }
 

@@ -11,7 +11,7 @@ A rebuild of the 2007 Cisco IT Essentials "Virtual Desktop" PC-assembly simulato
 ```bash
 npm run dev                       # Vite dev server (use --host 127.0.0.1 if localhost hangs)
 npm run build                     # tsc -b && vite build -> dist/
-npm run package                   # build + Pake (local pake-cli, --windows-toolchain gnu) -> release/PCBuilderDZ.msi + .exe
+npm run package [-- x64|x86]      # build + Pake (GNU toolchain), 64- and 32-bit -> release/ (msi, portable zip, web.zip, guide)
 npm test                          # vitest: auto-solves every lesson against the real extracted data
 npx vitest run -t "lesson 2"      # one lesson
 node tools/smoke.mjs <lesson> [url]   # plays a lesson through the real UI in headless system Chrome; screenshots -> tools/.cache/smoke/lesson<N>/
@@ -41,8 +41,10 @@ Transcription helpers:
 
 ## Packaging
 
-`tools/package.mjs` runs the project-local `pake-cli` on `dist/` from inside `release/`, because Pake writes artifacts to its cwd. It uses `--use-local-file` and `--windows-toolchain gnu`.
-- The GNU build needs MinGW `gcc` on PATH. The script prepends `C:\msys64\ucrt64\bin` (override with `MINGW_BIN`) for that process only. Pake sets `RUSTUP_TOOLCHAIN=stable-x86_64-pc-windows-gnu` itself.
+`tools/package.mjs` runs the project-local `pake-cli` on `dist/` once per arch, each in `release/.build/<arch>/`, because Pake writes `<name>.msi/.exe` to its cwd. It uses `--use-local-file` and `--windows-toolchain gnu`. It then assembles `release/`: `PCBuilderDZ_<v>_{x64,x86}.msi`, `PCBuilderDZ_<v>_portable_{x64,x86}.zip`, `PCBuilderDZ_<v>_web.zip` (dist/, for Windows 7 without WebView2), and `دليل-الأستاذ.md`.
+- **Toolchains:** x64 uses MSYS2 `ucrt64` gcc. x86 uses MSYS2 `mingw32` gcc (`pacman -S mingw-w64-i686-gcc`) plus `rustup target add i686-pc-windows-gnu`. The x86 linker, CC, AR and WINDRES are set through `CARGO_TARGET_I686_…` / `*_i686_pc_windows_gnu`. The 64-bit gcc stays first on PATH for the host build scripts. Everything is set per process; `MSYS2_ROOT` overrides `C:\msys64`. Pake sets `RUSTUP_TOOLCHAIN=stable-x86_64-pc-windows-gnu` itself.
+- **x86 needs a patched Pake:** Pake 3.17 maps only x64 for GNU. For x86 the script writes `pake-cli/dist/cli.x86.js`, a checked text patch adding `ia32` → `i686-pc-windows-gnu` (it fails loudly if pake-cli changes), runs it with `--targets ia32`, then deletes it.
+- **The portable exe never ships alone:** a GNU build imports `WebView2Loader.dll` at runtime, so the portable zips contain exe + DLL. Without the DLL, Windows shows "WebView2Loader.dll was not found". Both archs were verified to run offline, with every resource served from `tauri.localhost`.
 - The icon comes from `python tools/make_icon.py` (-> `build/icon.*`).
 - To smoke-test the packaged app, start `release/PCBuilderDZ.exe` with `WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS=--remote-debugging-port=9222`, then run smoke with `CDP=http://127.0.0.1:9222`.
 - `docs/guide-enseignant.md` is the teacher handout for the classroom trial.
@@ -70,15 +72,29 @@ Transcription helpers:
 - **`src/lib/engine.ts`** is a generic, pure interpreter. Each lesson is a set of **tasks**, started by dropping a tray part, by clicking a scene target (`start`), or automatically when prerequisites are done (no part, e.g. the "Install Motherboard" button). A task runs **steps**: `play`, `goto`, `scene`, `view` (close-up: draw only these clips), `show`/`hide`, `rotate`, `click`, `button`, `done`. Clips wait on their last frame, and sub-clips start at 0.
 - **`src/content/lessons.ts`** holds the lesson programs, transcribed from `tools/.cache/scripts/<Lesson>/`. It also has helpers for repeated patterns (`card`, `driveScrews`, `power`, `data`, `plug`). **Flash `_currentframe` is 1-based and `stop()` in `frame_N` means index N-1, while everything here is 0-based.** A click target's rect exists only on the frame where the clip stops, and a label usually marks the frame *after* that stop. A lesson shows in the menu only once it's in `lessons`.
 - **Modes (App.tsx):**
-  - Learn is the default: lesson menu with the LEARN panel (`src/content/learn.ts`) and a "Show instructions" toggle. Off means the original expert mode: hotspots stay active but invisible, and instructions, order hints and error hints are hidden.
+  - Learn is the default: the lesson menu, the info card and the tip (from `src/content/learn.ts`: goal, intro, items with fr/en terms, tip), and a "Show instructions" toggle. Off means the original expert mode: hotspots stay active but invisible, and instructions, order hints and error hints are hidden.
     - With instructions on, drops carry `assist`. The 3rd wrong-place drop in a row then installs the part, as the original's `stepCounter` did.
   - A welcome tour (`components/Tour.tsx`) opens on the first visit and again from the Help button. The smoke script skips it.
   - TEST chains lessons 1–7 with instructions forced off and the tray shuffled. It records `state.mistakes` (wrong place, order or orientation) and time per stage, then shows a printable result sheet (`components/TestPanels.tsx`).
   - Adding hooks to `App` resets its state on hot reload, which breaks a smoke run in progress.
+- **Layout** follows a mock-up; see "UI" below. It is three columns: info card | lesson | lessons, right to left. The lesson column is one screen tall (`--col-h`): the title, instruction and mat keep their size, and the stage row takes the rest. `.stage-wrap` is a size container, and `.stage-box` is sized in `cqw`/`cqh`. `.side-col` wraps both side cards. It is `display: contents` on wide screens; below 1480 px it becomes one column that scrolls on its own. Below 900 px everything stacks and the page scrolls. «تكبير» (`.app.focus`) hides the side column. The header (`--top-h`) and the mat (`.tray-body`) have fixed heights, so the stage never changes size mid-lesson.
 - **Components:**
   - `AssemblyStage` scales the fixed stage and draws the scene or view clips, including sub-clips. It also renders drop, start and click hotspots (tiny ones are inflated), the rotate tools, and the action button.
-  - `PartsTray` is the antistatic mat.
+  - `PartsTray` is the antistatic mat: pastel cards, FR/EN term, and scroll arrows when the cards overflow. With instructions off it gives no order hints and lets any part be picked up.
+  - `Sidebar` holds the lesson list, the tip, the progress, and the test card. `InfoPanel` holds the learn text, the terms and «تذكّر دائمًا».
+  - `About` is the «حول التطبيق» dialog from the header, with details from `src/content/about.ts` and the photo at `public/media/about/`. The GitHub, LinkedIn and Facebook logos are inline SVG paths, because lucide 1.x has no brand icons.
+  - `LessonPanels` holds `LessonHead`, `StepsCard` (built from `lib/steps.ts`, using `Task.label` or the part name) and `TestStatus`. `Decor` holds the SVG blobs and illustrations.
   - `App` owns pointer drag, plus tap-to-select/tap-to-place.
+
+## UI
+
+- **Look:** cream page, chocolate header and mat, orange for current/primary, teal for done/progress, yellow accents. Tokens live on `:root` in `styles.css`.
+- **Fonts:** Cairo for headings, Noto Sans Arabic for body text, and Aref Ruqaa only for the handwritten tagline. All are self-hosted via `@fontsource`.
+- **Icons:** `lucide-react`, bundled, so there's no CDN.
+- **Target screens** are lab PCs and laptops, from 1024×640 up to 1920×1080. Include browser windows with toolbars, e.g. 1920×890 or 1366×650. Phones aren't supported. `max-height` media queries shrink the header, the mat cards, the lesson title and the mat title on short screens.
+- **Tour highlighting** is a fixed `.tour-spot` drawn over the measured element. Its huge box-shadow does the dimming. Lifting elements with `z-index` doesn't work inside the sticky columns.
+- **Wording:** the parts area is «القطع المتوفّرة». Avoid the literal «البساط المضاد للكهرباء الساكنة» (antistatic mat), which students found confusing.
+- **Checking the layout:** `node tools/ui-shots.mjs` (or `SIZES=1366x650,...`) screenshots it at six sizes into `tools/.cache/ui/` and reports the stage size and any page scroll.
 
 ## Gotchas
 

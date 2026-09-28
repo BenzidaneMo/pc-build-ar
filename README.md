@@ -27,10 +27,10 @@ npm install
 npm run dev        # http://localhost:5173 (add --host 127.0.0.1 if localhost hangs)
 npm test           # auto-solves every lesson against the extracted data
 npm run build      # -> dist/, works from file://
-npm run package    # -> release/PCBuilderDZ.msi and portable PCBuilderDZ.exe (+ WebView2Loader.dll)
+npm run package    # -> release/: x64 and x86 .msi installers, portable .zip (exe + WebView2Loader.dll), web.zip
 ```
 
-`npm run package` uses [Pake](https://github.com/tw93/Pake), installed locally, with the Rust GNU toolchain (`rustup`, `stable-x86_64-pc-windows-gnu`). It also needs MinGW gcc, by default from `C:\msys64\ucrt64\bin`; set `MINGW_BIN` to override.
+`npm run package` uses [Pake](https://github.com/tw93/Pake), installed locally, with the Rust GNU toolchain (`rustup`, `stable-x86_64-pc-windows-gnu`, plus the `i686-pc-windows-gnu` target for 32-bit). It also needs MSYS2's MinGW gcc: `ucrt64` for 64-bit and `mingw32` for 32-bit. It looks in `C:\msys64` by default; set `MSYS2_ROOT` to override. Add `-- x64` or `-- x86` to build only one.
 
 ## How it works
 
@@ -46,5 +46,7 @@ npm run package    # -> release/PCBuilderDZ.msi and portable PCBuilderDZ.exe (+ 
 Classroom trial stage. The Arabic and French texts still need review by a teacher. Planned work includes the original "Explore" mode (360° views and videos of each part) and modern hardware (SSD, M.2, 24-pin ATX, HDMI/USB-C).
 
 ## Credits
+
+Developed by **Mohamed Benzidane**: [GitHub](https://github.com/BenzidaneMo) · [LinkedIn](https://www.linkedin.com/in/mohamed-benzidane-42b958210) · [Portfolio](https://portfolio-mohamed-benzidane.netlify.app)
 
 The lesson animations, part images and original lesson content come from Cisco Networking Academy's *IT Essentials Virtual Desktop* and remain Cisco's property. This project is a non-commercial educational adaptation for classroom use.

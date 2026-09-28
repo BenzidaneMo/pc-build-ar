@@ -3,6 +3,9 @@
 // `_currentframe > 68 && _currentframe < 73` becomes [68, 71].
 import type { LessonProgram, Step } from '../lib/types'
 
+/** "الدرس الأول"... for the lesson badge. */
+export const lessonOrdinals = ['الأول', 'الثاني', 'الثالث', 'الرابع', 'الخامس', 'السادس', 'السابع']
+
 export const lessonTitles = [
   'علبة التغذية',
   'اللوحة الأم',
@@ -37,7 +40,7 @@ export const lessons: Record<number, LessonProgram> = {
       {
         id: 'psu',
         part: 'iPowerSupply',
-        say: 'اسحب علبة التغذية من البساط المضاد للكهرباء الساكنة وضعها في المنطقة المضيئة.',
+        say: 'اسحب علبة التغذية من قائمة القطع وضعها في المنطقة المضيئة.',
         steps: [
           assemble('iPowerSupply', 80),
           { op: 'rotate', clip: 'iPowerSupply', range: [49, 79], correct: [[68, 71]], install: 48,
@@ -72,7 +75,7 @@ export const lessons: Record<number, LessonProgram> = {
       {
         id: 'cpu',
         part: 'iCPU',
-        say: 'اسحب المعالج من البساط المضاد للكهرباء الساكنة وضعه في المنطقة المضيئة.',
+        say: 'اسحب المعالج من قائمة القطع وضعه في المنطقة المضيئة.',
         steps: [
           assemble('iCPU', 54),
           { op: 'goto', clip: 'iCPU', frame: 0 },
@@ -93,7 +96,7 @@ export const lessons: Record<number, LessonProgram> = {
       {
         id: 'ram1',
         part: 'iRAM1',
-        say: 'اسحب الذاكرة الحية 1 من البساط وضعها في المنطقة المضيئة.',
+        say: 'اسحب الذاكرة الحية 1 من قائمة القطع وضعها في المنطقة المضيئة.',
         steps: [
           assemble('iRAM1', 41),
           { op: 'view', clips: ['s1070'] },
@@ -112,7 +115,7 @@ export const lessons: Record<number, LessonProgram> = {
       {
         id: 'ram2',
         part: 'iRAM2',
-        say: 'اسحب الذاكرة الحية 2 من البساط وضعها في المنطقة المضيئة.',
+        say: 'اسحب الذاكرة الحية 2 من قائمة القطع وضعها في المنطقة المضيئة.',
         steps: [
           assemble('iRAM2', 32),
           { op: 'view', clips: ['s1868'] },
@@ -164,6 +167,7 @@ export const lessons: Record<number, LessonProgram> = {
         id: 'mobo',
         after: ['cpu', 'ram1', 'ram2', 'paste', 'heatsink'],
         say: '',
+        label: 'تركيب اللوحة الأم في الصندوق',
         steps: [
           { op: 'button', label: 'تركيب اللوحة الأم في الصندوق', say: 'كل القطع على اللوحة الأم. اضغط «تركيب اللوحة الأم في الصندوق».' },
           { op: 'view', clips: ['s1744'] },
@@ -209,7 +213,7 @@ export const lessons: Record<number, LessonProgram> = {
       {
         id: 'hd',
         part: 'iHD',
-        say: 'اسحب القرص الصلب من البساط وضعه أمام حجرة الأقراص 3.5 بوصة (المنطقة المضيئة).',
+        say: 'اسحب القرص الصلب من قائمة القطع وضعه أمام حجرة الأقراص 3.5 بوصة (المنطقة المضيئة).',
         steps: [
           assemble('iHD', 109),
           { op: 'rotate', clip: 'iHD', range: ['lStartRotation', 'lEndRotation'], correct: [[98, 108]], install: 'lInstall',
@@ -288,7 +292,7 @@ export const lessons: Record<number, LessonProgram> = {
         .map((clip): Step => ({ op: 'goto', clip, frame: 0 })),
     ],
     home: 'lStep1',
-    idle: 'اضغط على طرف أحد أسلاك التغذية، أو اسحب سلك بيانات من البساط.',
+    idle: 'اضغط على طرف أحد أسلاك التغذية، أو اسحب كابل بيانات من قائمة القطع.',
     tasks: [
       power('atx', 'power3', 'btn404', 'سلك التغذية الرئيسي ATX (20 دبوسًا)', { stop: 31, range: ['lStartRotation', 'lEndRotation'], correct: [[12, 15], [43, 47]], install: 'lInstall' }, 73),
       power('cpuPower', 'power4', 'btn10', 'سلك تغذية المعالج (4 دبابيس)', { stop: 20, range: ['lStartRotation', 'lEndRotation'], correct: [[2, 6], [34, 37]], install: 'lInstall' }, 87),
@@ -417,7 +421,7 @@ function power(id: string, clip: string, end: string, name: string, rot: Rot | n
     )
   }
   steps.push({ op: 'play', clip, to: last }, { op: 'view', clips: null })
-  return { id, start: { clip, target: end }, say: `اضغط على طرف ${name}.`, steps }
+  return { id, start: { clip, target: end }, say: `اضغط على طرف ${name}.`, label: name, steps }
 }
 
 /** Data cable: drop one end on the board, rotate, plug; then click its other end and plug it into the drive. */
@@ -431,7 +435,7 @@ function data(
   return {
     id,
     part,
-    say: `اسحب ${name} من البساط وضعه على منفذه في اللوحة الأم (المنطقة المضيئة).`,
+    say: `اسحب ${name} من قائمة القطع وضعه على منفذه في اللوحة الأم (المنطقة المضيئة).`,
     steps: [
       { op: 'hide', clips: hide },
       assemble(part, near.stop),

@@ -8,12 +8,22 @@ const PAGES: { title: string; text: string; target?: string }[] = [
     text: 'ستتعلّم هنا خطوات تجميع حاسوب مكتبي، قطعةً قطعة، ثم تختبر معلوماتك. خذ دقيقة لتتعرّف على الواجهة. يمكنك إعادة هذه الجولة في أي وقت بزر «مساعدة» في الأعلى.',
   },
   {
-    title: 'الدروس',
-    text: 'اختر درسًا من القائمة. تحت الدرس الحالي تجد شرحًا قصيرًا وأسماء القطع بالعربية والفرنسية. تظهر علامة ✓ أمام كل درس أكملته.',
-    target: '.lessons ol',
+    title: 'دروس التجميع',
+    text: 'اختر درسًا من القائمة. تظهر علامة ✓ أمام كل درس أكملته، وتحت القائمة نصيحة الدرس ومدى تقدّمك فيه.',
+    target: '.lessons',
   },
   {
-    title: 'البساط المضاد للكهرباء الساكنة',
+    title: 'بطاقة الدرس',
+    text: 'هنا شرح الدرس وأسماء القطع بالعربية مع مصطلحاتها بالفرنسية أو الإنجليزية. اختر لغة المصطلحات من أعلى الصفحة.',
+    target: '.info-panel',
+  },
+  {
+    title: 'خطوات الدرس',
+    text: 'تتبّع خطوات الدرس الحالي: الخطوات المنجزة ✓، والخطوة التي تعمل عليها الآن، وما بقي منها.',
+    target: '.steps-card',
+  },
+  {
+    title: 'القطع المتوفّرة',
     text: 'هنا توجد القطع. اسحب القطعة بالفأرة وأفلتها في المنطقة المضيئة داخل الحاسوب، أو اضغط على القطعة ثم على مكانها.',
     target: '.tray',
   },
@@ -24,7 +34,7 @@ const PAGES: { title: string; text: string; target?: string }[] = [
   },
   {
     title: 'إظهار التعليمات',
-    text: 'عندما تتقن الدرس، ألغِ هذه الخانة لتتدرّب دون تعليمات ولا مناطق مضيئة.',
+    text: 'عندما تتقن الدرس، ألغِ هذه الخانة لتتدرّب دون تعليمات ولا مناطق مضيئة. وزرّ «تكبير» يكبّر منطقة العمل.',
     target: '.hints-toggle',
   },
   {
@@ -39,14 +49,31 @@ export function Tour({ onClose }: { onClose: () => void }) {
   const next = useRef<HTMLButtonElement>(null)
   const { title, text, target } = PAGES[page]
   const last = page === PAGES.length - 1
+  const [spot, setSpot] = useState<DOMRect | null>(null)
 
+  // The described element is shown through a "spotlight" drawn over it (fixed position, from its
+  // measured box), which works wherever it sits: lifting it with z-index fails inside the sticky
+  // columns, which are their own stacking contexts.
   useEffect(() => {
     next.current?.focus()
     const el = target ? document.querySelector(target) : null
-    el?.classList.add('tour-focus')
-    el?.scrollIntoView({ block: 'nearest' })
-    return () => el?.classList.remove('tour-focus')
+    if (!el) {
+      setSpot(null)
+      return
+    }
+    el.scrollIntoView({ block: 'nearest' })
+    const measure = () => setSpot(el.getBoundingClientRect())
+    measure()
+    window.addEventListener('resize', measure)
+    window.addEventListener('scroll', measure, true)
+    return () => {
+      window.removeEventListener('resize', measure)
+      window.removeEventListener('scroll', measure, true)
+    }
   }, [target])
+
+  // dialog at the bottom centre, unless that would cover the described element
+  const top = !!spot && spot.bottom > innerHeight - 280 && spot.left < innerWidth / 2 + 240 && spot.right > innerWidth / 2 - 240
 
   useEffect(() => {
     const key = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
@@ -54,11 +81,17 @@ export function Tour({ onClose }: { onClose: () => void }) {
     return () => window.removeEventListener('keydown', key)
   }, [onClose])
 
-  // backdrop and dialog are siblings so the dialog stacks above the lifted element
+  const pad = 6
   return (
     <>
-      <div className="tour-backdrop" />
-      <section className={`tour${target === '.tray' ? ' top' : ''}`} role="dialog" aria-modal="true" aria-labelledby="tour-title">
+      {/* blocks the page; dims it when nothing is described, else the spotlight's shadow does */}
+      <div className={`tour-backdrop${spot ? ' clear' : ''}`} />
+      {spot && (
+        <div className="tour-spot" aria-hidden="true" style={{
+          top: spot.top - pad, left: spot.left - pad, width: spot.width + 2 * pad, height: spot.height + 2 * pad,
+        }} />
+      )}
+      <section className={`tour${top ? ' top' : ''}`} role="dialog" aria-modal="true" aria-labelledby="tour-title">
         <p className="tour-count">{page + 1} / {PAGES.length}</p>
         <h2 id="tour-title">{title}</h2>
         <p>{text}</p>

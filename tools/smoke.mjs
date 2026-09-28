@@ -106,10 +106,15 @@ if (!process.env.CDP) await page.goto(url)
 await page.getByRole('button', { name: 'تخطّي الجولة' }).click({ timeout: 3000 }).catch(() => {})
 // layout jitter check: every stage size seen during the run (should stay one size)
 await page.evaluate(() => {
-  window.__stageSizes = new Set()
+  window.__stageSizes = new Map()
+  const h = (s) => Math.round(document.querySelector(s)?.getBoundingClientRect().height ?? -1)
   setInterval(() => {
     const b = document.querySelector('.stage-box')?.getBoundingClientRect()
-    if (b) window.__stageSizes.add(`${b.width.toFixed(1)}x${b.height.toFixed(1)}`)
+    const size = b && `${b.width.toFixed(1)}x${b.height.toFixed(1)}`
+    // what the rest of the lesson column looked like when this size first appeared
+    if (size && !window.__stageSizes.has(size)) {
+      window.__stageSizes.set(size, `head ${h('.lesson-head')} instruction ${h('.instruction-row')} tray ${h('.tray')}`)
+    }
   }, 50)
 })
 if (testMode) {
@@ -142,6 +147,6 @@ if (testMode) {
   await shot('end')
   console.log(`lesson ${lesson}:`, r.done ? 'COMPLETED' : 'NOT completed', '| last:', r.last)
 }
-console.log('stage sizes seen:', await page.evaluate(() => [...window.__stageSizes]))
+console.log('stage sizes seen:', await page.evaluate(() => [...window.__stageSizes].map(([s, d]) => `${s} (${d})`)))
 console.log('errors:', errors.length ? errors : 'none')
 await browser.close()
