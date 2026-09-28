@@ -4,6 +4,10 @@ import { loadEngine } from './content'
 
 type Loaded = { engine: Engine; state: LessonState }
 
+/** Flash plays a movie loaded with loadMovie at the host's frame rate, so every lesson ran at
+ *  RootMovie.swf's 35 fps whatever its own header says (24, or 12 for ExternalCables). */
+const PLAYBACK_FPS = 35
+
 /** Loads a lesson and drives its state machine at the lesson's frame rate. */
 export function useLesson(layer: number) {
   const [progress, setProgress] = useState(0)
@@ -29,12 +33,11 @@ export function useLesson(layer: number) {
   }, [layer])
 
   const animating = loaded ? isAnimating(loaded.state) : false
-  const fps = loaded?.engine.assets.fps ?? 24
   useEffect(() => {
     if (!animating) return
-    const t = setInterval(() => dispatchRaw({ type: 'tick' }), 1000 / fps)
+    const t = setInterval(() => dispatchRaw({ type: 'tick' }), 1000 / PLAYBACK_FPS)
     return () => clearInterval(t)
-  }, [animating, fps])
+  }, [animating])
 
   const dispatch = useCallback((a: Action) => dispatchRaw(a), [])
   return { progress, engine: loaded?.engine ?? null, state: loaded?.state ?? null, dispatch }

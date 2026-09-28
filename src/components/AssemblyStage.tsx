@@ -4,7 +4,7 @@ import {
   availableTasks, childRect, dropClip, dropHotspot, inflate, isOnStage, scene, stageClips,
   type Action, type Engine, type LessonState,
 } from '../lib/engine'
-import type { Rect } from '../lib/types'
+import type { FrameItem, Rect } from '../lib/types'
 
 export interface StageHandle {
   /** Converts a viewport point to stage pixels, or null if outside the stage. */
@@ -64,10 +64,40 @@ export const AssemblyStage = forwardRef<StageHandle, Props>(function AssemblySta
     )
   }
 
-  const drawClip = (clip: string): React.ReactNode[] =>
-    (assets.clips[clip]?.frames[state.frames[clip] ?? 0] ?? []).map((i, n) =>
-      typeof i === 'string' ? (state.hidden[i] ? null : drawClip(i)) : draw(i, `${clip}-${n}`),
+  // Flash mask: a box placed like the mask's svg draw uses that svg as its CSS mask;
+  // its content is transformed back so the masked layers keep stage coordinates.
+  const masked = (mask: number, content: React.ReactNode, key: string) => {
+    const d = assets.draws[mask]
+    if (!('v' in d)) return content
+    const [a, b, c, dd, tx, ty] = d.m
+    const TX = a * d.x0 + c * d.y0 + tx
+    const TY = b * d.x0 + dd * d.y0 + ty
+    const det = a * dd - b * c
+    const [ia, ib, ic, id] = [dd / det, -b / det, -c / det, a / det]
+    const url = `url("${drawUrl(assets.name, d)}")`
+    return (
+      <div key={key} className="layer" style={{
+        left: 0, top: 0, width: d.w, height: d.h, transformOrigin: '0 0', transform: `matrix(${a},${b},${c},${dd},${TX},${TY})`,
+        maskImage: url, maskSize: '100% 100%', maskRepeat: 'no-repeat',
+        WebkitMaskImage: url, WebkitMaskSize: '100% 100%', WebkitMaskRepeat: 'no-repeat',
+      }}>
+        <div className="layer" style={{ left: 0, top: 0, transformOrigin: '0 0',
+          transform: `matrix(${ia},${ib},${ic},${id},${-(ia * TX + ic * TY)},${-(ib * TX + id * TY)})` }}>
+          {content}
+        </div>
+      </div>
     )
+  }
+
+  const drawItems = (items: FrameItem[], key: string): React.ReactNode[] =>
+    items.map((i, n) =>
+      typeof i === 'number' ? draw(i, `${key}-${n}`)
+        : typeof i === 'string' ? (state.hidden[i] ? null : drawClip(i))
+        : masked(i.mask, drawItems(i.items, `${key}-${n}`), `${key}-m${n}`),
+    )
+
+  const drawClip = (clip: string): React.ReactNode[] =>
+    drawItems(assets.clips[clip]?.frames[state.frames[clip] ?? 0] ?? [], clip)
 
   const w = state.wait
   const running = state.running != null

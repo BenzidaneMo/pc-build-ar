@@ -203,41 +203,100 @@ class Swf:
 
     def shape_bitmap_fill(self, cid):
         """First bitmap fill of a shape as (bitmap_id, fill_matrix), or None."""
+        fills = self.shape_bitmap_fills(cid)
+        return fills[0] if fills else None
+
+    def shape_bitmap_fills(self, cid):
+        """Bitmap fills of a shape as [(bitmap_id, fill_matrix)] in paint order, bottom first.
+        Includes the style arrays that StateNewStyles records add mid-shape, whose paths paint
+        over the earlier ones (e.g. a close-up drawn over the previous view in one shape).
+        Stops quietly at anything this reader can't parse, keeping what it found."""
         code, tb = self.chars[cid]
+        rgba = code in (32, 83)
+        out = []
+
+        def fill_style(pos):
+            kind = tb[pos]
+            pos += 1
+            if kind == 0x00:
+                return pos + (4 if rgba else 3)
+            if kind in (0x10, 0x12, 0x13):
+                b = Bits(tb, pos)
+                read_matrix(b)
+                pos = b.pos
+                cnt = tb[pos] & 0x0F  # DefineShape4 keeps spread/interp bits in the high nibble
+                pos += 1 + cnt * (1 + (4 if rgba else 3))
+                return pos + 2 if kind == 0x13 else pos
+            if kind in (0x40, 0x41, 0x42, 0x43):
+                bid, = struct.unpack_from('<H', tb, pos)
+                b = Bits(tb, pos + 2)
+                m = read_matrix(b)
+                if bid != 0xFFFF:
+                    out.append((bid, m))
+                return b.pos
+            raise ValueError(f'fill style {kind:#x}')
+
+        def count(pos):
+            n = tb[pos]
+            if n == 0xFF:
+                return struct.unpack_from('<H', tb, pos + 1)[0], pos + 3
+            return n, pos + 1
+
+        def fill_array(pos):
+            n, pos = count(pos)
+            for _ in range(n):
+                pos = fill_style(pos)
+            return pos
+
+        def line_array(pos):
+            n, pos = count(pos)
+            for _ in range(n):
+                if code == 83:  # LINESTYLE2: width, 16 flag bits, [miter], fill or color
+                    b = Bits(tb, pos + 2)
+                    b.ub(2)
+                    join, has_fill = b.ub(2), b.ub(1)
+                    b.ub(11)
+                    pos = b.pos + (2 if join == 2 else 0)
+                    pos = fill_style(pos) if has_fill else pos + 4
+                else:
+                    pos += 2 + (4 if rgba else 3)
+            return pos
+
         b = Bits(tb, 2)
         read_rect(b)
         if code == 83:
             read_rect(b)
             b.pos += 1
-        pos = b.pos
-        n = tb[pos]
-        pos += 1
-        if n == 0xFF:
-            n, = struct.unpack_from('<H', tb, pos)
-            pos += 2
-        rgba = code in (32, 83)
-        for _ in range(n):
-            kind = tb[pos]
-            pos += 1
-            if kind == 0x00:
-                pos += 4 if rgba else 3
-            elif kind in (0x10, 0x12, 0x13):
-                b = Bits(tb, pos)
-                read_matrix(b)
-                pos = b.pos
-                if code == 83:
-                    pos += 0  # spread/interp bits live in the count byte below
-                cnt = tb[pos] & 0x0F
-                pos += 1 + cnt * (1 + (4 if rgba else 3))
-                if kind == 0x13:
-                    pos += 2
-            elif kind in (0x40, 0x41, 0x42, 0x43):
-                bid, = struct.unpack_from('<H', tb, pos)
-                if bid != 0xFFFF:
-                    return bid, read_matrix(Bits(tb, pos + 2))
-                b = Bits(tb, pos + 2)
-                read_matrix(b)
-                pos = b.pos
-            else:
-                return None
-        return None
+        try:
+            b = Bits(tb, line_array(fill_array(b.pos)))
+            nf, nl = b.ub(4), b.ub(4)
+            while True:
+                if b.ub(1):  # edge record
+                    straight, nb = b.ub(1), b.ub(4) + 2
+                    if not straight:
+                        for _ in range(4):
+                            b.sb(nb)
+                    elif b.ub(1):  # general line
+                        b.sb(nb)
+                        b.sb(nb)
+                    else:
+                        b.ub(1)
+                        b.sb(nb)
+                    continue
+                flags = b.ub(5)  # NewStyles, LineStyle, FillStyle1, FillStyle0, MoveTo
+                if not flags:
+                    break
+                if flags & 1:
+                    mb = b.ub(5)
+                    b.sb(mb)
+                    b.sb(mb)
+                for bit, nbits in ((2, nf), (4, nf), (8, nl)):
+                    if flags & bit:
+                        b.ub(nbits)
+                if flags & 16:
+                    b.align()
+                    b = Bits(tb, line_array(fill_array(b.pos)))
+                    nf, nl = b.ub(4), b.ub(4)
+        except (IndexError, ValueError, struct.error):
+            pass
+        return out

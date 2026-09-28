@@ -101,7 +101,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .message { margin: 0; padding: 10px 16px; border-radius: var(--radius); }
 .message.error { background: var(--error-soft); color: var(--error); }
 .message.success { background: var(--success-soft); color: var(--success); font-weight: 700; }
-.message.info { background: var(--accent-soft); }
+.message.info { background: var(--accent-soft); color: var(--accent); font-weight: 700; }
 
 .ghost, .primary { padding: 10px 16px; border-radius: var(--radius); }
 .ghost { background: var(--surface); border: 1px solid var(--line); }
@@ -217,8 +217,27 @@ button.hotspot { padding: 0; }
 .test-results td.bad { color: var(--error); font-weight: 700; }
 .test-verdict { font-weight: 700; }
 
+/* Welcome tour (components/Tour.tsx): the described element is lifted above the backdrop */
+.help-button { margin-inline-start: auto; align-self: center; padding: 6px 14px; border-radius: var(--radius); border: 1px solid rgb(255 255 255 / 0.6); background: transparent; color: #fff; }
+.help-button:hover:not(:disabled) { background: rgb(255 255 255 / 0.15); }
+.help-button:disabled { opacity: 0.5; cursor: default; }
+.tour-backdrop { position: fixed; inset: 0; z-index: 50; background: rgb(15 30 36 / 0.4); }
+.tour {
+  position: fixed; bottom: 24px; inset-inline-end: 24px; z-index: 52;
+  width: min(390px, calc(100vw - 32px)); padding: 18px 20px;
+  background: var(--surface); border-radius: var(--radius); box-shadow: 0 12px 40px rgb(0 0 0 / 0.25);
+}
+.tour.top { top: 88px; bottom: auto; } /* while the tray at the bottom is described */
+.tour h2 { margin: 0 0 8px; font-size: 1.1rem; color: var(--accent); }
+.tour p { margin: 0 0 14px; line-height: 1.8; }
+.tour .tour-count { margin: 0 0 4px; color: var(--muted); font-size: 0.8rem; }
+.tour-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.link { margin-inline-start: auto; padding: 8px; border: 0; background: none; color: var(--muted); text-decoration: underline; }
+.tour-focus { position: relative; z-index: 51; outline: 3px solid var(--hot); outline-offset: 4px; border-radius: var(--radius); }
+.lessons ol.tour-focus, .hints-toggle.tour-focus { background-color: var(--surface); }
+
 @media print {
-  .topbar, .lessons, .no-print { display: none !important; }
+  .topbar, .lessons, .no-print, .tour-backdrop { display: none !important; }
   .app { display: block; }
   body, .workspace { background: #fff; }
   .test-card { border: 0; max-width: none; }

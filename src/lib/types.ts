@@ -9,10 +9,14 @@ export type Draw =
 
 export interface Run<T> { from: number; to: number; rect?: Rect | null; draws?: number[]; clips?: string[]; value?: T }
 
+/** A draw index, a sub-clip key ("iSata.mcConnector") drawn at its own frame,
+ *  or a masked run: `items` are visible only inside the svg draw `mask` (Flash clip layers). */
+export type FrameItem = number | string | { mask: number; items: FrameItem[] }
+
 export interface ClipAssets {
   labels: Record<string, number>
-  /** Per frame: draw indices, or a sub-clip key ("iSata.mcConnector") drawn at its own frame. */
-  frames: (number | string)[][]
+  /** Per frame, back to front. */
+  frames: FrameItem[][]
   /** Named children (hotspots, buttons, rotate tools) by frame range. */
   named: Record<string, { from: number; to: number; rect: Rect | null }[]>
 }

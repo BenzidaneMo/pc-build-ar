@@ -64,10 +64,15 @@ Transcription helpers:
   - named children and unnamed buttons (`btn<charId>`, the click targets) as rects.
 
   Root placement matrices are baked in. `build_assets.py` dedupes layers into `draws` and crops bitmaps to WebP.
+  - **Masks** (`clip_depth`) become `{mask, items}` frame entries. The renderer uses the mask shape's SVG as a CSS `mask-image`. They hide the part of a drive or cable that has slid inside the case. Without them, parts are drawn in front of the case.
+  - One shape can stack several full-stage bitmap fills, for example a close-up painted over the previous view. Some come from `StateNewStyles` records mid-shape. `Swf.shape_bitmap_fills()` walks the shape records to find them all, bottom first.
+- **Playback runs at 35 fps** (`useLesson.ts`), RootMovie's rate. Flash plays movies loaded with `loadMovie` at the host's rate, whatever their own header says (24, or 12 for ExternalCables).
 - **`src/lib/engine.ts`** is a generic, pure interpreter. Each lesson is a set of **tasks**, started by dropping a tray part, by clicking a scene target (`start`), or automatically when prerequisites are done (no part, e.g. the "Install Motherboard" button). A task runs **steps**: `play`, `goto`, `scene`, `view` (close-up: draw only these clips), `show`/`hide`, `rotate`, `click`, `button`, `done`. Clips wait on their last frame, and sub-clips start at 0.
 - **`src/content/lessons.ts`** holds the lesson programs, transcribed from `tools/.cache/scripts/<Lesson>/`. It also has helpers for repeated patterns (`card`, `driveScrews`, `power`, `data`, `plug`). **Flash `_currentframe` is 1-based and `stop()` in `frame_N` means index N-1, while everything here is 0-based.** A click target's rect exists only on the frame where the clip stops, and a label usually marks the frame *after* that stop. A lesson shows in the menu only once it's in `lessons`.
 - **Modes (App.tsx):**
   - Learn is the default: lesson menu with the LEARN panel (`src/content/learn.ts`) and a "Show instructions" toggle. Off means the original expert mode: hotspots stay active but invisible, and instructions, order hints and error hints are hidden.
+    - With instructions on, drops carry `assist`. The 3rd wrong-place drop in a row then installs the part, as the original's `stepCounter` did.
+  - A welcome tour (`components/Tour.tsx`) opens on the first visit and again from the Help button. The smoke script skips it.
   - TEST chains lessons 1–7 with instructions forced off and the tray shuffled. It records `state.mistakes` (wrong place, order or orientation) and time per stage, then shows a printable result sheet (`components/TestPanels.tsx`).
   - Adding hooks to `App` resets its state on hot reload, which breaks a smoke run in progress.
 - **Components:**

@@ -27,14 +27,17 @@ export interface LessonState {
   installed: string[]
   spin: 1 | -1 | null
   /** `hint` is extra help shown only when "Show instructions" is on. */
-  message: { kind: 'error' | 'success'; text: string; hint?: string } | null
+  message: { kind: 'error' | 'success' | 'info'; text: string; hint?: string } | null
   complete: boolean
   /** Wrong-place, wrong-order and wrong-orientation attempts (scored in TEST mode). */
   mistakes: number
+  /** Drops outside the right spot since the last good drop (3 with assist -> the part installs itself). */
+  misses: number
 }
 
 export type Action =
-  | { type: 'drop'; part: string; x: number; y: number }
+  /** `assist`: learning mode with instructions, where the 3rd miss in a row autoplays the step. */
+  | { type: 'drop'; part: string; x: number; y: number; assist?: boolean }
   | { type: 'tick' }
   | { type: 'spin'; dir: 1 | -1 | 0 }
   | { type: 'install' }
@@ -50,6 +53,8 @@ export interface Engine {
 }
 
 const INTRO = '@intro'
+/** As in the original (Thumbs.as stepCounter): the 3rd wrong drop in a row installs the part. */
+export const AUTOPLAY_AFTER = 3
 const DROP_HOTSPOTS = ['mcHotSpot', 'highlight']
 
 function clipAssets(e: Engine, clip: string): ClipAssets | undefined {
@@ -127,7 +132,7 @@ export function initialState(e: Engine): LessonState {
   for (const [k, c] of Object.entries(e.assets.clips)) frames[k] = k.includes('.') ? 0 : c.frames.length - 1
   const s: LessonState = {
     frames, hidden: {}, view: null, anims: {}, running: { task: INTRO, step: 0 }, wait: null,
-    done: [], installed: [], spin: null, message: null, complete: false, mistakes: 0,
+    done: [], installed: [], spin: null, message: null, complete: false, mistakes: 0, misses: 0,
   }
   return advance(e, s)
 }
@@ -224,9 +229,15 @@ export function reducer(e: Engine, s: LessonState, a: Action): LessonState {
         return { ...s, mistakes: s.mistakes + 1, message: { kind: 'error', text: 'ليس بعد: هناك خطوة يجب إنجازها أولاً.', hint: `ركّب ${what} أولاً.` } }
       }
       if (!inside(dropHotspot(e, s, t), a.x, a.y)) {
-        return { ...s, mistakes: s.mistakes + 1, message: { kind: 'error', text: `ليس هذا مكان «${e.names[a.part]}».`, hint: 'ضعه في المنطقة المضيئة.' } }
+        const misses = s.misses + 1
+        if (a.assist && misses >= AUTOPLAY_AFTER) {
+          const next = advance(e, { ...s, mistakes: s.mistakes + 1, misses: 0, message: null, running: { task: t.id, step: 0 } })
+          return { ...next, message: next.message ?? { kind: 'info', text: `تشغيل تلقائي: شاهد أين وكيف تُركَّب «${e.names[a.part]}».` } }
+        }
+        const last = a.assist && misses === AUTOPLAY_AFTER - 1 ? ' إذا أخطأت مرة أخرى ستُركَّب القطعة تلقائيًا.' : ''
+        return { ...s, mistakes: s.mistakes + 1, misses, message: { kind: 'error', text: `ليس هذا مكان «${e.names[a.part]}».`, hint: `ضعه في المنطقة المضيئة.${last}` } }
       }
-      return advance(e, { ...s, message: null, running: { task: t.id, step: 0 } })
+      return advance(e, { ...s, message: null, misses: 0, running: { task: t.id, step: 0 } })
     }
 
     case 'start': {

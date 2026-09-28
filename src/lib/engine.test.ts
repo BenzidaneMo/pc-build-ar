@@ -95,6 +95,41 @@ describe.each(Object.keys(lessons).map(Number))('lesson %i', (layer) => {
   })
 })
 
+describe('autoplay after repeated misses', () => {
+  const e = engineFor(1)
+  const miss = (s: LessonState, part: string, assist: boolean) => reducer(e, s, { type: 'drop', part, x: -10, y: -10, assist })
+
+  it('installs the part on the 3rd miss in a row when assisted, still counting mistakes', () => {
+    let s = ready(e)
+    const t = availableTasks(e, s).find((x) => x.part)!
+    s = miss(miss(s, t.part!, true), t.part!, true)
+    expect(s.running).toBeNull()
+    expect(s.message?.hint).toContain('تلقائيًا')
+    s = miss(s, t.part!, true)
+    expect(s.running?.task).toBe(t.id)
+    expect(s.message?.kind).toBe('info')
+    expect(s.mistakes).toBe(3)
+    expect(s.misses).toBe(0)
+  })
+
+  it('never autoplays without assist (instructions off, TEST)', () => {
+    let s = ready(e)
+    const t = availableTasks(e, s).find((x) => x.part)!
+    for (let i = 0; i < 5; i++) s = miss(s, t.part!, false)
+    expect(s.running).toBeNull()
+    expect(s.mistakes).toBe(5)
+  })
+
+  it('a good drop resets the count', () => {
+    let s = ready(e)
+    const t = availableTasks(e, s).find((x) => x.part)!
+    s = miss(miss(s, t.part!, true), t.part!, true)
+    s = reducer(e, s, { type: 'drop', part: t.part!, ...center(dropHotspot(e, s, t)!), assist: true })
+    expect(s.running?.task).toBe(t.id)
+    expect(s.misses).toBe(0)
+  })
+})
+
 describe('rotation', () => {
   it('refuses a wrong orientation', () => {
     const e = engineFor(1)

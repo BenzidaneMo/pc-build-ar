@@ -102,6 +102,16 @@ async function playLesson() {
 }
 
 if (!process.env.CDP) await page.goto(url)
+// a fresh profile opens the welcome tour first
+await page.getByRole('button', { name: 'تخطّي الجولة' }).click({ timeout: 3000 }).catch(() => {})
+// layout jitter check: every stage size seen during the run (should stay one size)
+await page.evaluate(() => {
+  window.__stageSizes = new Set()
+  setInterval(() => {
+    const b = document.querySelector('.stage-box')?.getBoundingClientRect()
+    if (b) window.__stageSizes.add(`${b.width.toFixed(1)}x${b.height.toFixed(1)}`)
+  }, 50)
+})
 if (testMode) {
   await page.locator('.test-button').click()
   await page.locator('.test-name input').fill('تلميذ تجريبي')
@@ -132,5 +142,6 @@ if (testMode) {
   await shot('end')
   console.log(`lesson ${lesson}:`, r.done ? 'COMPLETED' : 'NOT completed', '| last:', r.last)
 }
+console.log('stage sizes seen:', await page.evaluate(() => [...window.__stageSizes]))
 console.log('errors:', errors.length ? errors : 'none')
 await browser.close()

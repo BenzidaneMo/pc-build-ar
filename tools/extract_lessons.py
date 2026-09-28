@@ -120,9 +120,25 @@ class Lesson:
         Named visual sprites become sub-clips ({'sub': '<owner>.<name>'}) with their own frame state."""
         s = self.swf
         bitmaps, clips = [], []
+        out = bitmaps  # where drawn layers go: the list, or the open mask group's layers
+        mask_until = None
         for depth in sorted(dl):
             p = dl[depth]
-            if 'char' not in p or p.get('clip_depth'):
+            if mask_until is not None and depth > mask_until:
+                out, mask_until = bitmaps, None
+            if 'char' not in p:
+                continue
+            if p.get('clip_depth'):
+                # a mask: only the parts of depths up to clip_depth inside its shape are visible
+                # (e.g. the half of a drive that has slid inside the case)
+                if p['char'] in s.sprites or s.chars.get(p['char'], (None,))[0] not in SHAPES:
+                    self.unknown['mask-non-shape'] = self.unknown.get('mask-non-shape', 0) + 1
+                    continue
+                pm = mul(m, p.get('matrix', IDENTITY))
+                group = {'mask': {'vector': p['char'], 'm': [round(v, 5) for v in pm[:4]] + [round(pm[4] / 20, 2), round(pm[5] / 20, 2)]},
+                         'layers': []}
+                bitmaps.append(group)
+                out, mask_until = group['layers'], p['clip_depth']
                 continue
             cx = p.get('cxform')
             # fully transparent (alpha multiplier 0): still clickable, never drawn
@@ -139,20 +155,21 @@ class Lesson:
                     if key not in self.subclips:
                         self.subclips[key] = None  # guard against recursion
                         self.subclips[key] = self.clip(cid, pm, key)
-                    bitmaps.append({'sub': key})
+                    out.append({'sub': key})
                 continue
             if hidden:
                 continue
             if code in SHAPES:
-                fill = s.shape_bitmap_fill(cid)
-                if fill:
-                    bid, fm = fill
-                    # bitmap pixel -> stage pixel (fill matrix is in twips per pixel)
-                    t = mul(pm, fm)
-                    bitmaps.append({'bmp': bid, 'm': [round(v / 20, 5) for v in t[:4]] + [round(t[4] / 20, 2), round(t[5] / 20, 2)]})
+                fills = s.shape_bitmap_fills(cid)
+                if fills:
+                    # several fills = stacked images in one shape (e.g. a close-up over the scene), bottom first
+                    for bid, fm in fills:
+                        # bitmap pixel -> stage pixel (fill matrix is in twips per pixel)
+                        t = mul(pm, fm)
+                        out.append({'bmp': bid, 'm': [round(v / 20, 5) for v in t[:4]] + [round(t[4] / 20, 2), round(t[5] / 20, 2)]})
                 else:
                     self.unknown['vector-shape'] = self.unknown.get('vector-shape', 0) + 1
-                    bitmaps.append({'vector': cid, 'm': [round(v, 5) for v in pm[:4]] + [round(pm[4] / 20, 2), round(pm[5] / 20, 2)]})
+                    out.append({'vector': cid, 'm': [round(v, 5) for v in pm[:4]] + [round(pm[4] / 20, 2), round(pm[5] / 20, 2)]})
             elif code in (7, 34):
                 # unnamed buttons are the click targets (CPU lever, latches...)
                 r = self.bounds(cid, pm)
@@ -160,13 +177,13 @@ class Lesson:
                               'rect': [round(v / 20, 1) for v in r] if r else None})
             elif cid in s.sprites and len(s.sprites[cid].frames) == 1:
                 b2, c2 = self.layers(next(s.sprites[cid].display_lists()), pm, owner)
-                bitmaps += b2
+                out += b2
                 clips += c2
             elif cid in s.sprites:
                 # unnamed nested animation: approximated by its first frame
                 self.unknown['anon-anim-sprite'] = self.unknown.get('anon-anim-sprite', 0) + 1
                 b2, c2 = self.layers(next(s.sprites[cid].display_lists()), pm, owner)
-                bitmaps += b2
+                out += b2
                 clips += c2
             else:
                 kind = TAG_NAMES.get(code, str(code))

@@ -7,8 +7,9 @@ Output per lesson:
     draws   unique drawable layers: {b, x, y, w, h} (1:1 bitmap), {b, m, w, h}
             (transformed bitmap; m maps cropped-bitmap px -> stage px) or
             {v, m, x0, y0, w, h} (svg; m maps shape space -> stage px)
-    clips   every animated sprite: labels, draw indices per frame, named
-            children (hotspots, buttons...) as frame ranges + rects
+    clips   every animated sprite: labels, draw indices per frame (or a sub-clip
+            key, or {mask, items}: items shown only inside the svg draw `mask`),
+            named children (hotspots, buttons...) as frame ranges + rects
     scenes  root timeline runs: static draws + which clips are on stage
 
 Usage: python build_assets.py [Lesson ...]     (default: all lessons)
@@ -54,9 +55,16 @@ def encode(args):
 
 def bitmap_ids(src):
     ids = set()
-    frames = [f for p in src['parts'].values() for f in p['frames']] + src['scenes']
-    for f in frames:
-        ids.update(l['bmp'] for l in f['layers'] if 'bmp' in l)
+
+    def walk(layers):
+        for l in layers:
+            if 'bmp' in l:
+                ids.add(l['bmp'])
+            elif 'mask' in l:
+                walk(l['layers'])
+
+    for f in [f for p in src['parts'].values() for f in p['frames']] + src['scenes']:
+        walk(f['layers'])
     return sorted(ids)
 
 
@@ -140,7 +148,20 @@ def build(lesson):
         return None
 
     def ids(layers):
-        return [i for i in (use(l) for l in layers) if i is not None]
+        out = []
+        for l in layers:
+            if 'mask' in l:
+                # masked run of layers: {mask: svg draw index, items: [...]}
+                items, mask = ids(l['layers']), use(l['mask'])
+                if mask is None:
+                    out += items
+                elif items:
+                    out.append({'mask': mask, 'items': items})
+            else:
+                i = use(l)
+                if i is not None:
+                    out.append(i)
+        return out
 
     clips = {}
     for key, p in src['parts'].items():

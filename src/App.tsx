@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { AssemblyStage, type StageHandle } from './components/AssemblyStage'
 import { LearnPanel } from './components/LearnPanel'
 import { PartsTray } from './components/PartsTray'
 import { TestIntro, TestResults, type LessonResult } from './components/TestPanels'
+import { Tour } from './components/Tour'
 import { lessons, lessonTitles } from './content/lessons'
 import { asset, parts } from './lib/content'
 import { currentInstruction } from './lib/engine'
@@ -29,6 +30,16 @@ function loadHints(): boolean {
   }
 }
 
+const TOUR_KEY = 'pc-build-ar:tour-seen'
+
+function tourSeen(): boolean {
+  try {
+    return localStorage.getItem(TOUR_KEY) === '1'
+  } catch {
+    return false
+  }
+}
+
 const LESSON_COUNT = lessonTitles.length
 
 type Test =
@@ -48,6 +59,16 @@ export default function App() {
   const [hints, setHints] = useState(loadHints)
   const [test, setTest] = useState<Test | null>(null)
   const testing = test?.phase === 'running'
+  // the welcome tour opens on the first visit and again from the Help button
+  const [tour, setTour] = useState(() => !tourSeen())
+  const closeTour = useCallback(() => {
+    setTour(false)
+    try {
+      localStorage.setItem(TOUR_KEY, '1')
+    } catch {
+      // storage unavailable: the tour shows again next time
+    }
+  }, [])
   // A test always runs without instructions (the original TEST = expert mode across all lessons).
   const showHints = hints && !testing
 
@@ -104,7 +125,8 @@ export default function App() {
   }
 
   const place = (part: string, x: number, y: number) => {
-    dispatch({ type: 'drop', part, x, y })
+    // with instructions shown, the 3rd wrong drop in a row plays the step (as the original did)
+    dispatch({ type: 'drop', part, x, y, assist: showHints })
     setSelected(null)
   }
 
@@ -144,6 +166,7 @@ export default function App() {
       <header className="topbar">
         <h1>محاكي تجميع الحاسوب</h1>
         <span className="subtitle" dir="ltr">Assemblage d'un ordinateur</span>
+        <button className="help-button" onClick={() => setTour(true)} disabled={testing}>مساعدة</button>
       </header>
 
       <nav className="lessons" aria-label="الدروس">
@@ -222,6 +245,8 @@ export default function App() {
           </>
         )}
       </main>
+
+      {tour && !testing && <Tour onClose={closeTour} />}
 
       {drag?.moved && (
         <img className="drag-ghost" src={asset(`media/images/${parts[drag.part].image}`)} alt=""
