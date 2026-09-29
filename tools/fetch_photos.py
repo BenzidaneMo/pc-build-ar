@@ -26,6 +26,9 @@ from PIL import Image
 ROOT = os.path.join(os.path.dirname(__file__), '..')
 OUT = os.path.join(ROOT, 'public', 'media', 'explore', 'modern')
 CREDITS = os.path.join(ROOT, 'src', 'content', 'photoCredits.json')
+# Manufacturer product photos chosen by the project owner (not from Commons): copied from a local
+# file (`from`, relative to the repo), cropped (`crop`) and credited to the maker.
+PRODUCTS = os.path.join(os.path.dirname(__file__), 'product_photos.json')
 LIST = os.path.join(os.path.dirname(__file__), 'photos.json')
 PREVIEWS = os.path.join(os.path.dirname(__file__), '.cache', 'photo-candidates')
 API = 'https://commons.wikimedia.org/w/api.php'
@@ -121,10 +124,33 @@ def fetch():
                              'licenseUrl': m['licenseUrl'], 'source': m['source'], 'w': im.width, 'h': im.height}
             print(f'{name}  {im.width}x{im.height}  {m["license"]}  {m["author"][:50]}')
             time.sleep(0.5)
+    credits.update(products())
     with open(CREDITS, 'w', encoding='utf-8', newline='\n') as fh:
         json.dump(credits, fh, ensure_ascii=False, indent=1)
         fh.write('\n')
     write_credits_md(credits)
+
+
+def products():
+    """The manufacturer photos: converted from their local file when it's there, else kept as they are."""
+    out = {}
+    for stem, p in json.load(open(PRODUCTS, encoding='utf-8')).items():
+        name = f'{stem}.webp'
+        src = os.path.join(ROOT, p['from'])
+        if os.path.exists(src):
+            im = Image.open(src).convert('RGBA')
+            if p.get('crop'):
+                im = im.crop(p['crop'])
+            flat = Image.new('RGB', im.size, 'white')
+            flat.paste(im, mask=im.getchannel('A'))
+            if flat.width > WIDTH:
+                flat = flat.resize((WIDTH, round(flat.height * WIDTH / flat.width)), Image.LANCZOS)
+            flat.save(os.path.join(OUT, name), 'WEBP', quality=85, method=6)
+        w, h = Image.open(os.path.join(OUT, name)).size
+        out[name] = {'title': p['title'], 'author': p['author'], 'license': p['license'], 'licenseUrl': '',
+                     'source': p['source'], 'w': w, 'h': h}
+        print(f'{name}  {w}x{h}  {p["license"]}  {p["author"]}')
+    return out
 
 
 def write_credits_md(credits):
@@ -145,9 +171,18 @@ def write_credits_md(credits):
         '|---|---|---|---|',
     ]
     for name, c in credits.items():
+        if c['license'] == 'Manufacturer photo':
+            continue
         author = c['author'].replace('|', '/')
         lic = f"[{c['license']}]({c['licenseUrl']})" if c['licenseUrl'] else c['license']
         lines.append(f"| `{name}` | {author} | {lic} | [{c['title']}]({c['source']}) |")
+    made = [(n, c) for n, c in credits.items() if c['license'] == 'Manufacturer photo']
+    if made:
+        lines += ['', '## Manufacturer photos', '',
+                  'Product photos from the makers\' pages, used for teaching in a non-commercial app; they remain',
+                  'the property of their makers (`tools/product_photos.json`).', '',
+                  '| File | Maker | Source |', '|---|---|---|']
+        lines += [f"| `{n}` | {c['author']} | [{c['title']}]({c['source']}) |" for n, c in made]
     with open(os.path.join(ROOT, 'CREDITS.md'), 'w', encoding='utf-8', newline='\n') as fh:
         fh.write('\n'.join(lines) + '\n')
 

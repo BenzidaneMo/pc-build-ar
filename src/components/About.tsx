@@ -73,14 +73,16 @@ export function About({ onClose }: { onClose: () => void }) {
         </p>
         <div className="about-credits">
           صور القطع الحديثة في «اكتشف القطع» (حاسوب اليوم) من <span dir="ltr">Wikimedia Commons</span> بتراخيص حرّة
-          (CC BY، CC BY-SA، CC0)، شكرًا لأصحابها:
+          (CC BY، CC BY-SA، CC0)، شكرًا لأصحابها، وبعضها من صفحات الشركات المصنّعة:
           <details className="about-photos">
             <summary>أصحاب الصور وتراخيصها</summary>
             <ul dir="ltr">
               {Object.entries(photoCredits).map(([file, c]) => (
                 <li key={file}>
                   {exploreEntries.find((e) => file.startsWith(`${e.id}-`))?.name.en}: {c.author} · {c.license} ·{' '}
-                  <a href={c.source} target="_blank" rel="noopener noreferrer">Wikimedia Commons</a>
+                  <a href={c.source} target="_blank" rel="noopener noreferrer">
+                    {c.source.startsWith('https://commons.') ? 'Wikimedia Commons' : 'source'}
+                  </a>
                 </li>
               ))}
             </ul>

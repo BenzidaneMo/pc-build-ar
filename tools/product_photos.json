@@ -1,0 +1,15 @@
+{
+ "gpu-2": {
+  "title": "ASUS TUF Gaming GeForce RTX 5070 Ti OC",
+  "author": "ASUS",
+  "license": "Manufacturer photo",
+  "source": "https://www.asus.com/motherboards-components/graphics-cards/tuf-gaming/tuf-rtx5070ti-o16g-gaming/",
+  "from": "../PC-components-mock-catalog-dz/images/products/asus-tuf-gaming-geforce-rtx-5070-ti-16gb-gddr7-oc.webp",
+  "crop": [
+   30,
+   320,
+   974,
+   745
+  ]
+ }
+}

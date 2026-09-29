@@ -170,6 +170,11 @@ const photoCallouts: Record<string, ExploreView['callouts']> = {
     { en: 'Battery', rect: [64, 54, 6, 8] },
     { en: 'I/O Ports', rect: [8, 64, 47, 25] },
   ],
+  'gpu-2': [
+    { en: 'PC Mounting Bracket', rect: [0, 14, 6, 86] },
+    { en: 'Cooling Fan', rect: [37, 5, 30, 71] },
+    { en: 'PCIe x 16 Connector', rect: [17, 82, 27, 10] },
+  ],
   'gpu-1': [
     { en: 'PC Mounting Bracket', rect: [0, 14, 10, 32] },
     { en: 'Cooling Fan', rect: [50, 30, 38, 42] },

@@ -134,15 +134,6 @@
   "w": 1200,
   "h": 800
  },
- "gpu-2.webp": {
-  "title": "MSI GeForce RTX 3070 VENTUS 3X OC.jpg",
-  "author": "TheStriker",
-  "license": "CC BY 4.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
-  "source": "https://commons.wikimedia.org/wiki/File:MSI_GeForce_RTX_3070_VENTUS_3X_OC.jpg",
-  "w": 1200,
-  "h": 534
- },
  "pcie12v-1.webp": {
   "title": "Aftermarket 12VHPWR cable.jpg",
   "author": "Benlisquare",
@@ -223,5 +214,14 @@
   "source": "https://commons.wikimedia.org/wiki/File:Kingston_Technology_DataTraveler_G4_USB_flash_drive_USB_3.0_32_Gb.jpg",
   "w": 1200,
   "h": 605
+ },
+ "gpu-2.webp": {
+  "title": "ASUS TUF Gaming GeForce RTX 5070 Ti OC",
+  "author": "ASUS",
+  "license": "Manufacturer photo",
+  "licenseUrl": "",
+  "source": "https://www.asus.com/motherboards-components/graphics-cards/tuf-gaming/tuf-rtx5070ti-o16g-gaming/",
+  "w": 944,
+  "h": 425
  }
 }

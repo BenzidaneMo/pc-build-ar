@@ -127,7 +127,7 @@ function Detail({ entry, terms, onPick, onCatalog }: {
               ? { aspectRatio: `${view.w} / ${view.h}`, width: `min(100%, calc(var(--photo-h) * ${view.w / view.h}))` }
               : { height: '100%' }}>
               <img src={asset(src)} alt={view ? `${entry.name.ar}: ${caption(v)}` : entry.name.ar}
-                title={credit ? `${credit.author} · ${credit.license} · Wikimedia Commons` : undefined} />
+                title={credit ? `${credit.author} · ${credit.license}` : undefined} />
               {view?.callouts.map((c, n) => (
                 <span key={n} className={`callout${hot === n ? ' hot' : ''}`}
                   style={{ left: `${c.rect[0]}%`, top: `${c.rect[1]}%`, width: `${c.rect[2]}%`, height: `${c.rect[3]}%` }}

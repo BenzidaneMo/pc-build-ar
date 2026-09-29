@@ -6,11 +6,14 @@ const ALLOWED = /^(CC0|Public domain|CC BY(-SA)? \d\.\d( \w+)?)$/i
 const file = (path: string) => new URL(`../../public/${path}`, import.meta.url)
 
 describe('«اكتشف القطع»', () => {
-  it('credits every Commons photo, under a free licence', () => {
+  it('credits every photo: Commons ones under a free licence, the others to their maker', () => {
     for (const [name, c] of Object.entries(photoCredits)) {
-      expect(c.license, name).toMatch(ALLOWED)
+      if (c.license === 'Manufacturer photo') expect(c.source, name).toMatch(/^https:\/\//)
+      else {
+        expect(c.license, name).toMatch(ALLOWED)
+        expect(c.source, name).toMatch(/^https:\/\/commons\.wikimedia\.org\//)
+      }
       expect(c.author, name).not.toBe('')
-      expect(c.source, name).toMatch(/^https:\/\/commons\.wikimedia\.org\//)
       expect(existsSync(file(`media/explore/modern/${name}`)), name).toBe(true)
     }
   })
