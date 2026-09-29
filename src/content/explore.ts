@@ -1,16 +1,32 @@
 // «اكتشف القطع»: what each component is, what it does, and what it looks like today.
-// Photos and callouts come from the original EXPLORE views (tools/extract_explore.py ->
-// explore.json + public/media/explore/). Texts written for students; to be reviewed by a teacher.
+// The 2007 parts (the lessons' parts): photos and callouts from the original EXPLORE views
+// (tools/extract_explore.py -> explore.json + public/media/explore/). Today's parts: Wikimedia
+// Commons photos (tools/fetch_photos.py -> photoCredits.json + public/media/explore/modern/),
+// callouts placed here. Texts written for students; to be reviewed by a teacher.
 import views from './explore.json'
+import credits from './photoCredits.json'
 
 export interface ExploreFeature { ar: string; fr: string }
 
+/** The two tabs of the catalog: the 2007 parts of the lessons, and today's parts. */
+export type Era = 'classic' | 'modern'
+export const eras: { id: Era; tab: string }[] = [{ id: 'classic', tab: 'حاسوب 2007' }, { id: 'modern', tab: 'حاسوب اليوم' }]
+/** Today's parts are grouped by topic (their `lesson` is the topic's number). */
+export const todayTopics = [
+  'المعالج ومقبسه', 'الذاكرة والتخزين M.2', 'التبريد', 'اللوحة الأم والصندوق', 'التغذية وكوابلها',
+  'الرسوميات والتخزين SATA', 'الواجهة الأمامية والمراوح', 'المنافذ والأجهزة', 'الإعدادات',
+]
+
 export interface ExploreEntry {
   id: string
+  /** Default: a 2007 part. */
+  era?: Era
   lesson: number
   name: { ar: string; fr: string; en: string }
-  /** Card image in media/thumbs/ (also the photo when there are no explore views). */
-  thumb: string
+  /** Classic: card image in media/thumbs/ (also the photo when there are no explore views).
+   *  Today's: the first photo, unless `art` (a drawing in media/explore/modern/) stands in for photos. */
+  thumb?: string
+  art?: string
   /** Key in explore.json (the legacy explore<Part>.swf). */
   swf?: string
   /** Without explore views: the part's image in media/images/. */
@@ -19,10 +35,18 @@ export interface ExploreEntry {
   captions?: string[]
   what: string
   role: string
-  /** How it looks in today's computers. */
+  /** How it looks in today's computers (classic parts). */
   today?: string
+  /** What it replaced (today's parts). */
+  before?: string
   fact?: string
+  /** The same part in the other tab (then and now). */
+  pair?: string
 }
+
+/** Credit of a Commons photo (tools/fetch_photos.py). */
+export interface PhotoCredit { title: string; author: string; license: string; licenseUrl: string; source: string; w: number; h: number }
+export const photoCredits = credits as Record<string, PhotoCredit>
 
 export interface ExploreView {
   view: string
@@ -107,6 +131,86 @@ export const features: Record<string, ExploreFeature> = {
   VRAM: { ar: 'ذاكرة الرسوميات VRAM', fr: 'Mémoire vidéo (VRAM)' },
   'Video Port': { ar: 'منفذ الشاشة DVI', fr: 'Port vidéo (DVI)' },
   'Wireless Antenna Connector': { ar: 'موصّل الهوائي', fr: "Connecteur d'antenne" },
+  // today's parts
+  'VRM Heatsink': { ar: 'مشتت دارة تغذية المعالج (VRM)', fr: 'Dissipateur du VRM' },
+  VRM: { ar: 'دارة تغذية المعالج (VRM)', fr: "Étage d'alimentation (VRM)" },
+  Capacitors: { ar: 'مكثّفات صغيرة', fr: 'Condensateurs' },
+  'Socket Pins': { ar: 'دبابيس المقبس الدقيقة', fr: 'Broches du socket' },
+  'Load Plate': { ar: 'الغطاء المعدني', fr: 'Plaque de maintien' },
+  'Retention Lever': { ar: 'ذراع التثبيت', fr: 'Levier de verrouillage' },
+  'Socket Screws': { ar: 'براغي تثبيت إطار المقبس', fr: 'Vis du cadre' },
+  'Memory Chips': { ar: 'رقاقات الذاكرة', fr: 'Puces mémoire' },
+  PMIC: { ar: 'منظّم الجهد PMIC (جديد في DDR5)', fr: 'Régulateur PMIC' },
+  'M.2 Connector (M key)': { ar: 'أطراف التوصيل M.2 (مفتاح M)', fr: 'Connecteur M.2 (clé M)' },
+  'Mounting Notch': { ar: 'نصف الدائرة لبرغي التثبيت', fr: 'Encoche de fixation' },
+  'Modular Sockets': { ar: 'مقابس الكوابل المعيارية', fr: 'Prises modulaires' },
+  'Modular Cables': { ar: 'الكوابل المعيارية', fr: 'Câbles modulaires' },
+  'Cooling Fan': { ar: 'مروحة التبريد', fr: 'Ventilateur' },
+  'Power LED Pins': { ar: 'دبوسا ضوء التشغيل (POW LED)', fr: "LED d'alimentation" },
+  'Power Switch Pins': { ar: 'دبوسا زر التشغيل (ON/OFF)', fr: 'Bouton marche' },
+  'HDD LED Pins': { ar: 'دبوسا ضوء القرص (HLED)', fr: 'LED disque' },
+  'Reset Switch Pins': { ar: 'دبوسا زر إعادة التشغيل (RST)', fr: 'Bouton reset' },
+  'Speaker Pins': { ar: 'دبابيس مكبّر الصوت الصغير (SPK)', fr: 'Haut-parleur (SPK)' },
+}
+
+/** Callouts on the Commons photos (% of the photo), by photo file name. */
+const photoCallouts: Record<string, ExploreView['callouts']> = {
+  'modernBoard-1': [
+    { en: 'CPU Socket', rect: [23, 30, 25, 22] },
+    { en: 'RAM Slots', rect: [15, 13, 40, 14] },
+    { en: 'ATX Power Connector', rect: [33, 7, 13, 7] },
+    { en: 'Aux Power Connector', rect: [12, 61, 5, 10] },
+    { en: 'VRM Heatsink', rect: [11, 33, 9, 28] },
+    { en: 'PCIe x16 Slot', rect: [59, 37, 4, 39] },
+    { en: 'PCIe x1 Slots', rect: [53, 63, 4, 13] },
+    { en: 'SATA Connectors', rect: [60, 6, 13, 7] },
+    { en: 'Battery', rect: [64, 54, 6, 8] },
+    { en: 'I/O Ports', rect: [8, 64, 47, 25] },
+  ],
+  'gpu-1': [
+    { en: 'PC Mounting Bracket', rect: [0, 14, 10, 32] },
+    { en: 'Cooling Fan', rect: [50, 30, 38, 42] },
+    { en: 'Graphic Processor & Heat Sink', rect: [42, 60, 24, 20] },
+  ],
+  'lgaCpu-2': [
+    { en: 'CPU Contacts', rect: [4, 20, 24, 55] },
+    { en: 'Latch Notches', rect: [17, 0, 8, 5] },
+    { en: 'Capacitors', rect: [31, 20, 38, 56] },
+    { en: 'Connection 1 Indicator', rect: [92, 93, 7, 6] },
+  ],
+  'cpuSocket-1': [
+    { en: 'Socket Pins', rect: [31, 25, 38, 43] },
+    { en: 'Load Plate', rect: [26, 70, 50, 12] },
+    { en: 'Retention Lever', rect: [75, 25, 8, 62] },
+    { en: 'Socket Screws', rect: [27, 13, 8, 8] },
+    { en: 'VRM', rect: [1, 18, 15, 48] },
+  ],
+  'ddr5-1': [
+    { en: 'DIMM Connector', rect: [5, 37, 90, 6] },
+    { en: 'Single Key Notch', rect: [47, 36, 4, 8] },
+    { en: 'Memory Chips', rect: [4, 74, 30, 20] },
+    { en: 'PMIC', rect: [44, 59, 10, 16] },
+  ],
+  'm2Ssd-1': [
+    { en: 'M.2 Connector (M key)', rect: [90, 16, 6, 44] },
+    { en: 'Single Key Notch', rect: [89, 62, 7, 9] },
+    { en: 'Mounting Notch', rect: [4, 38, 7, 17] },
+  ],
+  'modularPsu-1': [
+    { en: 'Modular Sockets', rect: [20, 40, 68, 18] },
+    { en: 'Modular Cables', rect: [0, 58, 55, 38] },
+  ],
+  'sataSsd-1': [
+    { en: 'SATA Data Connector', rect: [11, 57, 14, 14] },
+    { en: 'SATA Power Connector', rect: [23, 66, 20, 18] },
+  ],
+  'frontPanel-1': [
+    { en: 'Power LED Pins', rect: [43, 42, 20, 18] },
+    { en: 'Power Switch Pins', rect: [65, 42, 15, 17] },
+    { en: 'HDD LED Pins', rect: [55, 60, 12, 14] },
+    { en: 'Reset Switch Pins', rect: [67, 60, 13, 14] },
+    { en: 'Speaker Pins', rect: [31, 60, 24, 14] },
+  ],
 }
 
 export const exploreEntries: ExploreEntry[] = [
@@ -313,6 +417,192 @@ export const exploreEntries: ExploreEntry[] = [
     fact: 'القابس في الصورة أمريكي. في الجزائر القابس بطرفين دائريين.',
   },
 ]
+
+// today's parts, by topic (todayTopics)
+exploreEntries.push(
+  {
+    id: 'lgaCpu', era: 'modern', lesson: 1, pair: 'cpu', captions: ['من الأعلى', 'من الأسفل: نقاط التلامس'],
+    name: { ar: 'المعالج الحديث (LGA)', fr: 'Processeur LGA', en: 'LGA processor' },
+    what: 'المعالج هو «دماغ» الحاسوب: ينفّذ تعليمات البرامج ويحسب. المعالجات الحديثة فيها عدّة أنوية (cores) تعمل في الوقت نفسه.',
+    role: 'في الصورة الثانية وجهه السفلي: مئات نقاط التلامس المسطّحة الذهبية. لا دبابيس فيه: الدبابيس في المقبس على اللوحة الأم (LGA).',
+    before: 'معالجات 2007 كانت تحمل دبابيس تحتها تنثني بسهولة، ونواة أو نواتين فقط.',
+    fact: 'في معالج واحد اليوم أكثر من 10 مليارات ترانزستور.',
+  },
+  {
+    id: 'cpuSocket', era: 'modern', lesson: 1, pair: 'motherboard', captions: ['Intel ‏LGA 1700', 'AMD ‏AM5 (مفتوح)'],
+    name: { ar: 'مقبس المعالج', fr: 'Socket du processeur', en: 'CPU socket' },
+    what: 'المقبس هو مكان المعالج على اللوحة الأم: إطار معدني فيه أكثر من 1700 دبوس دقيق يلامس المعالج.',
+    role: 'يُفتح بذراع جانبي وغطاء معدني، ثم يُغلق ليضغط المعالج على الدبابيس بالتساوي.',
+    before: 'قديمًا كانت الثقوب في المقبس والدبابيس في المعالج.',
+    fact: 'لكل جيل من المعالجات مقبسه: معالج AM5 لا يدخل في مقبس LGA 1700.',
+  },
+  {
+    id: 'ddr5', era: 'modern', lesson: 2, pair: 'ram',
+    name: { ar: 'ذاكرة DDR5', fr: 'Mémoire DDR5', en: 'DDR5 memory' },
+    what: 'الذاكرة الحية تحفظ البرامج والمعطيات التي يعمل عليها المعالج الآن، وتُمحى عند إطفاء الحاسوب.',
+    role: 'في الصورة وجها الشريحة: في الأعلى الملصق والملامس الذهبية، وفي الأسفل رقاقات الذاكرة ومنظّم الجهد PMIC، الجديد في DDR5.',
+    before: 'في 2007 كانت الذاكرة DDR2 بسعة 512 ميغابايت إلى 2 جيغابايت. شريحة DDR5 واحدة اليوم فيها 16 أو 32 جيغابايت.',
+    fact: 'لكل جيل (DDR3، DDR4، DDR5) فتحة في مكان مختلف: لا تدخل شريحة DDR4 في منفذ DDR5.',
+  },
+  {
+    id: 'm2Ssd', era: 'modern', lesson: 2, pair: 'hdd',
+    name: { ar: 'قرص M.2 NVMe', fr: 'SSD M.2 NVMe', en: 'M.2 NVMe SSD' },
+    what: 'قرص تخزين دون أجزاء متحرّكة (SSD): يحفظ النظام والملفات في رقاقات ذاكرة «فلاش».',
+    role: 'يُركَّب مباشرة في منفذ M.2 على اللوحة الأم ويُثبَّت ببرغي صغير. يتّصل عبر PCIe، لذلك هو سريع جدًا ولا يحتاج أي كابل.',
+    before: 'القرص الصلب القديم أقراص مغناطيسية تدور ورأس قراءة يتحرّك: أبطأ بعشرات المرات، ويتأثّر بالصدمات.',
+    fact: 'قرص NVMe حديث يقرأ أكثر من 7000 ميغابايت في الثانية، والقرص الصلب القديم حوالي 100 فقط.',
+  },
+  {
+    id: 'towerCooler', era: 'modern', lesson: 3, pair: 'heatsink',
+    name: { ar: 'المبرّد البرجي', fr: 'Ventirad tour', en: 'Tower CPU cooler' },
+    what: 'مبرّد كبير للمعالج: قاعدة معدنية تلامس المعالج، أنابيب حرارية نحاسية، وبرج من الزعانف الرقيقة.',
+    role: 'ينقل حرارة المعالج إلى الزعانف، والمروحة (غير موجودة في الصورة) تدفع الهواء بينها نحو خلف الصندوق.',
+    before: 'مشتتات 2007 كانت صغيرة ومروحتها فوقها مباشرة، لأن المعالجات كانت تُنتج حرارة أقل.',
+    fact: 'في الأنابيب الحرارية قليل من سائل يتبخّر عند المعالج ويتكثّف في الزعانف: هكذا تنتقل الحرارة بسرعة.',
+  },
+  {
+    id: 'modernBoard', era: 'modern', lesson: 4, pair: 'motherboard',
+    name: { ar: 'اللوحة الأم الحديثة (ATX)', fr: 'Carte mère ATX', en: 'ATX motherboard' },
+    what: 'الدارة الرئيسية التي تربط كل القطع: المعالج، الذاكرة، البطاقات، الأقراص، والمنافذ.',
+    role: 'اللوحة في الصورة مُدارة: منافذها الخلفية تحت الغطاء في الأسفل على اليسار. مرّر الفأرة على الأرقام لتعرف أجزاءها.',
+    before: 'لوحات 2007 كانت فيها منافذ AGP وPCI وIDE ومنفذ القرص المرن، وكلها اختفت اليوم.',
+    fact: 'المقاس ATX موجود منذ 1995: لذلك تدخل لوحة حديثة في صندوق قديم بالأبعاد نفسها.',
+  },
+  {
+    id: 'modernCase', era: 'modern', lesson: 4, pair: 'casePanels',
+    name: { ar: 'الصندوق الحديث', fr: 'Boîtier ATX', en: 'ATX case' },
+    what: 'علبة الحاسوب: تحمل القطع وتحميها وتنظّم تيّار الهواء.',
+    role: 'الصندوق في الصورة مفتوح من جانبه: علبة التغذية تحت غطاء في الأسفل، فتحات لتمرير الكوابل خلف اللوحة، ومراوح في الأمام والخلف.',
+    before: 'صناديق 2007 كانت فيها حجرات أمامية كثيرة لقارئات الأقراص، ولا مكان لإخفاء الكوابل.',
+    fact: 'كثير من الصناديق اليوم لها جانب زجاجي، لذلك صار ترتيب الكوابل مهمًّا.',
+  },
+  {
+    id: 'modularPsu', era: 'modern', lesson: 5, pair: 'powerSupply',
+    name: { ar: 'علبة التغذية المعيارية', fr: "Bloc d'alimentation modulaire", en: 'Modular power supply' },
+    what: 'تحوّل كهرباء المأخذ (220 فولط متناوب) إلى جهد مستمر منخفض (12 و5 و3.3 فولط) تحتاجه القطع.',
+    role: 'في الصورة وجهها «المعياري»: مقابس نوصل بها فقط الكوابل التي نحتاجها.',
+    before: 'علب التغذية القديمة كانت كل كوابلها ثابتة، حتى التي لا نستعملها.',
+    fact: 'شعار 80 PLUS يعني أن العلبة تحوّل أكثر من 80٪ من الكهرباء دون أن تضيع حرارةً.',
+  },
+  {
+    id: 'atx24', era: 'modern', lesson: 5, pair: 'powerSupply',
+    name: { ar: 'الكابل الرئيسي 24 دبوسًا', fr: 'Câble ATX 24 broches', en: 'ATX 24-pin cable' },
+    what: 'الكابل الذي يغذّي اللوحة الأم كلها.',
+    role: 'يوصل بأكبر مقبس على حافة اللوحة الأم. مشبكه البلاستيكي يمنع تركيبه مقلوبًا ويُمسكه في مكانه.',
+    before: 'قديمًا كان الموصّل 20 دبوسًا فقط، ثم أضيفت إليه 4 دبابيس.',
+    fact: 'لكل لون جهد: الأصفر 12 فولط، الأحمر 5 فولط، البرتقالي 3.3 فولط، والأسود للأرضي.',
+  },
+  {
+    id: 'eps8', era: 'modern', lesson: 5,
+    name: { ar: 'كابل المعالج 8 دبابيس', fr: 'Câble EPS 8 broches (CPU)', en: 'EPS 8-pin CPU cable' },
+    what: 'كابل خاص بتغذية المعالج.',
+    role: 'يوصل بالمقبس CPU_PWR في أعلى اللوحة الأم، قرب المعالج. قد يأتي في شكل 4+4 دبابيس.',
+    fact: 'يشبه كابل بطاقة الرسوميات (PCIe) لكنه لا يتوافق معه: اقرأ الكتابة عليه قبل التوصيل.',
+  },
+  {
+    id: 'gpu', era: 'modern', lesson: 6, pair: 'videoCard', captions: ['بطاقة بمروحتين', 'بطاقة بثلاث مراوح'],
+    name: { ar: 'بطاقة الرسوميات الحديثة', fr: 'Carte graphique', en: 'Graphics card (GPU)' },
+    what: 'بطاقة تحسب الصور ثلاثية الأبعاد وترسلها إلى الشاشة. فيها معالج رسوميات (GPU) وذاكرة خاصة به.',
+    role: 'تُركَّب في المنفذ PCIe x16 الأول وتُثبَّت بحاملها المعدني في خلف الصندوق. مراوحها تبرّد معالجها، ومنافذها (HDMI وDisplayPort) للشاشة.',
+    before: 'في 2007 كانت بطاقة الرسوميات صغيرة، بمروحة واحدة أو دونها، ومنفذها VGA أو DVI.',
+    fact: 'تُستعمل معالجات الرسوميات اليوم في الذكاء الاصطناعي أيضًا، لأنها تحسب آلاف العمليات في الوقت نفسه.',
+  },
+  {
+    id: 'pcie12v', era: 'modern', lesson: 6,
+    name: { ar: 'موصّل تغذية البطاقة 12V-2x6', fr: 'Connecteur 12V-2x6 (12VHPWR)', en: '12V-2x6 (12VHPWR) connector' },
+    what: 'موصّل تغذية حديث لبطاقات الرسوميات القوية: 12 دبوسًا كبيرًا و4 دبابيس إشارة صغيرة.',
+    role: 'يُدفع حتى آخره: موصّل غير مُدخل كاملًا قد يسخن. البطاقات الأخرى تستعمل موصّلات PCIe بـ 6 أو 8 دبابيس.',
+    fact: 'ينقل حتى 600 واط، أي أكثر من حاسوب مكتبي كامل في 2007!',
+  },
+  {
+    id: 'sataSsd', era: 'modern', lesson: 6, pair: 'sata', captions: ['القرص SSD', 'كابلات بيانات SATA'],
+    name: { ar: 'قرص SSD ‏2.5 بوصة (SATA)', fr: 'SSD SATA 2,5″', en: '2.5″ SATA SSD' },
+    what: 'قرص SSD بحجم قرص الحاسوب المحمول، يتّصل بواجهة SATA.',
+    role: 'يحتاج كابلين: كابل البيانات SATA (الصغير) نحو اللوحة الأم، وكابل التغذية SATA (العريض) نحو علبة التغذية.',
+    before: 'عوّض الأقراص الصلبة، وقبلها كابلات PATA العريضة.',
+    fact: 'أسرع من القرص الصلب بخمس مرات تقريبًا، لكنه أبطأ من قرص M.2 NVMe.',
+  },
+  {
+    id: 'frontPanel', era: 'modern', lesson: 7,
+    name: { ar: 'منفذ الواجهة الأمامية', fr: 'Connecteur façade (F_PANEL)', en: 'Front panel header' },
+    what: 'مجموعة دبابيس صغيرة على اللوحة الأم توصل بها أزرار الصندوق وأضواؤه.',
+    role: 'فوق كل زوج من الدبابيس كتابة: POW LED لضوء التشغيل، ON/OFF لزر التشغيل، HLED لضوء القرص، RST لزر إعادة التشغيل.',
+    fact: 'الأسماء تختلف قليلًا من لوحة إلى أخرى (PWR_SW، PLED…): دليل اللوحة الأم هو المرجع.',
+  },
+  {
+    id: 'caseFan', era: 'modern', lesson: 7,
+    name: { ar: 'مروحة الصندوق 120 مم', fr: 'Ventilateur de boîtier 120 mm', en: '120 mm case fan' },
+    what: 'مروحة تدفع الهواء داخل الصندوق أو خارجه.',
+    role: 'في الأمام تُدخل الهواء البارد، وفي الخلف والأعلى تُخرج الهواء الساخن. توصل بمنافذ CHA_FAN أو SYS_FAN على اللوحة الأم.',
+    fact: 'على جانب المروحة سهمان صغيران: الأول يبيّن اتجاه الهواء، والثاني اتجاه الدوران.',
+  },
+  {
+    id: 'hdmi', era: 'modern', lesson: 8, pair: 'monitor',
+    name: { ar: 'كابل HDMI', fr: 'HDMI', en: 'HDMI' },
+    what: 'كابل رقمي يحمل الصورة والصوت معًا نحو الشاشة أو التلفاز.',
+    role: 'يوصل بمنفذ HDMI في بطاقة الرسوميات. في الصورة طرف HDMI (الأبيض الكبير) بجانب طرف USB للمقارنة.',
+    before: 'منفذ VGA الأزرق القديم كان يحمل الصورة فقط، بإشارة تناظرية أقل وضوحًا.',
+    fact: 'HDMI 2.1 يستطيع نقل صورة بدقّة 8K.',
+  },
+  {
+    id: 'displayport', era: 'modern', lesson: 8, pair: 'monitor',
+    name: { ar: 'كابل DisplayPort', fr: 'DisplayPort', en: 'DisplayPort' },
+    what: 'منفذ رقمي للشاشة، شائع في بطاقات الرسوميات وشاشات الحاسوب.',
+    role: 'لطرفه زاوية مقطوعة تمنع إدخاله مقلوبًا، ومشبك يُمسكه: اضغط على زرّه قبل نزعه.',
+    fact: 'في أغلب بطاقات الرسوميات 3 منافذ DisplayPort ومنفذ HDMI واحد.',
+  },
+  {
+    id: 'usbC', era: 'modern', lesson: 8, pair: 'usb',
+    name: { ar: 'منفذ USB-C', fr: 'USB-C', en: 'USB-C' },
+    what: 'منفذ USB الحديث: صغير ويدخل في الاتجاهين.',
+    role: 'يحمل البيانات والكهرباء، وأحيانًا الصورة، عبر كابل واحد. نجده في الهواتف والحواسيب المحمولة وخلف الحواسيب المكتبية الحديثة.',
+    before: 'في 2007 كان USB 2.0 بالموصّل المستطيل A الذي لا يدخل إلا في اتجاه واحد.',
+    fact: 'منذ 2024 صار USB-C إجباريًا لشحن الهواتف الجديدة في الاتحاد الأوروبي.',
+  },
+  {
+    id: 'usbDrive', era: 'modern', lesson: 8, pair: 'floppy',
+    name: { ar: 'مفتاح USB', fr: 'Clé USB', en: 'USB flash drive' },
+    what: 'ذاكرة «فلاش» صغيرة نحملها في الجيب لنقل الملفات.',
+    role: 'يحمل ملفات التثبيت: يُقلع منه الحاسوب الجديد لتثبيت نظام التشغيل.',
+    before: 'عوّض القرص المرن (1.44 ميغابايت) والأقراص الضوئية.',
+    fact: 'مفتاح 32 جيغابايت يسع ما يعادل أكثر من 22000 قرص مرن!',
+  },
+  {
+    id: 'uefi', era: 'modern', lesson: 9, art: 'uefi.svg',
+    name: { ar: 'إعدادات UEFI', fr: 'UEFI (ex-BIOS)', en: 'UEFI (formerly BIOS)' },
+    what: 'برنامج صغير مخزَّن في اللوحة الأم، يعمل قبل نظام التشغيل: يفحص القطع ثم يبحث عن نظام يُقلع منه.',
+    role: 'ندخل إليه بالمفتاح Del أو F2 عند التشغيل، لنرى القطع ونضبط الإعدادات: سرعة الذاكرة (XMP/EXPO)، ترتيب الإقلاع، الساعة…',
+    before: 'عوّض BIOS القديم ذا الشاشة الزرقاء التي لا تُستعمل فيها الفأرة.',
+    fact: 'الصورة هنا رسم تعليمي: شكل UEFI يختلف من صانع لوحة إلى آخر.',
+  },
+)
+
+// classic parts point to what replaced them
+for (const [classic, modern] of Object.entries({
+  cpu: 'lgaCpu', ram: 'ddr5', hdd: 'm2Ssd', heatsink: 'towerCooler', motherboard: 'modernBoard', casePanels: 'modernCase',
+  powerSupply: 'modularPsu', videoCard: 'gpu', sata: 'sataSsd', floppy: 'usbDrive', dvd: 'usbDrive', pata: 'm2Ssd',
+  monitor: 'hdmi', usb: 'usbC', keyboard: 'usbC', mouse: 'usbC',
+})) {
+  const e = exploreEntries.find((x) => x.id === classic)!
+  e.pair = modern
+}
+
+export const eraOf = (e: ExploreEntry): Era => e.era ?? 'classic'
+
+/** The views of an entry: its original EXPLORE views, or its Commons photos. */
+export function viewsOf(e: ExploreEntry): ExploreView[] {
+  if (e.swf) return exploreViews[e.swf] ?? []
+  return Object.entries(photoCredits)
+    .filter(([file]) => file.startsWith(`${e.id}-`))
+    .map(([file, c], n) => ({ view: `Photo${n + 1}`, img: `modern/${file}`, w: c.w, h: c.h, callouts: photoCallouts[file.replace('.webp', '')] ?? [] }))
+}
+
+/** Card image of an entry (under public/). */
+export function entryThumb(e: ExploreEntry): string {
+  if (e.art) return `media/explore/modern/${e.art}`
+  if (eraOf(e) === 'modern') return `media/explore/${viewsOf(e)[0]?.img}`
+  return `media/thumbs/${e.thumb}`
+}
 
 export const exploreById: Record<string, ExploreEntry> = Object.fromEntries(exploreEntries.map((e) => [e.id, e]))
 

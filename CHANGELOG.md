@@ -2,6 +2,14 @@
 
 All notable changes to this project. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+- **Today's parts in «اكتشف القطع»:** a second tab, «حاسوب اليوم», with 20 components of a PC built today (LGA CPU and socket, DDR5, M.2 NVMe, tower cooler, ATX board and case, modular PSU and its 24-pin and 8-pin cables, graphics card and 12V-2x6, SATA SSD, front panel header, case fan, HDMI, DisplayPort, USB-C, USB drive, UEFI), grouped by topic. The lessons are unchanged.
+  - Photos from Wikimedia Commons under free licences (CC0, public domain, CC BY, CC BY-SA), with numbered callouts on the main ones. Each photo shows its author and licence; `CREDITS.md` lists them all with their sources.
+  - Then and now: a 2007 part links to what replaced it («اليوم»), and a part of today to what it replaced («في 2007», «وقديمًا؟»).
+- `tools/fetch_photos.py`: finds, previews and fetches Commons photos listed in `tools/photos.json`, converts them to WebP and writes the credits. It refuses any other licence.
+
 ## [0.2.0] - 2026-09-28
 
 ### Added

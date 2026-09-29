@@ -34,6 +34,10 @@ python tools/extract_lessons.py [Lesson]   # SWF -> tools/.cache/manifests/<Less
 python tools/build_assets.py [Lesson]      # -> public/lessons/<Lesson>/ + src/content/lessons/<Lesson>.json (parallel, cached)
 # «اكتشف القطع» photos + callouts from legacy/media/explore/*.swf (export images and texts first, see the script's docstring):
 python tools/extract_explore.py [--debug]  # -> public/media/explore/ + src/content/explore.json; --debug outlines callouts in tools/.cache/explore-debug/
+# today's parts in «اكتشف القطع»: photos from Wikimedia Commons
+python tools/fetch_photos.py search "<query>"       # Commons files with their licence (OK = allowed)
+python tools/fetch_photos.py preview "File:..."     # small previews -> tools/.cache/photo-candidates/
+python tools/fetch_photos.py                        # fetch tools/photos.json -> public/media/explore/modern/ + photoCredits.json + CREDITS.md
 ```
 
 Transcription helpers:
@@ -85,7 +89,9 @@ Transcription helpers:
   - `AssemblyStage` scales the fixed stage and draws the scene or view clips, including sub-clips. It also renders drop, start and click hotspots (tiny ones are inflated), the rotate tools, and the action button.
   - `PartsTray` is the antistatic mat: pastel cards, FR/EN term, and scroll arrows when the cards overflow. With instructions off it gives no order hints and lets any part be picked up.
   - `Sidebar` holds the lesson list, the tip, the progress, and the test card. `InfoPanel` holds the learn text, the terms and «تذكّر دائمًا».
-  - `Explore` is «اكتشف القطع» (header button, or ⓘ on a tray card): a catalog by lesson, then per component the original EXPLORE photos (front/back/top… views) with numbered callouts, and what it is, its role, today's equivalent and a fact. Texts, callout translations and the part → entry map are in `src/content/explore.ts`; photos and callout rects come from `tools/extract_explore.py`.
+  - `Explore` is «اكتشف القطع» (header button, or ⓘ on a tray card). Its catalog has two tabs: «حاسوب 2007» (the lessons' parts, by lesson) and «حاسوب اليوم» (today's parts, by topic: `era: 'modern'`, `todayTopics`). Per component: its photos with numbered callouts, what it is, its role, today's equivalent («واليوم؟») or what it replaced («وقديمًا؟»), a fact, and a then-and-now button (`pair`). Texts, callout translations, the callouts on today's photos and the part → entry map are in `src/content/explore.ts`.
+    - 2007 photos and callout rects come from `tools/extract_explore.py`.
+    - Today's photos come from Wikimedia Commons (`tools/photos.json` → `fetch_photos.py`). **Only CC0, public domain, CC BY and CC BY-SA**: the script refuses others. Each photo shows its author and licence, and CREDITS.md lists them all with sources. They load only when a component is opened.
   - «تلميذ جديد» (`ResetProgress`) clears the ✓ marks and returns to lesson 1, for the next student on the same PC. It's disabled during a test and leaves a result sheet on screen alone. `Dialog` is the shared modal shell.
   - Stage feedback (`.message`) closes on click, or by itself after 4 s (7 s with a hint).
   - `About` is the «حول التطبيق» dialog from the header, with details from `src/content/about.ts` and the photo at `public/media/about/`. The GitHub, LinkedIn and Facebook logos are inline SVG paths, because lucide 1.x has no brand icons.
@@ -109,3 +115,4 @@ Transcription helpers:
 - Vector layers containing `#6699cc` are the old Flash UI button baked into scenes, and are skipped.
 - The legacy `essentials.xml` is not well-formed and mixes UTF-8 with cp1252 bytes, so read it with regexes or `errors='replace'`, never a strict XML parser.
 - Arabic and French text is written for the classroom and should be reviewed by a teacher before release.
+- Keep the user's email out of requests to external services. The Commons User-Agent names the public repository instead.

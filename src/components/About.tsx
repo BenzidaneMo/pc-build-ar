@@ -70,6 +70,10 @@ export function About({ onClose }: { onClose: () => void }) {
           الرسوم المتحركة وصور القطع مأخوذة من برنامج <span dir="ltr">IT Essentials Virtual Desktop</span> لأكاديمية
           <span dir="ltr"> Cisco Networking Academy</span>، وتبقى ملكًا لها. هذا التطبيق اقتباس تعليمي غير تجاري.
         </p>
+        <p className="about-credits">
+          صور القطع الحديثة في «اكتشف القطع» (حاسوب اليوم) من <span dir="ltr">Wikimedia Commons</span> بتراخيص حرّة
+          (CC BY، CC BY-SA، CC0)، واسم صاحب كل صورة مكتوب تحتها، والقائمة الكاملة في الملف <span dir="ltr">CREDITS.md</span>.
+        </p>
       </section>
     </div>
   )

@@ -6,7 +6,7 @@
 
 - **الدروس:** 7 دروس مع تعليمات ومناطق مضيئة، ويمكن إخفاؤها للتدرّب.
 - **الاختبار:** تجميع الحاسوب كاملًا دون تعليمات، مع حساب الوقت والأخطاء وطباعة النتيجة.
-- **اكتشف القطع:** صور كل قطعة من كل الجهات مع أسماء أجزائها، ودورها، وما عوّضها اليوم.
+- **اكتشف القطع:** صور كل قطعة من كل الجهات مع أسماء أجزائها، ودورها، وما عوّضها اليوم. وفي تبويب «حاسوب اليوم»: قطع الحاسوب الحديث (M.2، DDR5، HDMI، USB-C…) بصور حرّة من Wikimedia Commons، مع رابط بين كل قطعة قديمة وما عوّضها.
 - **للأستاذ:** دليل التثبيت والاستعمال في [docs/guide-enseignant.md](docs/guide-enseignant.md).
 
 </div>
@@ -18,7 +18,7 @@ A rebuild of the 2007 Cisco IT Essentials "Virtual Desktop" (Flash 8) as an offl
 - **Learn:** seven lessons (power supply, motherboard, expansion cards, hard drive, optical and floppy drives, internal cables, external cables). Each has a short description, drag-and-drop from the antistatic mat, rotate-to-fit connectors, and click targets for screws and latches.
 - **Show instructions** toggle. Off is the original "expert mode": no instructions and no highlighted drop areas. With it on, three wrong drops in a row install the part automatically, as in the original.
 - **Test:** all seven stages in a row without instructions. Time and mistakes are recorded per stage, and there's a printable result sheet.
-- **Explore the parts:** every component with the original's photos from each side, numbered callouts for its connectors and features, and a short explanation of what it is, what it does and what replaced it today (floppy drives, PATA, PS/2…).
+- **Explore the parts:** every component with the original's photos from each side, numbered callouts for its connectors and features, and a short explanation of what it is, what it does and what replaced it today (floppy drives, PATA, PS/2…). A second tab shows today's parts (M.2 NVMe, DDR5, modular PSU, HDMI, USB-C…) with freely licensed Wikimedia Commons photos, each linked to the 2007 part it replaced.
 - **New student** button: clears the lessons' ✓ marks on a shared lab PC.
 - **Welcome tour**, reopened with the Help button.
 - **Offline:** a Windows app (MSI or portable exe), or the `dist/` folder opened straight from disk in Chrome 109+ or Firefox 115+, which covers Windows 7.
@@ -48,7 +48,7 @@ npm run package    # -> release/: x64 and x86 .msi installers, portable .zip (ex
 
 Changes per version are in [CHANGELOG.md](CHANGELOG.md).
 
-Classroom trial stage. The Arabic and French texts still need review by a teacher. Planned work includes the original 360° spin videos of each part (FLV in `legacy/media/explore/flv/`, they need converting) and modern hardware (SSD, M.2, 24-pin ATX, HDMI/USB-C).
+Classroom trial stage. The Arabic and French texts still need review by a teacher. Planned work includes the original 360° spin videos of each part (FLV in `legacy/media/explore/flv/`, they need converting) and more of today's hardware.
 
 ## Credits
 
