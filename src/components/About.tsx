@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { Code, Globe, X } from 'lucide-react'
 import { developer, repo, socials, type SocialId } from '../content/about'
+import { exploreEntries, photoCredits } from '../content/explore'
 import { asset } from '../lib/content'
 import { ComputerArt } from './Decor'
 
@@ -70,10 +71,21 @@ export function About({ onClose }: { onClose: () => void }) {
           الرسوم المتحركة وصور القطع مأخوذة من برنامج <span dir="ltr">IT Essentials Virtual Desktop</span> لأكاديمية
           <span dir="ltr"> Cisco Networking Academy</span>، وتبقى ملكًا لها. هذا التطبيق اقتباس تعليمي غير تجاري.
         </p>
-        <p className="about-credits">
+        <div className="about-credits">
           صور القطع الحديثة في «اكتشف القطع» (حاسوب اليوم) من <span dir="ltr">Wikimedia Commons</span> بتراخيص حرّة
-          (CC BY، CC BY-SA، CC0)، واسم صاحب كل صورة مكتوب تحتها، والقائمة الكاملة في الملف <span dir="ltr">CREDITS.md</span>.
-        </p>
+          (CC BY، CC BY-SA، CC0)، شكرًا لأصحابها:
+          <details className="about-photos">
+            <summary>أصحاب الصور وتراخيصها</summary>
+            <ul dir="ltr">
+              {Object.entries(photoCredits).map(([file, c]) => (
+                <li key={file}>
+                  {exploreEntries.find((e) => file.startsWith(`${e.id}-`))?.name.en}: {c.author} · {c.license} ·{' '}
+                  <a href={c.source} target="_blank" rel="noopener noreferrer">Wikimedia Commons</a>
+                </li>
+              ))}
+            </ul>
+          </details>
+        </div>
       </section>
     </div>
   )

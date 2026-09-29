@@ -151,6 +151,9 @@ export const features: Record<string, ExploreFeature> = {
   'HDD LED Pins': { ar: 'دبوسا ضوء القرص (HLED)', fr: 'LED disque' },
   'Reset Switch Pins': { ar: 'دبوسا زر إعادة التشغيل (RST)', fr: 'Bouton reset' },
   'Speaker Pins': { ar: 'دبابيس مكبّر الصوت الصغير (SPK)', fr: 'Haut-parleur (SPK)' },
+  'Pump Block': { ar: 'رأس المضخّة (فوق المعالج)', fr: 'Bloc pompe (waterblock)' },
+  Tubes: { ar: 'أنبوبا السائل', fr: 'Tuyaux' },
+  'Radiator & Fans': { ar: 'المبرِّد (radiateur) ومراوحه', fr: 'Radiateur et ventilateurs' },
 }
 
 /** Callouts on the Commons photos (% of the photo), by photo file name. */
@@ -203,6 +206,15 @@ const photoCallouts: Record<string, ExploreView['callouts']> = {
   'sataSsd-1': [
     { en: 'SATA Data Connector', rect: [11, 57, 14, 14] },
     { en: 'SATA Power Connector', rect: [23, 66, 20, 18] },
+  ],
+  'aioCooler-1': [
+    { en: 'Pump Block', rect: [33, 23, 17, 22] },
+    { en: 'Tubes', rect: [50, 27, 44, 30] },
+    { en: 'Radiator & Fans', rect: [6, 45, 79, 37] },
+  ],
+  'aioCooler-2': [
+    { en: 'Pump Block', rect: [38, 26, 30, 42] },
+    { en: 'Tubes', rect: [64, 40, 36, 52] },
   ],
   'frontPanel-1': [
     { en: 'Power LED Pins', rect: [43, 42, 20, 18] },
@@ -459,6 +471,14 @@ exploreEntries.push(
     role: 'ينقل حرارة المعالج إلى الزعانف، والمروحة (غير موجودة في الصورة) تدفع الهواء بينها نحو خلف الصندوق.',
     before: 'مشتتات 2007 كانت صغيرة ومروحتها فوقها مباشرة، لأن المعالجات كانت تُنتج حرارة أقل.',
     fact: 'في الأنابيب الحرارية قليل من سائل يتبخّر عند المعالج ويتكثّف في الزعانف: هكذا تنتقل الحرارة بسرعة.',
+  },
+  {
+    id: 'aioCooler', era: 'modern', lesson: 3, pair: 'heatsink', captions: ['المبرّد كاملًا (360 مم)', 'المضخّة فوق المعالج'],
+    name: { ar: 'مبرّد مائي (AIO)', fr: 'Watercooling AIO', en: 'AIO liquid cooler' },
+    what: 'مبرّد بالسائل «الكل في واحد» (AIO): رأس مضخّة يوضع فوق المعالج، أنبوبان، ومبرِّد (radiateur) بمراوحه، كلّها مغلقة ومملوءة مسبقًا.',
+    role: 'المضخّة تدفع سائلًا يأخذ حرارة المعالج ويحملها في الأنبوبين إلى المبرِّد، حيث تطردها المراوح خارج الصندوق. يُثبَّت المبرِّد في أعلى الصندوق أو في واجهته.',
+    before: 'في 2007 كان التبريد المائي نادرًا ويُركَّب قطعةً قطعة. اليوم يُباع جاهزًا ومغلقًا، ولا يحتاج أي صيانة للسائل.',
+    fact: 'رأس المضخّة يوصل بالمنفذ CPU_FAN أو AIO_PUMP في اللوحة الأم: إذا لم تدُر المضخّة، يسخن المعالج في ثوانٍ.',
   },
   {
     id: 'modernBoard', era: 'modern', lesson: 4, pair: 'motherboard',

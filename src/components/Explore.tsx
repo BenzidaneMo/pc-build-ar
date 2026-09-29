@@ -120,8 +120,14 @@ function Detail({ entry, terms, onPick, onCatalog }: {
             </div>
           )}
           <figure className="explore-photo">
-            <div className="explore-frame" dir="ltr" style={view ? { aspectRatio: `${view.w} / ${view.h}` } : undefined}>
-              <img src={asset(src)} alt={view ? `${entry.name.ar}: ${caption(v)}` : entry.name.ar} />
+            {/* every photo fits the same box (--photo-h): its frame keeps the photo's proportions, so
+                the callouts, in % of the photo, stay on their parts */}
+            <div className="explore-box">
+            <div className="explore-frame" dir="ltr" style={view
+              ? { aspectRatio: `${view.w} / ${view.h}`, width: `min(100%, calc(var(--photo-h) * ${view.w / view.h}))` }
+              : { height: '100%' }}>
+              <img src={asset(src)} alt={view ? `${entry.name.ar}: ${caption(v)}` : entry.name.ar}
+                title={credit ? `${credit.author} · ${credit.license} · Wikimedia Commons` : undefined} />
               {view?.callouts.map((c, n) => (
                 <span key={n} className={`callout${hot === n ? ' hot' : ''}`}
                   style={{ left: `${c.rect[0]}%`, top: `${c.rect[1]}%`, width: `${c.rect[2]}%`, height: `${c.rect[3]}%` }}
@@ -130,12 +136,8 @@ function Detail({ entry, terms, onPick, onCatalog }: {
                 </span>
               ))}
             </div>
+            </div>
             {views.length === 1 && !credit && <figcaption>{caption(0)}</figcaption>}
-            {credit && (
-              <figcaption className="explore-credit" dir="ltr">
-                Photo: {credit.author} · {credit.license} · Wikimedia Commons
-              </figcaption>
-            )}
           </figure>
           {view && view.callouts.length > 0 && (
             <>

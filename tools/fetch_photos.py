@@ -132,9 +132,9 @@ def write_credits_md(credits):
     lines = [
         '# Credits',
         '',
-        'The lessons of «حاسوب 2007» and their parts photos come from Cisco Networking Academy\'s',
-        '*IT Essentials Virtual Desktop* and remain its property. The drawings of «حاسوب اليوم» were made',
-        'for this project (`tools/draw_modern.py`).',
+        'The lessons and the photos of their parts («حاسوب 2007» in «اكتشف القطع») come from Cisco',
+        'Networking Academy\'s *IT Essentials Virtual Desktop* and remain its property. The UEFI screen of',
+        '«حاسوب اليوم» (`public/media/explore/modern/uefi.svg`) was drawn for this project.',
         '',
         '## Photos of today\'s parts («اكتشف القطع»)',
         '',
