@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { ArrowLeft, CircleHelp, Compass, Info, Lightbulb, Maximize2, Minimize2, Monitor, RotateCcw, UserRoundPlus, X } from 'lucide-react'
+import { ArrowLeft, CircleHelp, Compass, Info, Lightbulb, Maximize2, Minimize2, RotateCcw, UserRoundPlus, X } from 'lucide-react'
 import { About } from './components/About'
 import { AssemblyStage, type StageHandle } from './components/AssemblyStage'
 import { Explore } from './components/Explore'
-import { PageDecor, StageDecor } from './components/Decor'
+import { BrandLogo, PageDecor, StageDecor } from './components/Decor'
 import { InfoPanel, type Terms } from './components/InfoPanel'
 import { LessonHead, StepsCard, TestStatus } from './components/LessonPanels'
 import { PartsTray } from './components/PartsTray'
@@ -209,7 +209,7 @@ export default function App() {
       <PageDecor />
       <header className="topbar">
         <div className="brand">
-          <span className="brand-logo" aria-hidden="true"><Monitor /></span>
+          <span className="brand-logo" aria-hidden="true"><BrandLogo /></span>
           <div>
             <h1>محاكي تجميع الحاسوب</h1>
             <p className="brand-tagline">تعلّم • اكتشف • ركّب بنفسك</p>

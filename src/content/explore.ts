@@ -5,6 +5,7 @@
 // callouts placed here. Texts written for students; to be reviewed by a teacher.
 import views from './explore.json'
 import credits from './photoCredits.json'
+import photoSizes from './explorePhotos.json'
 
 export interface ExploreFeature { ar: string; fr: string }
 
@@ -45,8 +46,11 @@ export interface ExploreEntry {
 }
 
 /** Credit of a Commons photo (tools/fetch_photos.py). */
-export interface PhotoCredit { title: string; author: string; license: string; licenseUrl: string; source: string; w: number; h: number }
+export interface PhotoCredit { title: string; author: string; license: string; licenseUrl: string; source: string }
+/** Credits of the photos that have one (a photo put there by hand may have none). */
 export const photoCredits = credits as Record<string, PhotoCredit>
+/** Every photo of today's parts and its size [w, h] (tools/fetch_photos.py sizes). */
+export const explorePhotos = photoSizes as unknown as Record<string, [number, number]>
 
 export interface ExploreView {
   view: string
@@ -194,7 +198,7 @@ const photoCallouts: Record<string, ExploreView['callouts']> = {
     { en: 'VRM', rect: [1, 18, 15, 48] },
   ],
   'ddr5-1': [
-    { en: 'DIMM Connector', rect: [5, 37, 90, 6] },
+    { en: 'DIMM Connector', rect: [2, 90, 96, 7] },
     { en: 'Single Key Notch', rect: [47, 36, 4, 8] },
     { en: 'Memory Chips', rect: [4, 74, 30, 20] },
     { en: 'PMIC', rect: [44, 59, 10, 16] },
@@ -205,17 +209,17 @@ const photoCallouts: Record<string, ExploreView['callouts']> = {
     { en: 'Mounting Notch', rect: [4, 38, 7, 17] },
   ],
   'modularPsu-1': [
-    { en: 'Modular Sockets', rect: [20, 40, 68, 18] },
-    { en: 'Modular Cables', rect: [0, 58, 55, 38] },
+    { en: 'Modular Sockets', rect: [52, 45, 39, 23] },
+    { en: 'Modular Cables', rect: [80, 55, 17, 23] },
   ],
   'sataSsd-1': [
     { en: 'SATA Data Connector', rect: [11, 57, 14, 14] },
     { en: 'SATA Power Connector', rect: [23, 66, 20, 18] },
   ],
   'aioCooler-1': [
-    { en: 'Pump Block', rect: [33, 23, 17, 22] },
-    { en: 'Tubes', rect: [50, 27, 44, 30] },
-    { en: 'Radiator & Fans', rect: [6, 45, 79, 37] },
+    { en: 'Pump Block', rect: [36, 53, 30, 30] },
+    { en: 'Tubes', rect: [65, 56, 30, 30] },
+    { en: 'Radiator & Fans', rect: [7, 23, 79, 32] },
   ],
   'aioCooler-2': [
     { en: 'Pump Block', rect: [38, 26, 30, 42] },
@@ -593,7 +597,7 @@ exploreEntries.push(
     fact: 'مفتاح 32 جيغابايت يسع ما يعادل أكثر من 22000 قرص مرن!',
   },
   {
-    id: 'uefi', era: 'modern', lesson: 9, art: 'uefi.svg',
+    id: 'uefi', era: 'modern', lesson: 9, art: 'uefi.webp',
     name: { ar: 'إعدادات UEFI', fr: 'UEFI (ex-BIOS)', en: 'UEFI (formerly BIOS)' },
     what: 'برنامج صغير مخزَّن في اللوحة الأم، يعمل قبل نظام التشغيل: يفحص القطع ثم يبحث عن نظام يُقلع منه.',
     role: 'ندخل إليه بالمفتاح Del أو F2 عند التشغيل، لنرى القطع ونضبط الإعدادات: سرعة الذاكرة (XMP/EXPO)، ترتيب الإقلاع، الساعة…',
@@ -617,9 +621,9 @@ export const eraOf = (e: ExploreEntry): Era => e.era ?? 'classic'
 /** The views of an entry: its original EXPLORE views, or its Commons photos. */
 export function viewsOf(e: ExploreEntry): ExploreView[] {
   if (e.swf) return exploreViews[e.swf] ?? []
-  return Object.entries(photoCredits)
+  return Object.entries(explorePhotos)
     .filter(([file]) => file.startsWith(`${e.id}-`))
-    .map(([file, c], n) => ({ view: `Photo${n + 1}`, img: `modern/${file}`, w: c.w, h: c.h, callouts: photoCallouts[file.replace('.webp', '')] ?? [] }))
+    .map(([file, [w, h]], n) => ({ view: `Photo${n + 1}`, img: `modern/${file}`, w, h, callouts: photoCallouts[file.replace('.webp', '')] ?? [] }))
 }
 
 /** Card image of an entry (under public/). */

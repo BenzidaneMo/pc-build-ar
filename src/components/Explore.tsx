@@ -137,7 +137,7 @@ function Detail({ entry, terms, onPick, onCatalog }: {
               ))}
             </div>
             </div>
-            {views.length === 1 && !credit && <figcaption>{caption(0)}</figcaption>}
+            {views.length === 1 && (entry.captions?.[0] ?? viewNames[views[0].view]) && <figcaption>{caption(0)}</figcaption>}
           </figure>
           {view && view.callouts.length > 0 && (
             <>

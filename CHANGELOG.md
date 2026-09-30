@@ -6,12 +6,13 @@ All notable changes to this project. The format follows [Keep a Changelog](https
 
 ### Added
 - **Today's parts in «اكتشف القطع»:** a second tab, «حاسوب اليوم», with 21 components of a PC built today (LGA CPU and socket, DDR5, M.2 NVMe, tower and water coolers, ATX board and case, modular PSU and its 24-pin and 8-pin cables, graphics card and 12V-2x6, SATA SSD, front panel header, case fan, HDMI, DisplayPort, USB-C, USB drive, UEFI), grouped by topic. The lessons are unchanged.
-  - Photos from Wikimedia Commons under free licences (CC0, public domain, CC BY, CC BY-SA), with numbered callouts on the main ones. `CREDITS.md` lists them all with their sources.
+  - Photos with numbered callouts on the main ones: most from Wikimedia Commons under free licences (CC0, public domain, CC BY, CC BY-SA), listed with their sources in `CREDITS.md`; a few product photos from the makers or chosen by hand.
   - Then and now: a 2007 part links to what replaced it («اليوم»), and a part of today to what it replaced («في 2007», «وقديمًا؟»).
   - Includes an all-in-one water cooler (AIO) beside the tower cooler.
   - Photos of every component fit the same height, and the numbered callouts are see-through until pointed at.
   - The photo credits (author, licence, source) are listed in «حول التطبيق», and shown as a tooltip on each photo.
-- `tools/fetch_photos.py`: finds, previews and fetches Commons photos listed in `tools/photos.json`, converts them to WebP and writes the credits. It refuses any other licence.
+- `tools/fetch_photos.py`: finds, previews and fetches Commons photos listed in `tools/photos.json`, converts them to WebP and writes the credits. It refuses any other licence. Makers' photos are listed apart (`tools/product_photos.json`), and a photo put there by hand is kept as it is (`null` slot).
+- A new logo: a motherboard and a screwdriver, drawn in the header's line style (and as the browser tab's icon). The packaged app gets a detailed version of it.
 
 ## [0.2.0] - 2026-09-28
 

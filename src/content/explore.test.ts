@@ -1,6 +1,6 @@
 import { existsSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
-import { eraOf, exploreById, exploreEntries, features, photoCredits, viewsOf } from './explore'
+import { eraOf, exploreById, exploreEntries, explorePhotos, features, photoCredits, viewsOf } from './explore'
 
 const ALLOWED = /^(CC0|Public domain|CC BY(-SA)? \d\.\d( \w+)?)$/i
 const file = (path: string) => new URL(`../../public/${path}`, import.meta.url)
@@ -14,6 +14,12 @@ describe('«اكتشف القطع»', () => {
         expect(c.source, name).toMatch(/^https:\/\/commons\.wikimedia\.org\//)
       }
       expect(c.author, name).not.toBe('')
+      expect(explorePhotos[name], `${name} is credited but not listed`).toBeDefined()
+    }
+  })
+
+  it('lists photos that exist', () => {
+    for (const name of Object.keys(explorePhotos)) {
       expect(existsSync(file(`media/explore/modern/${name}`)), name).toBe(true)
     }
   })

@@ -120,9 +120,9 @@ svg.lucide { flex: none; }
 }
 .brand { display: flex; align-items: center; gap: 16px; }
 .brand-logo { display: grid; place-items: center; width: 54px; height: 46px; border: 2.5px solid #fff; border-radius: 12px; }
-.brand-logo svg { width: 30px; height: 30px; }
+.brand-logo svg { width: 32px; height: 34px; }
 .brand > div { padding-inline-start: 16px; border-inline-start: 1px solid rgb(255 255 255 / 0.25); }
-@media (max-height: 820px) { .brand-logo { width: 42px; height: 36px; } .brand-logo svg { width: 24px; height: 24px; } .topbar h1 { font-size: 1.25rem; } .brand-tagline { display: none; } .terms-switch button { padding-block: 3px; } }
+@media (max-height: 820px) { .brand-logo { width: 42px; height: 36px; } .brand-logo svg { width: 24px; height: 26px; } .topbar h1 { font-size: 1.25rem; } .brand-tagline { display: none; } .terms-switch button { padding-block: 3px; } }
 .topbar h1 { margin: 0; font-size: 1.45rem; font-weight: 800; line-height: 1.3; }
 .brand-tagline { margin: 0; font-size: 0.9rem; opacity: 0.8; }
 .top-actions { display: flex; align-items: center; gap: 12px; }

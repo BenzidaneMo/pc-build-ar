@@ -5,11 +5,16 @@ Usage:
   python tools/fetch_photos.py preview "File:..." ...  save small previews to tools/.cache/photo-candidates/
   python tools/fetch_photos.py                        fetch everything in tools/photos.json
   python tools/fetch_photos.py credits                only rewrite CREDITS.md from photoCredits.json
+  python tools/fetch_photos.py sizes                  only rewrite explorePhotos.json (after changing a photo by hand)
 
 tools/photos.json maps an explore entry id to its Commons files ["File:...", ...]. Each file is
 downloaded about 1200 px wide, saved as WebP in public/media/explore/modern/<id>-<n>.webp, and its
 credit (author, licence, source page) is written to src/content/photoCredits.json. Anything that
-is not CC0, public domain, CC BY or CC BY-SA is refused.
+is not CC0, public domain, CC BY or CC BY-SA is refused. A null slot is a photo put there by hand:
+it's kept as it is, without a credit.
+
+src/content/explorePhotos.json lists every photo in the folder with its size (the app shapes the
+photo's box, and places the callouts, from it).
 """
 import html
 import io
@@ -26,6 +31,7 @@ from PIL import Image
 ROOT = os.path.join(os.path.dirname(__file__), '..')
 OUT = os.path.join(ROOT, 'public', 'media', 'explore', 'modern')
 CREDITS = os.path.join(ROOT, 'src', 'content', 'photoCredits.json')
+SIZES = os.path.join(ROOT, 'src', 'content', 'explorePhotos.json')
 # Manufacturer product photos chosen by the project owner (not from Commons): copied from a local
 # file (`from`, relative to the repo), cropped (`crop`) and credited to the maker.
 PRODUCTS = os.path.join(os.path.dirname(__file__), 'product_photos.json')
@@ -108,8 +114,10 @@ def fetch():
     os.makedirs(OUT, exist_ok=True)
     credits = {}
     for entry, titles in entries.items():
-        meta = info(titles)
+        meta = info([t for t in titles if t])
         for n, t in enumerate(titles, 1):
+            if not t:
+                continue
             m = meta.get(t)
             if not m:
                 raise SystemExit(f'{entry}: {t} not found')
@@ -121,7 +129,7 @@ def fetch():
                 im = im.resize((WIDTH, round(im.height * WIDTH / im.width)), Image.LANCZOS)
             im.save(os.path.join(OUT, name), 'WEBP', quality=85, method=6)
             credits[name] = {'title': t[5:], 'author': m['author'] or 'unknown', 'license': m['license'],
-                             'licenseUrl': m['licenseUrl'], 'source': m['source'], 'w': im.width, 'h': im.height}
+                             'licenseUrl': m['licenseUrl'], 'source': m['source']}
             print(f'{name}  {im.width}x{im.height}  {m["license"]}  {m["author"][:50]}')
             time.sleep(0.5)
     credits.update(products())
@@ -129,6 +137,15 @@ def fetch():
         json.dump(credits, fh, ensure_ascii=False, indent=1)
         fh.write('\n')
     write_credits_md(credits)
+    write_sizes()
+
+
+def write_sizes():
+    """explorePhotos.json: every photo of the folder with its size, whatever its origin."""
+    sizes = {f: list(Image.open(os.path.join(OUT, f)).size) for f in sorted(os.listdir(OUT))
+             if f.endswith('.webp') and f != 'uefi.webp'}
+    with open(SIZES, 'w', encoding='utf-8', newline='\n') as fh:
+        fh.write('{\n' + ',\n'.join(f' "{k}": {json.dumps(v)}' for k, v in sizes.items()) + '\n}\n')
 
 
 def products():
@@ -146,10 +163,9 @@ def products():
             if flat.width > WIDTH:
                 flat = flat.resize((WIDTH, round(flat.height * WIDTH / flat.width)), Image.LANCZOS)
             flat.save(os.path.join(OUT, name), 'WEBP', quality=85, method=6)
-        w, h = Image.open(os.path.join(OUT, name)).size
         out[name] = {'title': p['title'], 'author': p['author'], 'license': p['license'], 'licenseUrl': '',
-                     'source': p['source'], 'w': w, 'h': h}
-        print(f'{name}  {w}x{h}  {p["license"]}  {p["author"]}')
+                     'source': p['source']}
+        print(f'{name}  {p["license"]}  {p["author"]}')
     return out
 
 
@@ -159,8 +175,7 @@ def write_credits_md(credits):
         '# Credits',
         '',
         'The lessons and the photos of their parts («حاسوب 2007» in «اكتشف القطع») come from Cisco',
-        'Networking Academy\'s *IT Essentials Virtual Desktop* and remain its property. The UEFI screen of',
-        '«حاسوب اليوم» (`public/media/explore/modern/uefi.svg`) was drawn for this project.',
+        'Networking Academy\'s *IT Essentials Virtual Desktop* and remain its property.',
         '',
         '## Photos of today\'s parts («اكتشف القطع»)',
         '',
@@ -194,5 +209,7 @@ if __name__ == '__main__':
         preview(sys.argv[2:])
     elif len(sys.argv) > 1 and sys.argv[1] == 'credits':
         write_credits_md(json.load(open(CREDITS, encoding='utf-8')))
+    elif len(sys.argv) > 1 and sys.argv[1] == 'sizes':
+        write_sizes()
     else:
         fetch()
