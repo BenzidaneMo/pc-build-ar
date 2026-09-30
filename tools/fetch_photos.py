@@ -39,7 +39,7 @@ LIST = os.path.join(os.path.dirname(__file__), 'photos.json')
 PREVIEWS = os.path.join(os.path.dirname(__file__), '.cache', 'photo-candidates')
 API = 'https://commons.wikimedia.org/w/api.php'
 # Wikimedia asks for an identifiable User-Agent: the project's public repository
-UA = 'pc-build-ar/0.3 (educational PC assembly simulator; https://github.com/BenzidaneMo/pc-build-ar)'
+UA = 'pc-build-ar/1.0 (educational PC assembly simulator; https://github.com/BenzidaneMo/pc-build-ar)'
 ALLOWED = re.compile(r'^(CC0|Public domain|PD\b.*|CC BY(-SA)? \d\.\d( \w+)?)$', re.I)
 WIDTH = 1200
 

@@ -2,7 +2,7 @@
 
 All notable changes to this project. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [1.0.0] - 2026-09-30
 
 ### Added
 - **Today's parts in «اكتشف القطع»:** a second tab, «حاسوب اليوم», with 21 components of a PC built today (LGA CPU and socket, DDR5, M.2 NVMe, tower and water coolers, ATX board and case, modular PSU and its 24-pin and 8-pin cables, graphics card and 12V-2x6, SATA SSD, front panel header, case fan, HDMI, DisplayPort, USB-C, USB drive, UEFI), grouped by topic. The lessons are unchanged.
@@ -51,5 +51,6 @@ First release, for a classroom trial.
   - portable zips (exe + `WebView2Loader.dll`);
   - a web zip for Windows 7.
 
+[1.0.0]: https://github.com/BenzidaneMo/pc-build-ar/compare/v0.2.0...v1.0.0
 [0.2.0]: https://github.com/BenzidaneMo/pc-build-ar/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/BenzidaneMo/pc-build-ar/releases/tag/v0.1.0
