@@ -1,0 +1,22 @@
+{
+ "lgaCpu": ["File:Intel CPU Core i7 12700K Alder Lake top.jpg", "File:Intel CPU Core i7 12700K Alder Lake bottom.jpg"],
+ "cpuSocket": ["File:2023 Podstawka LGA 1700.jpg", "File:AM5 Socket Open.jpg"],
+ "ddr5": ["File:SK hynix 16GB DDR5-5600 UDIMM HMCG78AGBUA084N BA.jpg"],
+ "m2Ssd": ["File:Samsung 980 PRO PCIe 4.0 NVMe SSD 1TB-top PNr°0915.jpg"],
+ "towerCooler": [null],
+ "aioCooler": [null, "File:Corsair H100i 240mm CPU cooler. On MSI Z590 Torpedo motherboard. (51987363353).jpg"],
+ "modernBoard": ["File:Asus-ROG-Strix-Z390-F-Gaming-Motherboard 20201120 DSC6025.jpg"],
+ "modernCase": ["File:ATX computer case - left - 2018-05-18.jpg"],
+ "modularPsu": [null],
+ "atx24": [null],
+ "eps8": [null],
+ "gpu": ["File:Nvidia GeForce RTX 5060 Ti 16GB, PNY Overclocked Dual Fan, front.jpg"],
+ "pcie12v": ["File:Aftermarket 12VHPWR cable.jpg"],
+ "sataSsd": [null, "File:SATA cables (2026).jpg"],
+ "frontPanel": ["File:JPANEL MB IMG 1121.JPG"],
+ "caseFan": [null],
+ "hdmi": [null],
+ "displayport": [null],
+ "usbC": [null],
+ "usbDrive": [null]
+}

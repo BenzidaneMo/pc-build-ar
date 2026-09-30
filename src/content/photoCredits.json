@@ -1,0 +1,100 @@
+{
+ "lgaCpu-1.webp": {
+  "title": "Intel CPU Core i7 12700K Alder Lake top.jpg",
+  "author": "Eric Gaba (Sting - fr:Sting)",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Intel_CPU_Core_i7_12700K_Alder_Lake_top.jpg"
+ },
+ "lgaCpu-2.webp": {
+  "title": "Intel CPU Core i7 12700K Alder Lake bottom.jpg",
+  "author": "Eric Gaba (Sting - fr:Sting)",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Intel_CPU_Core_i7_12700K_Alder_Lake_bottom.jpg"
+ },
+ "cpuSocket-1.webp": {
+  "title": "2023 Podstawka LGA 1700.jpg",
+  "author": "Jacek Halicki",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:2023_Podstawka_LGA_1700.jpg"
+ },
+ "cpuSocket-2.webp": {
+  "title": "AM5 Socket Open.jpg",
+  "author": "CristoCalis",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:AM5_Socket_Open.jpg"
+ },
+ "ddr5-1.webp": {
+  "title": "SK hynix 16GB DDR5-5600 UDIMM HMCG78AGBUA084N BA.jpg",
+  "author": "ITEagle Europe - Sebastiaan Broekhoven",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:SK_hynix_16GB_DDR5-5600_UDIMM_HMCG78AGBUA084N_BA.jpg"
+ },
+ "m2Ssd-1.webp": {
+  "title": "Samsung 980 PRO PCIe 4.0 NVMe SSD 1TB-top PNr°0915.jpg",
+  "author": "D-Kuru",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Samsung_980_PRO_PCIe_4.0_NVMe_SSD_1TB-top_PNr%C2%B00915.jpg"
+ },
+ "aioCooler-2.webp": {
+  "title": "Corsair H100i 240mm CPU cooler. On MSI Z590 Torpedo motherboard. (51987363353).jpg",
+  "author": "Chi Ho Chan from Hong Kong",
+  "license": "CC BY 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Corsair_H100i_240mm_CPU_cooler._On_MSI_Z590_Torpedo_motherboard._(51987363353).jpg"
+ },
+ "modernBoard-1.webp": {
+  "title": "Asus-ROG-Strix-Z390-F-Gaming-Motherboard 20201120 DSC6025.jpg",
+  "author": "PantheraLeo1359531",
+  "license": "CC BY 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Asus-ROG-Strix-Z390-F-Gaming-Motherboard_20201120_DSC6025.jpg"
+ },
+ "modernCase-1.webp": {
+  "title": "ATX computer case - left - 2018-05-18.jpg",
+  "author": "Bretwa",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:ATX_computer_case_-_left_-_2018-05-18.jpg"
+ },
+ "gpu-1.webp": {
+  "title": "Nvidia GeForce RTX 5060 Ti 16GB, PNY Overclocked Dual Fan, front.jpg",
+  "author": "FreeMediaKid!",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Nvidia_GeForce_RTX_5060_Ti_16GB,_PNY_Overclocked_Dual_Fan,_front.jpg"
+ },
+ "pcie12v-1.webp": {
+  "title": "Aftermarket 12VHPWR cable.jpg",
+  "author": "Benlisquare",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Aftermarket_12VHPWR_cable.jpg"
+ },
+ "sataSsd-2.webp": {
+  "title": "SATA cables (2026).jpg",
+  "author": "Gpkp",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:SATA_cables_(2026).jpg"
+ },
+ "frontPanel-1.webp": {
+  "title": "JPANEL MB IMG 1121.JPG",
+  "author": "Hans Haase",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:JPANEL_MB_IMG_1121.JPG"
+ },
+ "gpu-2.webp": {
+  "title": "ASUS TUF Gaming GeForce RTX 5070 Ti OC",
+  "author": "ASUS",
+  "license": "Manufacturer photo",
+  "licenseUrl": "",
+  "source": "https://www.asus.com/motherboards-components/graphics-cards/tuf-gaming/tuf-rtx5070ti-o16g-gaming/"
+ }
+}
